@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - TalkBuddy Ai</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/dashboard.css">
+    <link rel="stylesheet" href="styles/admin_teacher.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <h2><i class="fas fa-school"></i> TalkBuddy Ai</h2>
+                    <p class="user-role">Admin Panel</p>
+                </div>
+            </div>
+
+            <nav class="sidebar-menu">
+                <ul>
+                    <li class="active">
+                        <a href="#dashboard">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#users">
+                            <i class="fas fa-users"></i>
+                            <span>Foydalanuvchilar</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#ustozlar">
+                            <i class="fas fa-book"></i>
+                            <span>Ustozlar</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#statistika">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>Statistika</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#parametrlar">
+                            <i class="fas fa-cogs"></i>
+                            <span>Parametrlar</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="avatar">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    <div class="user-details">
+                        <strong>Admin User</strong>
+                        <small>admin@maktab.uz</small>
+                    </div>
+                </div>
+                <button class="btn btn-secondary" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Chiqish
+                </button>
+            </div>
+        </aside>
+
+        <!-- Asosiy kontent -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-left">
+                    <h1>Admin Boshqaruvi</h1>
+                </div>
+                <div class="header-right">
+                    <div class="notification">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge">3</span>
+                    </div>
+                    <div class="date-display">
+                        <i class="fas fa-calendar"></i>
+                        <span id="currentDate"></span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Kontent -->
+            <div class="content">
+                <!-- Dashboard -->
+                <section id="dashboard" class="content-section active">
+                    <h2><i class="fas fa-tachometer-alt"></i> Dashboard</h2>
+                    
+                    <!-- Statistikalar -->
+                    <div class="stats-cards">
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background-color: #e6d4ff;">
+                                <i class="fas fa-users" style="color: blueviolet;"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>1,254</h3>
+                                <p>Jami O'quvchilar</p>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background-color: #d4edda;">
+                                <i class="fas fa-chalkboard-teacher" style="color: #28a745;"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>48</h3>
+                                <p>O'qituvchilar</p>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background-color: #fff3cd;">
+                                <i class="fas fa-book" style="color: #ffc107;"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>156</h3>
+                                <p>Darslar</p>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background-color: #f8d7da;">
+                                <i class="fas fa-chart-line" style="color: #dc3545;"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>94%</h3>
+                                <p>Faollik</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tezkor amallar -->
+                    <div class="quick-actions">
+                        <h3>Tezkor Amallar</h3>
+                        <div class="actions-grid">
+                            <button class="action-btn" onclick="showSection('users')">
+                                <i class="fas fa-user-plus"></i>
+                                <span>Yangi Foydalanuvchi</span>
+                            </button>
+                            <button class="action-btn" onclick="showSection('dars-plani')">
+                                <i class="fas fa-plus-circle"></i>
+                                <span>Yangi Dars</span>
+                            </button>
+                            <button class="action-btn" onclick="showSection('statistika')">
+                                <i class="fas fa-chart-pie"></i>
+                                <span>Statistika</span>
+                            </button>
+                            <button class="action-btn" onclick="showSection('parametrlar')">
+                                <i class="fas fa-cog"></i>
+                                <span>Tizim Sozlamalari</span>
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+<!-- Foydalanuvchilar -->
+<section id="users" class="content-section">
+    <div class="section-header">
+        <h2><i class="fas fa-users"></i> Foydalanuvchilar Boshqaruvi</h2>
+        <button class="btn btn-primary" onclick="showAddUserModal()">
+            <i class="fas fa-plus"></i> Yangi Foydalanuvchi
+        </button>
+    </div>
+
+    <!-- Foydalanuvchi qo'shish formasi -->
+    <div class="card">
+        <h3>Yangi Foydalanuvchi Qo'shish</h3>
+        <form id="addUserForm" onsubmit="addUser(event)">
+            <div class="row">
+                <div class="col-4">
+                    <div class="form-group">
+                        <label for="userLogin">Login *</label>
+                        <input type="text" id="userLogin" class="form-control" required>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="form-group">
+                        <label for="userPassword">Parol *</label>
+                        <input type="password" id="userPassword" class="form-control" required>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="form-group">
+                        <label for="userHealthStatus">O'quvchi Holati *</label>
+                        <select id="userHealthStatus" class="form-control" required>
+                            <option value="">Tanlang</option>
+                            <option value="healthy">Sog'lom</option>
+                            <option value="temporarily_ill">Vaqtincha kasal</option>
+                            <option value="disabled">Nogiron</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="userAge">Yoshi</label>
+                        <input type="number" id="userAge" class="form-control" min="6" max="60">
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="userClass">Sinf</label>
+                        <select id="userClass" class="form-control">
+                            <option value="">Tanlang</option>
+                            <option value="1">1-sinf</option>
+                            <option value="2">2-sinf</option>
+                            <option value="3">3-sinf</option>
+                            <option value="4">4-sinf</option>
+                            <option value="5">5-sinf</option>
+                            <option value="6">6-sinf</option>
+                            <option value="7">7-sinf</option>
+                            <option value="8">8-sinf</option>
+                            <option value="9">9-sinf</option>
+                            <option value="10">10-sinf</option>
+                            <option value="11">11-sinf</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="userPhone">Telefon Raqam</label>
+                        <input type="tel" id="userPhone" class="form-control" placeholder="+998">
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="userStatus">Holati</label>
+                        <select id="userStatus" class="form-control">
+                            <option value="active">Faol</option>
+                            <option value="inactive">Nofaol</option>
+                            <option value="blocked">Bloklangan</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="userFullName">To'liq Ism</label>
+                <input type="text" id="userFullName" class="form-control">
+            </div>
+
+            <div class="text-right">
+                <button type="reset" class="btn btn-secondary">Tozalash</button>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Saqlash
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Foydalanuvchilar jadvali -->
+    <div class="card">
+        <h3>Ro'yxatdagi Foydalanuvchilar</h3>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Login</th>
+                        <th>Ism</th>
+                        <th>O'quvchi Holati</th>
+                        <th>Sinf</th>
+                        <th>Yoshi</th>
+                        <th>Telefon</th>
+                        <th>Holati</th>
+                        <th>Amallar</th>
+                    </tr>
+                </thead>
+                <tbody id="usersTable">
+                    <!-- JavaScript orqali to'ldiriladi -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+<!-- Ustozlar Boshqaruvi -->
+<section id="ustozlar" class="content-section">
+    <div class="section-header">
+        <h2><i class="fas fa-chalkboard-teacher"></i> Ustozlar Boshqaruvi</h2>
+        <button class="btn btn-primary" onclick="showAddTeacherModal()">
+            <i class="fas fa-plus"></i> Yangi Ustoz
+        </button>
+    </div>
+
+    <!-- Ustoz qo'shish formasi -->
+    <div class="card">
+        <h3>Yangi Ustoz Qo'shish</h3>
+        <form id="addTeacherForm" onsubmit="addTeacher(event)">
+            <div class="row">
+                <div class="col-4">
+                    <div class="form-group">
+                        <label for="teacherFirstName">Ism *</label>
+                        <input type="text" id="teacherFirstName" class="form-control" required>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="form-group">
+                        <label for="teacherLastName">Familiya *</label>
+                        <input type="text" id="teacherLastName" class="form-control" required>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="form-group">
+                        <label for="teacherAge">Yoshi *</label>
+                        <input type="number" id="teacherAge" class="form-control" required min="25" max="70">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-6">
+                    <div class="form-group">
+                        <label for="teacherPhone">Telefon Raqami *</label>
+                        <input type="tel" id="teacherPhone" class="form-control" placeholder="+998 90 123 45 67" required>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-group">
+                        <label for="teacherExperience">Tajriba (yil) *</label>
+                        <input type="number" id="teacherExperience" class="form-control" required min="0" max="50">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-6">
+                    <div class="form-group">
+                        <label for="teacherQualification">Malakasi *</label>
+                        <select id="teacherQualification" class="form-control" required>
+                            <option value="">Tanlang</option>
+                            <option value="oliy">Oliy ma'lumotli</option>
+                            <option value="orta-maxsus">O'rta maxsus</option>
+                            <option value="magistr">Magistr</option>
+                            <option value="doktor">PhD/Doktor</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-group">
+                        <label for="teacherHasClass">Dars Bera oladimi? *</label>
+                        <select id="teacherHasClass" class="form-control" required>
+                            <option value="">Tanlang</option>
+                            <option value="ha">Ha, dars bera oladi</option>
+                            <option value="yoq">Yo'q, dars bera olmaydi</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="teacherSubjects">O'qitadigan Fanlar</label>
+                <select id="teacherSubjects" class="form-control" multiple>
+                    <option value="matematika">Matematika</option>
+                    <option value="fizika">Fizika</option>
+                    <option value="kimyo">Kimyo</option>
+                    <option value="biologiya">Biologiya</option>
+                    <option value="ona_tili">Ona Tili</option>
+                    <option value="ingliz_tili">Ingliz Tili</option>
+                    <option value="tarix">Tarix</option>
+                    <option value="geografiya">Geografiya</option>
+                    <option value="informatika">Informatika</option>
+                </select>
+                <small class="text-muted">Bir nechta fanni tanlash uchun CTRL tugmasini bosib turib tanlang</small>
+            </div>
+
+            <div class="form-group">
+                <label for="teacherNotes">Qo'shimcha ma'lumotlar</label>
+                <textarea id="teacherNotes" class="form-control" rows="3" placeholder="Maxsus ko'nikmalar, sertifikatlar..."></textarea>
+            </div>
+
+            <div class="text-right">
+                <button type="reset" class="btn btn-secondary">Tozalash</button>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Saqlash
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Ustozlar jadvali -->
+    <div class="card">
+        <h3>Ro'yxatdagi Ustozlar</h3>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Ism</th>
+                        <th>Familiya</th>
+                        <th>Yoshi</th>
+                        <th>Telefon</th>
+                        <th>Tajriba</th>
+                        <th>Malakasi</th>
+                        <th>Dars</th>
+                        <th>Fanlar</th>
+                        <th>Holati</th>
+                        <th>Amallar</th>
+                    </tr>
+                </thead>
+                <tbody id="teachersTable">
+                    <!-- JavaScript orqali to'ldiriladi -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+<!-- Statistika -->
+<section id="statistika" class="content-section">
+    <h2><i class="fas fa-chart-bar"></i> Statistika</h2>
+    
+    <!-- Filtrlash bo'limi -->
+    <div class="filter-section">
+        <div class="row">
+            <div class="col-4">
+                <div class="form-group">
+                    <label for="studentTypeFilter"><i class="fas fa-filter"></i> O'quvchilar Turi</label>
+                    <select id="studentTypeFilter" class="form-control" onchange="filterStatistics()">
+                        <option value="all">Barcha o'quvchilar</option>
+                        <option value="regular">Oddiy o'quvchilar</option>
+                        <option value="special_needs">Maxsus ehtiyojli o'quvchilar</option>
+                        <option value="gifted">Iqtidorli o'quvchilar</option>
+                        <option value="olympiad">Olimpiadachilar</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="form-group">
+                    <label for="classFilter"><i class="fas fa-graduation-cap"></i> Sinf bo'yicha</label>
+                    <select id="classFilter" class="form-control" onchange="filterStatistics()">
+                        <option value="all">Barcha sinflar</option>
+                        <option value="1">1-sinf</option>
+                        <option value="2">2-sinf</option>
+                        <option value="3">3-sinf</option>
+                        <option value="4">4-sinf</option>
+                        <option value="5">5-sinf</option>
+                        <option value="6">6-sinf</option>
+                        <option value="7">7-sinf</option>
+                        <option value="8">8-sinf</option>
+                        <option value="9">9-sinf</option>
+                        <option value="10">10-sinf</option>
+                        <option value="11">11-sinf</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="form-group">
+                    <label for="moodFilter"><i class="fas fa-smile"></i> Kayfiyat bo'yicha</label>
+                    <select id="moodFilter" class="form-control" onchange="filterStatistics()">
+                        <option value="all">Barcha kayfiyatlar</option>
+                        <option value="happy">Baxtli</option>
+                        <option value="normal">Oddiy</option>
+                        <option value="sad">G'amgin</option>
+                        <option value="excited">Hursand</option>
+                        <option value="tired">Charchagan</option>
+                        <option value="sick">Kasal</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Umumiy statistika -->
+    <div class="card">
+        <h3><i class="fas fa-users"></i> Umumiy O'quvchilar: 10 ta</h3>
+        <div class="row">
+            <div class="col-4">
+                <div class="health-stats">
+                    <h4><i class="fas fa-heartbeat"></i> Sog'liq Holati</h4>
+                    <div class="stats-list">
+                        <div class="stat-item">
+                            <span class="stat-label">Sog'lom:</span>
+                            <span class="stat-value" id="healthyCount">6 ta (60%)</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Nogiron:</span>
+                            <span class="stat-value" id="disabledCount">3 ta (30%)</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Vaqtincha kasal:</span>
+                            <span class="stat-value" id="sickCount">1 ta (10%)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-4">
+                <div class="mood-stats">
+                    <h4><i class="fas fa-smile"></i> Kayfiyat Statistikasi</h4>
+                    <div class="stats-list">
+                        <div class="stat-item">
+                            <span class="stat-label">Baxtli:</span>
+                            <span class="stat-value" id="happyCount">3 ta (30%)</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Oddiy:</span>
+                            <span class="stat-value" id="normalCount">2 ta (20%)</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">G'amgin:</span>
+                            <span class="stat-value" id="sadCount">1 ta (10%)</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Hursand:</span>
+                            <span class="stat-value" id="excitedCount">2 ta (20%)</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Charchagan:</span>
+                            <span class="stat-value" id="tiredCount">1 ta (10%)</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Kasal:</span>
+                            <span class="stat-value" id="sickMoodCount">1 ta (10%)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-4">
+                <div class="mood-distribution">
+                    <h4><i class="fas fa-chart-pie"></i> Kayfiyatlar Taqsimoti</h4>
+                <div class="distribution-list">
+    <div class="distribution-item">
+        <div class="distribution-header">
+            <span class="dist-label">Baxtli:</span>
+            <span class="dist-value">40%</span>
+        </div>
+        <div class="progress">
+            <div class="progress-bar progress-bar-happy" style="width: 40%"></div>
+        </div>
+    </div>
+    <div class="distribution-item">
+        <div class="distribution-header">
+            <span class="dist-label">Oddiy:</span>
+            <span class="dist-value">30%</span>
+        </div>
+        <div class="progress">
+            <div class="progress-bar progress-bar-normal" style="width: 30%"></div>
+        </div>
+    </div>
+    <div class="distribution-item">
+        <div class="distribution-header">
+            <span class="dist-label">G'amgin:</span>
+            <span class="dist-value">15%</span>
+        </div>
+        <div class="progress">
+            <div class="progress-bar progress-bar-sad" style="width: 15%"></div>
+        </div>
+    </div>
+    <div class="distribution-item">
+        <div class="distribution-header">
+            <span class="dist-label">Hursand:</span>
+            <span class="dist-value">10%</span>
+        </div>
+        <div class="progress">
+            <div class="progress-bar progress-bar-excited" style="width: 10%"></div>
+        </div>
+    </div>
+    <div class="distribution-item">
+        <div class="distribution-header">
+            <span class="dist-label">Charchagan:</span>
+            <span class="dist-value">4%</span>
+        </div>
+        <div class="progress">
+            <div class="progress-bar progress-bar-tired" style="width: 4%"></div>
+        </div>
+    </div>
+    <div class="distribution-item">
+        <div class="distribution-header">
+            <span class="dist-label">Kasal:</span>
+            <span class="dist-value">1%</span>
+        </div>
+        <div class="progress">
+            <div class="progress-bar progress-bar-sick" style="width: 1%"></div>
+        </div>
+    </div>
+</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Eng yaxshi o'quvchilar jadvali -->
+    <div class="card">
+        <div class="card-header">
+            <h3><i class="fas fa-trophy"></i> Eng Yaxshi O'quvchilar</h3>
+            <div class="card-actions">
+                <button class="btn btn-sm btn-secondary" onclick="resetStatisticsFilters()">
+                    <i class="fas fa-redo"></i> Filtrlarni tozalash
+                </button>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table" id="topStudentsTable">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>O'quvchi</th>
+                        <th>Sinf</th>
+                        <th>Kayfiyat</th>
+                        <th>Sog'liq Holati</th>
+                        <th>O'quvchi Turi</th>
+                        <th>O'rtacha Baho</th>
+                        <th>Darslarni Bajarish</th>
+                        <th>Holati</th>
+                    </tr>
+                </thead>
+                <tbody id="topStudentsList">
+                    <!-- JavaScript orqali to'ldiriladi -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+                <!-- Parametrlar -->
+                <section id="parametrlar" class="content-section">
+                    <h2><i class="fas fa-cogs"></i> Tizim Parametrlari</h2>
+                    
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="card">
+                                <h3>Umumiy Sozlamalar</h3>
+                                <form id="systemSettings">
+                                    <div class="form-group">
+                                        <label for="siteName">Sayt Nomi</label>
+                                        <input type="text" id="siteName" class="form-control" value="TalkBuddy Ai">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="siteUrl">Sayt URL</label>
+                                        <input type="url" id="siteUrl" class="form-control" value="https://talkbuddyai.uz">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="adminEmail">Admin Email</label>
+                                        <input type="email" id="adminEmail" class="form-control" value="admin@talkbuddyai.uz">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="timezone">Vaqt Zonasi</label>
+                                        <select id="timezone" class="form-control">
+                                            <option value="Asia/Tashkent" selected>Toshkent (GMT+5)</option>
+                                            <option value="UTC">UTC</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="language">Til</label>
+                                        <select id="language" class="form-control">
+                                            <option value="uz" selected>O'zbekcha</option>
+                                            <option value="ru">Ruscha</option>
+                                            <option value="en">Inglizcha</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-save"></i> Sozlamalarni Saqlash
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                        
+                        <div class="col-6">
+                            <div class="card">
+                                <h3>Xavfsizlik Sozlamalari</h3>
+                                <form id="securitySettings">
+                                    <div class="form-group">
+                                        <label for="sessionTimeout">Sessiya Muddati (daqiqa)</label>
+                                        <input type="number" id="sessionTimeout" class="form-control" value="30" min="5" max="120">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="maxLoginAttempts">Maksimal Kirish Urinishi</label>
+                                        <input type="number" id="maxLoginAttempts" class="form-control" value="5" min="1" max="10">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="passwordStrength">Parol Kuchliligi</label>
+                                        <select id="passwordStrength" class="form-control">
+                                            <option value="weak">Oddiy</option>
+                                            <option value="medium" selected>O'rtacha</option>
+                                            <option value="strong">Kuchli</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <div class="checkbox-group">
+                                            <input type="checkbox" id="twoFactorAuth" checked>
+                                            <label for="twoFactorAuth">Ikki faktorli autentifikatsiya</label>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <div class="checkbox-group">
+                                            <input type="checkbox" id="emailNotifications" checked>
+                                            <label for="emailNotifications">Email bildirishnomalari</label>
+                                        </div>
+                                    </div>
+                                    
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-shield-alt"></i> Xavfsizlikni Saqlash
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal oynalar -->
+    <div id="addUserModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Yangi Foydalanuvchi</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!-- Modal kontenti -->
+            </div>
+        </div>
+    </div>
+
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

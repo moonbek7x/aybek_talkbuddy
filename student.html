@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>O'quvchi Panel - TalkBuddy Ai</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <h2><i class="fas fa-school"></i> TalkBuddy Ai</h2>
+                    <p class="user-role">O'quvchi Panel</p>
+                </div>
+            </div>
+
+            <nav class="sidebar-menu">
+                <ul>
+                    <li class="active">
+                        <a href="#dashboard">
+                            <i class="fas fa-home"></i>
+                            <span>Asosiy</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#darslar">
+                            <i class="fas fa-book"></i>
+                            <span>Darslarim</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#topshiriqlar">
+                            <i class="fas fa-tasks"></i>
+                            <span>Topshiriqlar</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#baholar">
+                            <i class="fas fa-star"></i>
+                            <span>Baholarim</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#ai-dars">
+                            <i class="fas fa-robot"></i>
+                            <span>AI Darslar</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="avatar">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <div class="user-details">
+                        <strong>Aziz Aliyev</strong>
+                        <small>9-sinf</small>
+                    </div>
+                </div>
+                <button class="btn btn-secondary" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Chiqish
+                </button>
+            </div>
+        </aside>
+
+        <!-- Asosiy kontent -->
+        <main class="main-content">
+            <header class="header">
+                <div class="header-left">
+                    <h1>O'quvchi Paneli</h1>
+                    <p class="text-light">Xush kelibsiz, Aziz!</p>
+                </div>
+                <div class="header-right">
+                    <div class="student-info">
+                        <span class="class-badge">9-sinf</span>
+                        <span class="rating">O'rtacha baho: <strong id="averageGrade">4.8</strong></span>
+                        <div class="notification-badge">
+                            <i class="fas fa-bell"></i>
+                            <span class="badge-count" id="notificationCount">3</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content">
+                <!-- Dashboard -->
+                <section id="dashboard" class="content-section active">
+                    <h2><i class="fas fa-home"></i> Asosiy</h2>
+                    
+                    <div class="row">
+                        <div class="col-8">
+                            <!-- Bugungi darslar -->
+                            <div class="card">
+                                <h3><i class="fas fa-calendar-day"></i> Bugungi Dars Jadvali</h3>
+                                <div class="student-schedule" id="todaySchedule">
+                                    <!-- JavaScript orqali to'ldiriladi -->
+                                </div>
+                            </div>
+                            
+                            <!-- Oxirgi aktivlik -->
+                            <div class="card">
+                                <h3><i class="fas fa-history"></i> Oxirgi Aktivlik</h3>
+                                <div class="activity-list" id="recentActivity">
+                                    <!-- JavaScript orqali to'ldiriladi -->
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-4">
+                            <!-- Statistika -->
+                            <div class="card">
+                                <h3><i class="fas fa-chart-pie"></i> Statistika</h3>
+                                <div class="student-stats" id="studentStats">
+                                    <!-- JavaScript orqali to'ldiriladi -->
+                                </div>
+                            </div>
+                            
+                            <!-- AI rekomendatsiyalar -->
+                            <div class="card">
+                                <h3><i class="fas fa-lightbulb"></i> AI Tavsiyalari</h3>
+                                <div class="ai-recommendation" id="aiRecommendation">
+                                    <!-- JavaScript orqali to'ldiriladi -->
+                                </div>
+                            </div>
+                            
+                            <!-- Vaqtni qolgan topshiriqlar -->
+                            <div class="card">
+                                <h3><i class="fas fa-clock"></i> Muddat o'tish</h3>
+                                <div class="deadline-warning" id="deadlineWarning">
+                                    <!-- JavaScript orqali to'ldiriladi -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Darslar -->
+                <section id="darslar" class="content-section">
+                    <h2><i class="fas fa-book"></i> Darslarim</h2>
+                    
+                    <div class="filters">
+                        <select class="form-control" id="subjectFilter" onchange="filterLessons()">
+                            <option value="all">Barcha fanlar</option>
+                            <option value="matematika">Matematika</option>
+                            <option value="fizika">Fizika</option>
+                            <option value="kimyo">Kimyo</option>
+                            <option value="ona_tili">Ona Tili</option>
+                        </select>
+                    </div>
+                    
+                    <div class="lessons-grid" id="lessonsGrid">
+                        <!-- JavaScript orqali to'ldiriladi -->
+                    </div>
+                </section>
+
+                <!-- Topshiriqlar -->
+                <section id="topshiriqlar" class="content-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-tasks"></i> Topshiriqlar</h2>
+                        <div class="task-filters">
+                            <select class="form-control" id="taskFilter" onchange="filterTasks()">
+                                <option value="all">Barcha topshiriqlar</option>
+                                <option value="pending">Kutayotgan topshiriqlar</option>
+                                <option value="completed">Bajarilgan topshiriqlar</option>
+                                <option value="overdue">Muddati o'tgan</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Topshiriqlar statistikasi -->
+                    <div class="task-stats">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-tasks"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="totalTasks">0</h3>
+                                <p>Jami topshiriqlar</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="completedTasks">0</h3>
+                                <p>Bajarilgan</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="pendingTasks">0</h3>
+                                <p>Kutayotgan</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-exclamation-circle"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="overdueTasks">0</h3>
+                                <p>Muddati o'tgan</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Topshiriqlar ro'yxati -->
+                    <div class="card">
+                        <h3>Topshiriqlar Ro'yxati</h3>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>№</th>
+                                        <th>Topshiriq nomi</th>
+                                        <th>Fan</th>
+                                        <th>Berilgan sana</th>
+                                        <th>Muddati</th>
+                                        <th>Holati</th>
+                                        <th>Baho</th>
+                                        <th>Amallar</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tasksTable">
+                                    <!-- JavaScript orqali to'ldiriladi -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- Yangi topshiriq bajarish -->
+                    <div class="card">
+                        <h3>Topshiriq Bajarish</h3>
+                        <form id="submitTaskForm" onsubmit="submitTask(event)">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="taskSelect">Topshiriqni tanlang *</label>
+                                        <select id="taskSelect" class="form-control" required>
+                                            <option value="">Tanlang</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="taskFile">Fayl yuklash *</label>
+                                        <input type="file" id="taskFile" class="form-control" accept=".pdf,.doc,.docx,.txt" required>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="taskComment">Izoh (ixtiyoriy)</label>
+                                <textarea id="taskComment" class="form-control" rows="3" placeholder="Topshiriq haqida qo'shimcha izoh..."></textarea>
+                            </div>
+                            
+                            <div class="text-right">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-paper-plane"></i> Topshirish
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+
+                <!-- Baholar -->
+                <section id="baholar" class="content-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-star"></i> Baholarim</h2>
+                        <div class="grade-filters">
+                            <select class="form-control" id="gradePeriodFilter" onchange="filterGrades()">
+                                <option value="all">Barcha davr</option>
+                                <option value="week">Oxirgi hafta</option>
+                                <option value="month">Oxirgi oy</option>
+                                <option value="semester">Semestr</option>
+                            </select>
+                            <select class="form-control" id="gradeSubjectFilter" onchange="filterGrades()">
+                                <option value="all">Barcha fanlar</option>
+                                <option value="matematika">Matematika</option>
+                                <option value="fizika">Fizika</option>
+                                <option value="kimyo">Kimyo</option>
+                                <option value="ona_tili">Ona Tili</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- O'rtacha baho va statistikalar -->
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="card">
+                                <h3>O'rtacha Baho</h3>
+                                <div class="average-grade-display">
+                                    <div class="grade-circle">
+                                        <span id="overallGrade">4.8</span>
+                                    </div>
+                                    <p class="grade-label">Umumiy o'rtacha baho</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-8">
+                            <div class="card">
+                                <h3>Fanlar bo'yicha</h3>
+                                <div class="subject-grades">
+                                    <!-- JavaScript orqali to'ldiriladi -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Baholar jadvali -->
+                    <div class="card">
+                        <h3>Baholar Tarixi</h3>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>№</th>
+                                        <th>Fan</th>
+                                        <th>Dars/Topshiriq</th>
+                                        <th>Baho</th>
+                                        <th>O'qituvchi izohi</th>
+                                        <th>Sana</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="gradesTable">
+                                    <!-- JavaScript orqali to'ldiriladi -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- Baholash diagrammasi -->
+                    <div class="card">
+                        <h3>Baholar Statistikasi</h3>
+                        <div class="grade-chart" id="gradeChart">
+                            <div class="chart-placeholder">
+                                <!-- JavaScript orqali to'ldiriladi -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- AI Darslar -->
+                <section id="ai-dars" class="content-section">
+                    <h2><i class="fas fa-robot"></i> AI bilan Darslar</h2>
+                    
+                    <div class="card">
+                        <h3>Shaxsiylashtirilgan AI Assistant</h3>
+                        <div class="ai-assistant">
+                            <div class="ai-avatar">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div class="ai-message">
+                                <p>Salom, Aziz! Men sizning shaxsiy o'qituvchi assistantingizman. Qaysi mavzuda yordam kerak?</p>
+                            </div>
+                        </div>
+                        
+                        <div class="ai-options">
+                            <button class="btn btn-secondary" onclick="startAILesson('matematika')">
+                                <i class="fas fa-calculator"></i> Algebra masalalar
+                            </button>
+                            <button class="btn btn-secondary" onclick="startAILesson('fizika')">
+                                <i class="fas fa-atom"></i> Fizika tajribalari
+                            </button>
+                            <button class="btn btn-secondary" onclick="startAILesson('kimyo')">
+                                <i class="fas fa-flask"></i> Kimyo masalalar
+                            </button>
+                            <button class="btn btn-secondary" onclick="startAILesson('ona_tili')">
+                                <i class="fas fa-book"></i> O'na tili grammatikasi
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- AI darslar tarixi -->
+                    <div class="card">
+                        <h3>AI Darslar Tarixi</h3>
+                        <div class="ai-lessons-history">
+                            <!-- JavaScript orqali to'ldiriladi -->
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Topshiriq bajarish modal -->
+    <div id="taskModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Topshiriq Bajarish</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="modalTaskForm">
+                    <div class="form-group">
+                        <label for="modalTaskSelect">Topshiriq</label>
+                        <input type="text" id="modalTaskSelect" class="form-control" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="modalTaskFile">Fayl yuklash</label>
+                        <input type="file" id="modalTaskFile" class="form-control" accept=".pdf,.doc,.docx,.txt">
+                    </div>
+                    <div class="form-group">
+                        <label for="modalTaskComment">Izoh</label>
+                        <textarea id="modalTaskComment" class="form-control" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Topshirish</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/student_dashboard.js"></script>
+    <script>
+        // O'quvchi paneli uchun qo'shimcha CSS
+        document.head.insertAdjacentHTML('beforeend', `
+        <style>
+        .student-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .class-badge {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+        
+        .rating {
+            color: var(--text-light);
+        }
+        
+        .notification-badge {
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .badge-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: #dc3545;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+        
+        .student-schedule {
+            margin-top: 20px;
+        }
+        
+        .schedule-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .schedule-item:last-child {
+            border-bottom: none;
+        }
+        
+        .schedule-time {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--primary-color);
+            min-width: 80px;
+        }
+        
+        .schedule-details {
+            flex: 1;
+        }
+        
+        .schedule-details h4 {
+            margin-bottom: 5px;
+        }
+        
+        .schedule-details p {
+            color: var(--text-light);
+            margin-bottom: 10px;
+        }
+        
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 14px;
+        }
+        
+        .activity-list {
+            margin-top: 15px;
+        }
+        
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+        
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+        }
+        
+        .activity-content p {
+            margin-bottom: 5px;
+        }
+        
+        .activity-content small {
+            color: var(--text-light);
+        }
+        
+        .student-stats {
+            padding: 15px 0;
+        }
+        
+        .student-stats .stat-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .student-stats .stat-item:last-child {
+            border-bottom: none;
+        }
+        
+        .ai-recommendation {
+            padding: 15px;
+            background-color: var(--primary-light);
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+        
+        .ai-recommendation p {
+            margin-bottom: 10px;
+        }
+        
+        .deadline-warning {
+            padding: 15px;
+            background-color: #fff3cd;
+            border-radius: 10px;
+            margin-top: 15px;
+            border-left: 4px solid #ffc107;
+        }
+        
+        .deadline-warning .warning-item {
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+        
+        .deadline-warning .warning-item:last-child {
+            margin-bottom: 0;
+            border-bottom: none;
+        }
+        
+        .filters {
+            margin-bottom: 20px;
+            max-width: 300px;
+        }
+        
+        .lessons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .lesson-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border: 1px solid var(--border-color);
+        }
+        
+        .lesson-card.ai-lesson {
+            border: 2px solid var(--primary-color);
+        }
+        
+        .lesson-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .lesson-header h4 {
+            color: var(--primary-color);
+        }
+        
+        .lesson-progress {
+            background-color: var(--success-color);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+        
+        .lesson-card p {
+            color: var(--text-light);
+            margin-bottom: 15px;
+        }
+        
+        .lesson-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .ai-assistant {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .ai-avatar {
+            width: 60px;
+            height: 60px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+        }
+        
+        .ai-message {
+            flex: 1;
+            padding: 15px;
+            background-color: var(--bg-color);
+            border-radius: 10px;
+        }
+        
+        .ai-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .task-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .task-stats .stat-card {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .task-stats .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-size: 20px;
+        }
+        
+        .task-stats .stat-info h3 {
+            margin-bottom: 5px;
+            font-size: 24px;
+        }
+        
+        .task-stats .stat-info p {
+            color: var(--text-light);
+            margin: 0;
+        }
+        
+        .grade-filters {
+            display: flex;
+            gap: 10px;
+            max-width: 500px;
+        }
+        
+        .average-grade-display {
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .grade-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+        }
+        
+        .grade-circle span {
+            font-size: 36px;
+            font-weight: 600;
+            color: white;
+        }
+        
+        .grade-label {
+            color: var(--text-light);
+            font-size: 14px;
+        }
+        
+        .subject-grades {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            padding: 15px 0;
+        }
+        
+        .subject-grade-item {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+        }
+        
+        .subject-grade-item h4 {
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+        
+        .subject-grade-item .grade {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .ai-lessons-history {
+            display: grid;
+            gap: 15px;
+        }
+        
+        .ai-lesson-history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background-color: var(--bg-color);
+            border-radius: 10px;
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .task-status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .task-status-badge.pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        
+        .task-status-badge.completed {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .task-status-badge.overdue {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        .grade-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .grade-badge.excellent {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .grade-badge.good {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+        
+        .grade-badge.average {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-light);
+        }
+        
+        .modal-body {
+            padding: 20px;
+        }
+        </style>
+        `);
+    </script>
+</body>
+</html>

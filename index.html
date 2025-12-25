@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TalkBuddy Ai - Tizimga Kirish</title>
+    <link rel="stylesheet" href="styles/login.css">
+</head>
+<body>
+    <div class="login-container">
+        <!-- Sarlavha qismi -->
+        <div class="header">
+            <div class="school-icon">🏫</div>
+            <h1>TalkBuddy Ai</h1>
+            <p class="subtitle">Tizimga Kirish</p>
+        </div>
+
+        <!-- Form qismi -->
+        <div class="form-section">
+            <h2 class="form-title">Tizimga Kirish</h2>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label class="form-label">Loginni kiriting</label>
+                    <input type="text" class="form-input" id="username" placeholder="Loginni kiriting" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Parolni kiriting</label>
+                    <div class="password-wrapper">
+                        <input type="password" class="form-input" id="password" placeholder="Parolni kiriting" required>
+                        <button type="button" class="toggle-password" onclick="togglePassword()">👁️</button>
+                    </div>
+                </div>
+
+                <button type="submit" class="login-btn">Kirish</button>
+
+                <!-- Xato xabari -->
+                <div id="errorMessage" class="error-message" style="display: none;"></div>
+            </form>
+
+            <!-- Demo ma'lumotlar -->
+            <div class="demo-section">
+                <h3 class="demo-title">Demo Hisoblar</h3>
+                <div class="demo-accounts">
+                    <div class="demo-account">
+                        <strong>Login:</strong> admin
+                        <br>
+                        <strong>Parol:</strong> admin123
+                    </div>
+                    <div class="demo-account">
+                        <strong>Login:</strong> teacher
+                        <br>
+                        <strong>Parol:</strong> teacher123
+                    </div>
+                    <div class="demo-account">
+                        <strong>Login:</strong> student
+                        <br>
+                        <strong>Parol:</strong> student123
+                    </div>
+                </div>
+            </div>
+        </div>
+
+ 
+
+    <script src="js/auth.js"></script>
+</body>
+</html>
