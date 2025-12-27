@@ -1,4 +1,61 @@
 // O'qituvchi dashboard funksiyalari
+// teacher_dashboard.js faylining boshida quyidagi funksiyani qo'shing
+function initializeDashboard() {
+    // Dashboard bo'limini faol qilish
+    document.querySelectorAll('.content-section').forEach(section => {
+        section.style.display = 'none';
+    });
+    document.getElementById('dashboard').style.display = 'block';
+    
+    // Navigation event listenerlarini qo'shish
+    setupNavigation();
+}
+
+// Navigation sozlamalari
+function setupNavigation() {
+    // Navigation linklari uchun event listener
+    document.querySelectorAll('.sidebar-menu a').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const targetId = this.getAttribute('href').substring(1);
+            console.log(`${targetId} bo'limi tanlandi`);
+            
+            // Navbar aktivligini yangilash
+            document.querySelectorAll('.sidebar-menu li').forEach(li => {
+                li.classList.remove('active');
+            });
+            this.parentElement.classList.add('active');
+            
+            // Bo'limni ko'rsatish
+            showSection(targetId);
+        });
+    });
+}
+
+// Bo'limni ko'rsatish
+function showSection(sectionId) {
+    console.log(`showSection: ${sectionId}`);
+    
+    // Barcha bo'limlarni yashirish
+    document.querySelectorAll('.content-section').forEach(section => {
+        section.style.display = 'none';
+    });
+    
+    // Tanlangan bo'limni ko'rsatish
+    const targetSection = document.getElementById(sectionId);
+    if (targetSection) {
+        targetSection.style.display = 'block';
+        console.log(`${sectionId} bo'limi ko'rsatildi`);
+        
+        // Statistika bo'limi yuklansa
+        if (sectionId === 'statistika') {
+            setTimeout(() => {
+                loadStatistics();
+            }, 100);
+        }
+    }
+}
 
 // Sahifa yuklanganda
 document.addEventListener('DOMContentLoaded', function() {
@@ -12,7 +69,7 @@ document.addEventListener('DOMContentLoaded', function() {
     loadLessonPlans();
     
     // O'quvchilar statistikasini yuklash
-    loadStudentsStatistics();
+    loadStatistics()
     
     // Baholash jadvalini yuklash
     loadGradingTable();
@@ -398,34 +455,101 @@ const studentsData = [
         activity: 90
     }
 ];
+// Statistika funksiyalarini yangilangan holda qo'shing
+function loadStatistics() {
+    console.log("=== Statistika yuklanmoqda ===");
+    
+    try {
+        // 1. Eng yaxshi o'quvchilar jadvalini yuklash
+        loadTopStudents();
+        
+        // 2. Asosiy statistikani yangilash
+        updateMainStatistics();
+        
+        // 3. Kayfiyat statistikasini yangilash
+        updateMoodStatistics();
+        
+        // 4. Diagrammalarni chizish
+        drawCharts();
+        
+        console.log("=== Statistika muvaffaqiyatli yuklandi ===");
+    } catch (error) {
+        console.error("Statistika yuklashda xatolik:", error);
+        showNotification('Statistika yuklashda xatolik yuz berdi', 'error');
+    }
+}
 
-// O'quvchilar statistikasini yuklash
-function loadStudentsStatistics() {
-    // Eng yaxshi o'quvchilar jadvali
+// Diagrammalarni chizish
+function drawCharts() {
+    console.log("Diagrams chizilmoqda...");
+    
+    // Kayfiyat taqsimoti diagrammasi
+    const moodDistribution = document.getElementById('moodDistribution');
+    if (moodDistribution) {
+        const moods = [
+            { label: 'Baxtli', value: 40, color: '#28a745' },
+            { label: 'Oddiy', value: 30, color: '#ffc107' },
+            { label: 'Gʻamgin', value: 15, color: '#dc3545' },
+            { label: 'Kasal', value: 1, color: '#6c757d' },
+            { label: 'Hursand', value: 8, color: '#007bff' },
+            { label: 'Charchagan', value: 6, color: '#6f42c1' }
+        ];
+        
+        moodDistribution.innerHTML = moods.map(mood => `
+            <div class="distribution-item">
+                <div class="distribution-header">
+                    <span class="dist-label">${mood.label}</span>
+                    <span class="dist-value">${mood.value}%</span>
+                </div>
+                <div class="progress">
+                    <div class="progress-bar progress-bar-${mood.label.toLowerCase()}" 
+                         style="width: ${mood.value}%; background-color: ${mood.color};">
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    }
+}
+// Statistika bo'limini yuklash
+function loadStatistics() {
+    // 1. Eng yaxshi o'quvchilar jadvalini yuklash
+    loadTopStudents();
+    
+    // 2. Asosiy statistikani yangilash
+    updateMainStatistics();
+    
+    // 3. Kayfiyat statistikasini yangilash
+    updateMoodStatistics();
+}
+
+// Eng yaxshi o'quvchilar jadvali
+function loadTopStudents() {
     const topStudentsTable = document.getElementById('topStudentsTable');
     if (topStudentsTable) {
         const sortedStudents = [...studentsData]
             .sort((a, b) => b.avgGrade - a.avgGrade)
-            .slice(0, 5);
+            .slice(0, 10);
         
         topStudentsTable.innerHTML = sortedStudents.map((student, index) => `
             <tr>
                 <td>${index + 1}</td>
-                <td>${student.name}</td>
-                <td>${student.class}-sinf</td>
-                <td>${student.avgGrade.toFixed(1)}</td>
-                <td>${student.completion}%</td>
-                <td>${student.attendance}%</td>
+                <td><strong>${student.name}</strong></td>
+                <td><span class="badge badge-primary">${student.class}-sinf</span></td>
+                <td><span class="badge badge-info">${student.avgGrade.toFixed(1)}</span></td>
+                <td><span class="badge ${student.completion >= 90 ? 'badge-success' : 'badge-warning'}">${student.completion}%</span></td>
+                <td>
+                    <span class="mood-badge ${getMoodClass(student.mood)}">
+                        ${getMoodIcon(student.mood)} ${student.mood}
+                    </span>
+                </td>
+                <td><span class="badge badge-secondary">${getRandomGrade()}</span></td>
             </tr>
         `).join('');
     }
-    
-    // Umumiy ko'rsatkichlarni hisoblash
-    updateStatistics();
 }
 
-// Statistikani yangilash
-function updateStatistics() {
+// Asosiy statistikani yangilash
+function updateMainStatistics() {
     const classFilter = document.getElementById('statClassFilter')?.value || 'all';
     const subjectFilter = document.getElementById('statSubjectFilter')?.value || 'all';
     const periodFilter = document.getElementById('statPeriodFilter')?.value || 'week';
@@ -434,7 +558,7 @@ function updateStatistics() {
     let filteredStudents = [...studentsData];
     
     if (classFilter !== 'all') {
-        filteredStudents = filteredStudents.filter(s => s.class === classFilter);
+        filteredStudents = filteredStudents.filter(s => s.class.toString() === classFilter);
     }
     
     // O'rtacha ko'rsatkichlarni hisoblash
@@ -446,79 +570,141 @@ function updateStatistics() {
         const activePercentage = Math.round((activeStudents / filteredStudents.length) * 100);
         
         // Statistikani yangilash
-        const statItems = document.querySelectorAll('.stats-list .stat-item');
-        if (statItems.length >= 4) {
-            statItems[0].querySelector('.stat-value').textContent = avgGrade.toFixed(1);
-            statItems[1].querySelector('.stat-value').textContent = `${Math.round(avgCompletion)}%`;
-            statItems[2].querySelector('.stat-value').textContent = `${activePercentage}%`;
-            statItems[3].querySelector('.stat-value').textContent = `${Math.round(avgAttendance)}%`;
+        const statValues = document.querySelectorAll('.stat-value');
+        if (statValues.length >= 4) {
+            statValues[0].textContent = avgGrade.toFixed(1);
+            statValues[1].textContent = `${Math.round(avgCompletion)}%`;
+            statValues[2].textContent = `${activePercentage}%`;
+            statValues[3].textContent = `${Math.round(avgAttendance)}%`;
         }
         
         // Diagrammani yangilash
-        const chartBars = document.querySelectorAll('.chart-placeholder .chart-bar');
+        const chartBars = document.querySelectorAll('.chart-bar');
         if (chartBars.length >= 2) {
             const class9Students = filteredStudents.filter(s => s.class === '9');
             const class10Students = filteredStudents.filter(s => s.class === '10');
             
             const class9Activity = class9Students.length > 0 ? 
-                class9Students.reduce((sum, s) => sum + s.activity, 0) / class9Students.length : 0;
+                Math.round(class9Students.reduce((sum, s) => sum + s.activity, 0) / class9Students.length) : 0;
             const class10Activity = class10Students.length > 0 ? 
-                class10Students.reduce((sum, s) => sum + s.activity, 0) / class10Students.length : 0;
+                Math.round(class10Students.reduce((sum, s) => sum + s.activity, 0) / class10Students.length) : 0;
             
-            chartBars[0].style.height = `${Math.round(class9Activity)}%`;
-            chartBars[0].setAttribute('data-label', `9-sinf (${Math.round(class9Activity)}%)`);
+            chartBars[0].style.height = `${class9Activity}%`;
+            chartBars[0].setAttribute('data-label', `9-sinf (${class9Activity}%)`);
             
-            chartBars[1].style.height = `${Math.round(class10Activity)}%`;
-            chartBars[1].setAttribute('data-label', `10-sinf (${Math.round(class10Activity)}%)`);
+            chartBars[1].style.height = `${class10Activity}%`;
+            chartBars[1].setAttribute('data-label', `10-sinf (${class10Activity}%)`);
+            
+            // Diagramma ustunlariga label qo'shing
+            chartBars.forEach(bar => {
+                const label = bar.getAttribute('data-label');
+                if (label && !bar.querySelector('.chart-label')) {
+                    const labelEl = document.createElement('div');
+                    labelEl.className = 'chart-label';
+                    labelEl.textContent = label;
+                    labelEl.style.position = 'absolute';
+                    labelEl.style.bottom = '-25px';
+                    labelEl.style.left = '0';
+                    labelEl.style.width = '100%';
+                    labelEl.style.textAlign = 'center';
+                    labelEl.style.fontSize = '12px';
+                    labelEl.style.color = '#6c757d';
+                    bar.style.position = 'relative';
+                    bar.appendChild(labelEl);
+                }
+            });
         }
     }
 }
 
-// ==================== SINFLAR VA O'QUVCHILAR ====================
+// Kayfiyat statistikasini yangilash
+function updateMoodStatistics() {
+    const happyCount = Math.floor(Math.random() * 10) + 20;
+    const normalCount = Math.floor(Math.random() * 10) + 15;
+    const sadCount = Math.floor(Math.random() * 5) + 5;
+    const sickCount = Math.floor(Math.random() * 3) + 1;
+    const totalStudents = happyCount + normalCount + sadCount + sickCount;
+    
+    // Countlarni yangilash
+    document.getElementById('happyCount').textContent = happyCount;
+    document.getElementById('normalCount').textContent = normalCount;
+    document.getElementById('sadCount').textContent = sadCount;
+    document.getElementById('sickCount').textContent = sickCount;
+    document.getElementById('totalStudentsCount').textContent = totalStudents;
+    document.getElementById('todayChecked').textContent = totalStudents - sickCount;
+    
+    // Foizlarni yangilash
+    document.querySelectorAll('.mood-percentage')[0].textContent = `${Math.round((happyCount/totalStudents)*100)}%`;
+    document.querySelectorAll('.mood-percentage')[1].textContent = `${Math.round((normalCount/totalStudents)*100)}%`;
+    document.querySelectorAll('.mood-percentage')[2].textContent = `${Math.round((sadCount/totalStudents)*100)}%`;
+    document.querySelectorAll('.mood-percentage')[3].textContent = `${Math.round((sickCount/totalStudents)*100)}%`;
+}
 
-// Sinf o'quvchilarini ko'rsatish
-function showClassStudents(className) {
-    // O'quvchilar ro'yxatini ko'rsatish
-    const studentsList = document.getElementById('studentsList');
-    if (studentsList) {
-        studentsList.style.display = 'block';
-    }
+// Filtrlarni qo'llash
+function applyFilters() {
+    updateMainStatistics();
+    loadTopStudents();
     
-    // Jadvalni to'ldirish
-    const table = document.getElementById('classStudentsTable');
-    if (table) {
-        const classStudents = studentsData.filter(s => s.class === className.toString());
-        
-        table.innerHTML = classStudents.map((student, index) => `
-            <tr>
-                <td>${index + 1}</td>
-                <td>${student.name}</td>
-                <td>${student.avgGrade.toFixed(1)}</td>
-                <td>${student.completion}%</td>
-                <td>${student.attendance}%</td>
-                <td>
-                    <span class="status-badge ${student.activity >= 80 ? 'active' : 'inactive'}">
-                        ${student.activity >= 80 ? 'Faol' : 'Nofaol'}
-                    </span>
-                </td>
-            </tr>
-        `).join('');
-    }
+    // Filter tanlovini yangilash
+    const classFilter = document.getElementById('statClassFilter')?.value || 'all';
+    document.getElementById('topStudentsFilter').value = classFilter;
     
-    // Sinf nomini yangilash
-    const cardHeader = document.querySelector('#studentsList .card-header h3');
-    if (cardHeader) {
-        cardHeader.textContent = `${className}-sinf O'quvchilari`;
+    // Ma'lumot yangilandi bildirishnomasi
+    showNotification('Statistika filtrlari qo\'llandi', 'success');
+}
+
+// Yardamchi funksiyalar
+function getRandomGrade() {
+    const grades = ['5', '4', '4', '5', '3', '4+'];
+    return grades[Math.floor(Math.random() * grades.length)];
+}
+
+function getMoodClass(mood) {
+    switch(mood) {
+        case 'Baxtli': return 'mood-happy';
+        case 'Oddiy': return 'mood-normal';
+        case 'Gʻamgin': return 'mood-sad';
+        case 'Kasal': return 'mood-sick';
+        default: return 'mood-normal';
     }
 }
 
-// O'quvchilar ro'yxatini yashirish
-function hideStudentsList() {
-    const studentsList = document.getElementById('studentsList');
-    if (studentsList) {
-        studentsList.style.display = 'none';
+function getMoodIcon(mood) {
+    switch(mood) {
+        case 'Baxtli': return '😊';
+        case 'Oddiy': return '😐';
+        case 'Gʻamgin': return '😔';
+        case 'Kasal': return '🤒';
+        default: return '😐';
     }
 }
+
+// Statistika bo'limi ochilganda yuklash
+document.addEventListener('DOMContentLoaded', function() {
+    // Statistika linkiga click event qo'shish
+    const statLink = document.querySelector('a[href="#statistika"]');
+    if (statLink) {
+        statLink.addEventListener('click', function() {
+            setTimeout(() => {
+                loadStatistics();
+            }, 100);
+        });
+    }
+    
+    // Top students filter uchun event
+    const topStudentsFilter = document.getElementById('topStudentsFilter');
+    if (topStudentsFilter) {
+        topStudentsFilter.addEventListener('change', function() {
+            loadTopStudents();
+        });
+    }
+    
+    // Avtomatik yuklash (agar statistika bo'limi ochiq bo'lsa)
+    const statSection = document.getElementById('statistika');
+    if (statSection && statSection.style.display !== 'none') {
+        loadStatistics();
+    }
+});
 
 // ==================== BAHOLASH ====================
 

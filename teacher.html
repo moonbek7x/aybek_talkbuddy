@@ -472,85 +472,68 @@
         </div>
     </div>
 
-    <!-- Asosiy statistikalar -->
-    <div class="row">
-        <!-- O'quvchilar Faolligi -->
-        <div class="col-md-6 mb-4">
-            <div class="card">
-                <div class="card-header">
-                    <h4><i class="fas fa-running"></i> O'quvchilar Faolligi</h4>
-                </div>
-                <div class="card-body">
-                    <div class="activity-chart">
-                        <div class="activity-bar">
-                            <div class="bar-label">9-sinf</div>
-                            <div class="bar-container">
-                                <div class="bar-fill" style="width: 85%;" data-value="85"></div>
-                            </div>
-                            <div class="bar-value">85%</div>
-                        </div>
-                        <div class="activity-bar">
-                            <div class="bar-label">10-sinf</div>
-                            <div class="bar-container">
-                                <div class="bar-fill" style="width: 78%;" data-value="78"></div>
-                            </div>
-                            <div class="bar-value">78%</div>
-                        </div>
+<!-- Asosiy statistikalar qismini yangilang -->
+<div class="row">
+    <!-- O'quvchilar Faolligi -->
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h4><i class="fas fa-running"></i> O'quvchilar Faolligi</h4>
+            </div>
+            <div class="card-body">
+                <!-- Diagramma uchun container -->
+                <div class="activity-chart">
+                    <div class="chart-placeholder" style="height: 200px; display: flex; align-items: end; gap: 20px; padding: 20px;">
+                        <div class="chart-bar" data-label="9-sinf" style="height: 85%; background: #4e73df; width: 40%; border-radius: 5px;"></div>
+                        <div class="chart-bar" data-label="10-sinf" style="height: 78%; background: #36b9cc; width: 40%; border-radius: 5px;"></div>
                     </div>
                 </div>
             </div>
         </div>
-        
-        <!-- Umumiy Ko'rsatkichlar -->
-        <div class="col-md-6 mb-4">
-            <div class="card">
-                <div class="card-header">
-                    <h4><i class="fas fa-chart-line"></i> Umumiy Ko'rsatkichlar</h4>
-                </div>
-                <div class="card-body">
-                    <div class="stats-grid">
-                        <div class="stat-box">
-                            <div class="stat-icon primary">
-                                <i class="fas fa-star"></i>
-                            </div>
-                            <div class="stat-info">
-                                <h3>4.6</h3>
-                                <p>O'rtacha baho</p>
-                            </div>
+    </div>
+    
+    <!-- Umumiy Ko'rsatkichlar -->
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h4><i class="fas fa-chart-line"></i> Umumiy Ko'rsatkichlar</h4>
+            </div>
+            <div class="card-body">
+                <!-- Stats list uchun container -->
+                <div class="stats-list">
+                    <div class="stat-item">
+                        <i class="fas fa-star text-primary"></i>
+                        <div>
+                            <h3 class="stat-value">4.6</h3>
+                            <p>O'rtacha baho</p>
                         </div>
-                        <div class="stat-box">
-                            <div class="stat-icon success">
-                                <i class="fas fa-check-circle"></i>
-                            </div>
-                            <div class="stat-info">
-                                <h3>92%</h3>
-                                <p>Darslarni bajarish</p>
-                            </div>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-check-circle text-success"></i>
+                        <div>
+                            <h3 class="stat-value">92%</h3>
+                            <p>Darslarni bajarish</p>
                         </div>
-                        <div class="stat-box">
-                            <div class="stat-icon warning">
-                                <i class="fas fa-users"></i>
-                            </div>
-                            <div class="stat-info">
-                                <h3>86%</h3>
-                                <p>Faol o'quvchilar</p>
-                            </div>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-users text-warning"></i>
+                        <div>
+                            <h3 class="stat-value">86%</h3>
+                            <p>Faol o'quvchilar</p>
                         </div>
-                        <div class="stat-box">
-                            <div class="stat-icon info">
-                                <i class="fas fa-calendar-check"></i>
-                            </div>
-                            <div class="stat-info">
-                                <h3>94%</h3>
-                                <p>Qatnashish</p>
-                            </div>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-calendar-check text-info"></i>
+                        <div>
+                            <h3 class="stat-value">94%</h3>
+                            <p>Qatnashish</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
+</div>
     <!-- O'quvchilar Kayfiyati Statistikasi (FAQT STATISTIKA BO'LIMIDA KO'RINADI) -->
     <div class="row">
         <div class="col-12">
@@ -786,7 +769,6 @@
     <script src="js/auth.js"></script>
     <script src="js/teacher_dashboard.js"></script>
     <script>
-        // O'qituvchi paneli uchun qo'shimcha CSS
         document.head.insertAdjacentHTML('beforeend', `
         <style>
         .today-lessons {
