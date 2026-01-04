@@ -1,11 +1,23 @@
 // O'qituvchi dashboard funksiyalari
 // teacher_dashboard.js faylining boshida quyidagi funksiyani qo'shing
+// Dashboardni boshlash
 function initializeDashboard() {
-    // Dashboard bo'limini faol qilish
-    document.querySelectorAll('.content-section').forEach(section => {
+    console.log("Dashboard ishga tushirilmoqda...");
+    
+    // Barcha bo'limlarni yashirish
+    const sections = document.querySelectorAll('.content-section');
+    sections.forEach(section => {
         section.style.display = 'none';
+        section.classList.remove('active');
     });
-    document.getElementById('dashboard').style.display = 'block';
+    
+    // Dashboard bo'limini ko'rsatish
+    const dashboard = document.getElementById('dashboard');
+    if (dashboard) {
+        dashboard.style.display = 'block';
+        dashboard.classList.add('active');
+        console.log("Dashboard ko'rsatildi");
+    }
     
     // Navigation event listenerlarini qo'shish
     setupNavigation();
@@ -13,24 +25,76 @@ function initializeDashboard() {
 
 // Navigation sozlamalari
 function setupNavigation() {
-    // Navigation linklari uchun event listener
-    document.querySelectorAll('.sidebar-menu a').forEach(link => {
+    console.log("Navigation sozlamalari yuklanmoqda...");
+    
+    const navLinks = document.querySelectorAll('.sidebar-menu a');
+    
+    navLinks.forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
             
+            // Faol classni olib tashlash
+            document.querySelectorAll('.sidebar-menu li').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Joriy elementni faol qilish
+            this.parentElement.classList.add('active');
+            
+            // Bo'lim ID sini olish
             const targetId = this.getAttribute('href').substring(1);
             console.log(`${targetId} bo'limi tanlandi`);
-            
-            // Navbar aktivligini yangilash
-            document.querySelectorAll('.sidebar-menu li').forEach(li => {
-                li.classList.remove('active');
-            });
-            this.parentElement.classList.add('active');
             
             // Bo'limni ko'rsatish
             showSection(targetId);
         });
     });
+}
+// Statistika bo'limi haqida ma'lumot chiqarish
+function debugStatistics() {
+    const statSection = document.getElementById('statistika');
+    const statLink = document.querySelector('a[href="#statistika"]');
+    
+    console.log("=== Statistika Debug ===");
+    console.log("Section elementi:", statSection);
+    console.log("Section display style:", statSection?.style?.display);
+    console.log("Section classList:", statSection?.classList);
+    console.log("Nav link:", statLink);
+    console.log("========================");
+}
+
+// DOM yuklanganda chaqirish
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(debugStatistics, 1000);
+});
+// Bo'limni ko'rsatish funksiyasi
+function showSection(sectionId) {
+    console.log(`showSection: ${sectionId} chaqirildi`);
+    
+    // Barcha bo'limlarni yashirish
+    const sections = document.querySelectorAll('.content-section');
+    sections.forEach(section => {
+        section.style.display = 'none';
+        section.classList.remove('active');
+    });
+    
+    // Tanlangan bo'limni ko'rsatish
+    const targetSection = document.getElementById(sectionId);
+    if (targetSection) {
+        console.log(`${sectionId} elementi topildi`);
+        targetSection.style.display = 'block';
+        targetSection.classList.add('active');
+        
+        // Statistika bo'limi bo'lsa, uni yuklash
+        if (sectionId === 'statistika') {
+            console.log("Statistika bo'limi yuklanmoqda...");
+            setTimeout(() => {
+                loadStatistics();
+            }, 100);
+        }
+    } else {
+        console.error(`${sectionId} elementi topilmadi!`);
+    }
 }
 
 // Bo'limni ko'rsatish

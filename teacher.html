@@ -429,113 +429,217 @@
 
 <!-- Statistika Bo'limi -->
 <section id="statistika" class="content-section" style="display: none;">
-    <h2><i class="fas fa-chart-bar"></i> Mening O'quvchilarim Statistikasi</h2>
+    <h2><i class="fas fa-chart-bar"></i> Statistika</h2>
     
-    <!-- Filtrlar qismi (oldingi kabi) -->
+    <!-- Filtrlash bo'limi -->
     <div class="filter-section">
         <div class="row">
-            <div class="col-3">
+            <div class="col-4">
                 <div class="form-group">
-                    <label for="statClassFilter"><i class="fas fa-graduation-cap"></i> Sinf</label>
-                    <select id="statClassFilter" class="form-control">
+                    <label for="studentTypeFilter"><i class="fas fa-filter"></i> O'quvchilar Turi</label>
+                    <select id="studentTypeFilter" class="form-control" onchange="filterStatistics()">
+                        <option value="all">Barcha o'quvchilar</option>
+                        <option value="regular">Oddiy o'quvchilar</option>
+                        <option value="special_needs">Maxsus ehtiyojli o'quvchilar</option>
+                        <option value="gifted">Iqtidorli o'quvchilar</option>
+                        <option value="olympiad">Olimpiadachilar</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="form-group">
+                    <label for="classFilter"><i class="fas fa-graduation-cap"></i> Sinf bo'yicha</label>
+                    <select id="classFilter" class="form-control" onchange="filterStatistics()">
                         <option value="all">Barcha sinflar</option>
+                        <option value="1">1-sinf</option>
+                        <option value="2">2-sinf</option>
+                        <option value="3">3-sinf</option>
+                        <option value="4">4-sinf</option>
+                        <option value="5">5-sinf</option>
+                        <option value="6">6-sinf</option>
+                        <option value="7">7-sinf</option>
+                        <option value="8">8-sinf</option>
                         <option value="9">9-sinf</option>
                         <option value="10">10-sinf</option>
+                        <option value="11">11-sinf</option>
                     </select>
                 </div>
             </div>
-            <div class="col-3">
+            <div class="col-4">
                 <div class="form-group">
-                    <label for="statSubjectFilter"><i class="fas fa-book"></i> Fan</label>
-                    <select id="statSubjectFilter" class="form-control">
-                        <option value="all">Barcha fanlar</option>
-                        <option value="matematika">Matematika</option>
-                        <option value="fizika">Fizika</option>
+                    <label for="moodFilter"><i class="fas fa-smile"></i> Kayfiyat bo'yicha</label>
+                    <select id="moodFilter" class="form-control" onchange="filterStatistics()">
+                        <option value="all">Barcha kayfiyatlar</option>
+                        <option value="happy">Baxtli</option>
+                        <option value="normal">Oddiy</option>
+                        <option value="sad">G'amgin</option>
+                        <option value="excited">Hursand</option>
+                        <option value="tired">Charchagan</option>
+                        <option value="sick">Kasal</option>
                     </select>
                 </div>
             </div>
-            <div class="col-3">
-                <div class="form-group">
-                    <label for="statPeriodFilter"><i class="fas fa-calendar"></i> Davr</label>
-                    <select id="statPeriodFilter" class="form-control">
-                        <option value="week">Oxirgi hafta</option>
-                        <option value="month">Oxirgi oy</option>
-                        <option value="semester">Semestr</option>
-                    </select>
+        </div>
+    </div>
+    
+    <!-- Umumiy statistika -->
+    <div class="card">
+        <h3><i class="fas fa-users"></i> Umumiy O'quvchilar: 10 ta</h3>
+        <div class="row">
+            <div class="col-4">
+                <div class="health-stats">
+                    <h4><i class="fas fa-heartbeat"></i> Sog'liq Holati</h4>
+                    <div class="stats-list">
+                        <div class="stat-item">
+                            <span class="stat-label">Sog'lom:</span>
+                            <span class="stat-value" id="healthyCount">6 ta (60%)</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Nogiron:</span>
+                            <span class="stat-value" id="disabledCount">3 ta (30%)</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Vaqtincha kasal:</span>
+                            <span class="stat-value" id="sickCount">1 ta (10%)</span>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="col-3">
-                <button class="btn btn-primary btn-block" onclick="applyFilters()" style="margin-top: 24px;">
-                    <i class="fas fa-filter"></i> Filtrlash
-                </button>
+            
+            <div class="col-4">
+                <div class="mood-stats">
+                    <h4><i class="fas fa-smile"></i> Kayfiyat Statistikasi</h4>
+                    <div class="stats-list">
+                        <div class="stat-item">
+                            <span class="stat-label">Baxtli:</span>
+                            <span class="stat-value" id="happyCount">3 ta (30%)</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Oddiy:</span>
+                            <span class="stat-value" id="normalCount">2 ta (20%)</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">G'amgin:</span>
+                            <span class="stat-value" id="sadCount">1 ta (10%)</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Hursand:</span>
+                            <span class="stat-value" id="excitedCount">2 ta (20%)</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Charchagan:</span>
+                            <span class="stat-value" id="tiredCount">1 ta (10%)</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Kasal:</span>
+                            <span class="stat-value" id="sickMoodCount">1 ta (10%)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-4">
+                <div class="mood-distribution">
+                    <h4><i class="fas fa-chart-pie"></i> Kayfiyatlar Taqsimoti</h4>
+                <div class="distribution-list">
+    <div class="distribution-item">
+        <div class="distribution-header">
+            <span class="dist-label">Baxtli:</span>
+            <span class="dist-value">40%</span>
+        </div>
+        <div class="progress">
+            <div class="progress-bar progress-bar-happy" style="width: 40%"></div>
+        </div>
+    </div>
+    <div class="distribution-item">
+        <div class="distribution-header">
+            <span class="dist-label">Oddiy:</span>
+            <span class="dist-value">30%</span>
+        </div>
+        <div class="progress">
+            <div class="progress-bar progress-bar-normal" style="width: 30%"></div>
+        </div>
+    </div>
+    <div class="distribution-item">
+        <div class="distribution-header">
+            <span class="dist-label">G'amgin:</span>
+            <span class="dist-value">15%</span>
+        </div>
+        <div class="progress">
+            <div class="progress-bar progress-bar-sad" style="width: 15%"></div>
+        </div>
+    </div>
+    <div class="distribution-item">
+        <div class="distribution-header">
+            <span class="dist-label">Hursand:</span>
+            <span class="dist-value">10%</span>
+        </div>
+        <div class="progress">
+            <div class="progress-bar progress-bar-excited" style="width: 10%"></div>
+        </div>
+    </div>
+    <div class="distribution-item">
+        <div class="distribution-header">
+            <span class="dist-label">Charchagan:</span>
+            <span class="dist-value">4%</span>
+        </div>
+        <div class="progress">
+            <div class="progress-bar progress-bar-tired" style="width: 4%"></div>
+        </div>
+    </div>
+    <div class="distribution-item">
+        <div class="distribution-header">
+            <span class="dist-label">Kasal:</span>
+            <span class="dist-value">1%</span>
+        </div>
+        <div class="progress">
+            <div class="progress-bar progress-bar-sick" style="width: 1%"></div>
+        </div>
+    </div>
+</div>
+                </div>
             </div>
         </div>
     </div>
 
-<!-- Asosiy statistikalar qismini yangilang -->
-<div class="row">
-    <!-- O'quvchilar Faolligi -->
-    <div class="col-md-6 mb-4">
-        <div class="card">
-            <div class="card-header">
-                <h4><i class="fas fa-running"></i> O'quvchilar Faolligi</h4>
+    <!-- Eng yaxshi o'quvchilar jadvali -->
+    <div class="card">
+        <div class="card-header">
+            <h3><i class="fas fa-trophy"></i> Eng Yaxshi O'quvchilar</h3>
+            <div class="card-actions">
+                <button class="btn btn-sm btn-secondary" onclick="resetStatisticsFilters()">
+                    <i class="fas fa-redo"></i> Filtrlarni tozalash
+                </button>
             </div>
-            <div class="card-body">
-                <!-- Diagramma uchun container -->
-                <div class="activity-chart">
-                    <div class="chart-placeholder" style="height: 200px; display: flex; align-items: end; gap: 20px; padding: 20px;">
-                        <div class="chart-bar" data-label="9-sinf" style="height: 85%; background: #4e73df; width: 40%; border-radius: 5px;"></div>
-                        <div class="chart-bar" data-label="10-sinf" style="height: 78%; background: #36b9cc; width: 40%; border-radius: 5px;"></div>
-                    </div>
-                </div>
-            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table" id="topStudentsTable">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>O'quvchi</th>
+                        <th>Sinf</th>
+                        <th>Kayfiyat</th>
+                        <th>Sog'liq Holati</th>
+                        <th>O'quvchi Turi</th>
+                        <th>O'rtacha Baho</th>
+                        <th>Darslarni Bajarish</th>
+                        <th>Holati</th>
+                    </tr>
+                </thead>
+                <tbody id="topStudentsList">
+                    <!-- JavaScript orqali to'ldiriladi -->
+                </tbody>
+            </table>
         </div>
     </div>
     
-    <!-- Umumiy Ko'rsatkichlar -->
-    <div class="col-md-6 mb-4">
-        <div class="card">
-            <div class="card-header">
-                <h4><i class="fas fa-chart-line"></i> Umumiy Ko'rsatkichlar</h4>
-            </div>
-            <div class="card-body">
-                <!-- Stats list uchun container -->
-                <div class="stats-list">
-                    <div class="stat-item">
-                        <i class="fas fa-star text-primary"></i>
-                        <div>
-                            <h3 class="stat-value">4.6</h3>
-                            <p>O'rtacha baho</p>
-                        </div>
-                    </div>
-                    <div class="stat-item">
-                        <i class="fas fa-check-circle text-success"></i>
-                        <div>
-                            <h3 class="stat-value">92%</h3>
-                            <p>Darslarni bajarish</p>
-                        </div>
-                    </div>
-                    <div class="stat-item">
-                        <i class="fas fa-users text-warning"></i>
-                        <div>
-                            <h3 class="stat-value">86%</h3>
-                            <p>Faol o'quvchilar</p>
-                        </div>
-                    </div>
-                    <div class="stat-item">
-                        <i class="fas fa-calendar-check text-info"></i>
-                        <div>
-                            <h3 class="stat-value">94%</h3>
-                            <p>Qatnashish</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+    <!-- Filtrlar qismi (oldingi kabi) -->
+
+<!-- Asosiy statistikalar qismini yangilang -->
+
     <!-- O'quvchilar Kayfiyati Statistikasi (FAQT STATISTIKA BO'LIMIDA KO'RINADI) -->
-    <div class="row">
+    <div class="row" style="display: none;"> 
         <div class="col-12">
             <div class="card mood-statistics-card">
                 <div class="card-header">
@@ -714,40 +818,7 @@
     </div>
 
     <!-- Eng faol o'quvchilar -->
-    <div class="row mt-4">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <h4><i class="fas fa-trophy"></i> Eng Faol O'quvchilar</h4>
-                    <select class="form-control form-control-sm" style="width: 200px;" id="topStudentsFilter">
-                        <option value="all">Barcha sinflar</option>
-                        <option value="9">9-sinf</option>
-                        <option value="10">10-sinf</option>
-                    </select>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>O'quvchi</th>
-                                    <th>Sinf</th>
-                                    <th>O'rtacha Baho</th>
-                                    <th>Darslarni Bajarish</th>
-                                    <th>Kayfiyat</th>
-                                    <th>So'nggi baho</th>
-                                </tr>
-                            </thead>
-                            <tbody id="topStudentsTable">
-                                <!-- JavaScript tomonidan to'ldiriladi -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+   
 </section>
             </div>
         </main>
@@ -767,6 +838,7 @@
     </div>
 
     <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
     <script src="js/teacher_dashboard.js"></script>
     <script>
         document.head.insertAdjacentHTML('beforeend', `

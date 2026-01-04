@@ -1,21 +1,39 @@
-/* Statistika bo'limi uchun maxsus CSS */
-
-/* Asosiy bo'lim yashirin bo'ladi */
+/* ===== ASOSIY BO'LIMLAR UCHUN ===== */
 .content-section {
     display: none;
-    animation: fadeIn 0.5s ease;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .content-section.active {
-    display: block;
+    display: block !important;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Statistika bo'limi uchun maxsus - inline style ustun chiqishi uchun */
+#statistika {
+    display: none;
+}
+
+#statistika.active {
+    display: block !important;
+    animation: fadeIn 0.5s ease;
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+    from { 
+        opacity: 0; 
+        transform: translateY(20px); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0); 
+    }
 }
 
-/* Filtrlar bo'limi */
+/* ===== FILTRLASH BO'LIMI ===== */
 .filter-section {
     background: #f8f9fa;
     padding: 20px;
@@ -28,126 +46,151 @@
     margin-bottom: 0;
 }
 
-/* Activity chart */
-.activity-chart {
-    padding: 20px 0;
+.filter-section label {
+    font-weight: 600;
+    margin-bottom: 8px;
+    display: block;
+    color: #333;
 }
 
-.activity-bar {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
+.filter-section label i {
+    margin-right: 8px;
+    color: #4e73df;
 }
 
-.bar-label {
-    width: 80px;
-    font-weight: 500;
-    color: #495057;
-}
-
-.bar-container {
-    flex: 1;
-    height: 20px;
-    background: #e9ecef;
-    border-radius: 10px;
-    overflow: hidden;
-    margin: 0 15px;
-}
-
-.bar-fill {
-    height: 100%;
-    background: linear-gradient(90deg, #4e54c8, #8f94fb);
-    border-radius: 10px;
-    transition: width 1s ease;
-}
-
-.bar-value {
-    width: 50px;
-    text-align: right;
-    font-weight: bold;
-    color: #343a40;
-}
-
-/* Stats grid */
-.stats-grid {
+/* ===== STATISTIKA KARTALARI ===== */
+.stats-list {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 15px;
 }
 
-.stat-box {
+.stat-item {
     display: flex;
     align-items: center;
     padding: 15px;
     background: #f8f9fa;
     border-radius: 10px;
-    transition: transform 0.3s ease;
+    transition: all 0.3s ease;
 }
 
-.stat-box:hover {
+.stat-item:hover {
     transform: translateY(-5px);
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
-.stat-icon {
+.stat-item i {
+    font-size: 24px;
+    margin-right: 15px;
     width: 50px;
     height: 50px;
     border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-right: 15px;
-    font-size: 20px;
-    color: white;
 }
 
-.stat-icon.primary {
-    background: linear-gradient(135deg, #4e54c8, #8f94fb);
+.stat-item i.text-primary {
+    background: rgba(78, 115, 223, 0.1);
+    color: #4e73df;
 }
 
-.stat-icon.success {
-    background: linear-gradient(135deg, #28a745, #20c997);
+.stat-item i.text-success {
+    background: rgba(40, 167, 69, 0.1);
+    color: #28a745;
 }
 
-.stat-icon.warning {
-    background: linear-gradient(135deg, #ffc107, #fd7e14);
+.stat-item i.text-warning {
+    background: rgba(255, 193, 7, 0.1);
+    color: #ffc107;
 }
 
-.stat-icon.info {
-    background: linear-gradient(135deg, #17a2b8, #6f42c1);
+.stat-item i.text-info {
+    background: rgba(23, 162, 184, 0.1);
+    color: #17a2b8;
 }
 
-.stat-info h3 {
+.stat-item div {
+    flex: 1;
+}
+
+.stat-item .stat-value {
     margin: 0;
     font-size: 24px;
     font-weight: bold;
     color: #343a40;
 }
 
-.stat-info p {
+.stat-item p {
     margin: 5px 0 0;
     color: #6c757d;
     font-size: 14px;
 }
 
-/* O'quvchilar Kayfiyati Statistikasi */
-.mood-statistics-card {
-    margin-top: 30px;
+/* ===== ACTIVITY CHART ===== */
+.activity-chart {
+    padding: 20px 0;
 }
 
-.card-header {
+.chart-placeholder {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 40px;
+    height: 200px;
+    padding: 20px;
+}
+
+.chart-bar {
+    position: relative;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.chart-bar:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+.chart-bar::after {
+    content: attr(data-label);
+    position: absolute;
+    bottom: -25px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 12px;
+    color: #6c757d;
+    font-weight: 500;
+}
+
+/* ===== KAYFIYAT STATISTIKASI ===== */
+.mood-statistics-card {
+    margin-top: 30px;
+    border: 1px solid #e3e6f0;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.mood-statistics-card .card-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     background: white;
-    border-bottom: 1px solid #e9ecef;
+    border-bottom: 1px solid #e3e6f0;
+    padding: 1.25rem 1.5rem;
 }
 
-.card-header h4 {
+.mood-statistics-card .card-header h4 {
     margin: 0;
     display: flex;
     align-items: center;
     gap: 10px;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #333;
 }
 
 .card-actions {
@@ -155,7 +198,7 @@
     gap: 10px;
 }
 
-/* Mood stat cards */
+/* Kayfiyat kartalari */
 .mood-stat-card {
     display: flex;
     align-items: center;
@@ -163,36 +206,39 @@
     border-radius: 10px;
     color: white;
     margin-bottom: 15px;
-    transition: transform 0.3s ease;
+    transition: all 0.3s ease;
+    height: 120px;
 }
 
 .mood-stat-card:hover {
     transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
 }
 
 .mood-stat-card.happy {
     background: linear-gradient(135deg, #28a745, #20c997);
-    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
 }
 
 .mood-stat-card.normal {
     background: linear-gradient(135deg, #ffc107, #fd7e14);
-    box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3);
 }
 
 .mood-stat-card.sad {
     background: linear-gradient(135deg, #dc3545, #e83e8c);
-    box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
 }
 
 .mood-stat-card.sick {
     background: linear-gradient(135deg, #6c757d, #495057);
-    box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3);
 }
 
 .mood-icon {
     font-size: 32px;
-    margin-right: 15px;
+    margin-right: 20px;
+    opacity: 0.9;
+}
+
+.mood-info {
+    flex: 1;
 }
 
 .mood-info h3 {
@@ -204,6 +250,7 @@
 .mood-info p {
     margin: 5px 0;
     opacity: 0.9;
+    font-size: 14px;
 }
 
 .mood-percentage {
@@ -212,12 +259,13 @@
     padding: 3px 10px;
     border-radius: 20px;
     font-size: 12px;
+    font-weight: 500;
     margin-top: 5px;
 }
 
-/* Kayfiyat taqsimoti */
+/* ===== KAYFIYAT TAQSIMOTI ===== */
 .distribution-item {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
 .distribution-header {
@@ -273,7 +321,7 @@
     background: linear-gradient(90deg, #6c757d, #495057);
 }
 
-/* Summary stats */
+/* ===== SUMMARY STATS ===== */
 .summary-stats {
     display: flex;
     flex-direction: column;
@@ -284,7 +332,7 @@
     display: flex;
     align-items: center;
     gap: 15px;
-    padding: 10px 0;
+    padding: 12px 0;
     border-bottom: 1px solid #f0f0f0;
 }
 
@@ -294,6 +342,32 @@
 
 .summary-item i {
     font-size: 20px;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.summary-item i.text-primary {
+    background: rgba(78, 115, 223, 0.1);
+    color: #4e73df;
+}
+
+.summary-item i.text-success {
+    background: rgba(40, 167, 69, 0.1);
+    color: #28a745;
+}
+
+.summary-item i.text-info {
+    background: rgba(23, 162, 184, 0.1);
+    color: #17a2b8;
+}
+
+.summary-item i.text-warning {
+    background: rgba(255, 193, 7, 0.1);
+    color: #ffc107;
 }
 
 .summary-item div {
@@ -310,15 +384,18 @@
     margin: 5px 0 0;
     font-weight: bold;
     color: #343a40;
+    font-size: 16px;
 }
 
-/* Trend chart */
+/* ===== TREND CHART ===== */
 .trend-chart {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
     height: 200px;
-    padding: 20px 0;
+    padding: 20px 10px;
+    background: #f8f9fa;
+    border-radius: 10px;
 }
 
 .trend-day {
@@ -326,18 +403,20 @@
     flex-direction: column;
     align-items: center;
     width: 14%;
+    height: 100%;
 }
 
 .day-label {
     margin-bottom: 10px;
     font-size: 14px;
+    font-weight: 500;
     color: #495057;
 }
 
 .day-bar {
-    width: 100%;
-    height: 150px;
-    background: #f8f9fa;
+    width: 70%;
+    height: calc(100% - 30px);
+    background: #e9ecef;
     border-radius: 5px;
     overflow: hidden;
     position: relative;
@@ -347,22 +426,33 @@
     position: absolute;
     bottom: 0;
     width: 100%;
-    background: #28a745;
+    background: linear-gradient(to top, #28a745, #20c997);
     border-radius: 5px 5px 0 0;
+    transition: height 0.5s ease;
 }
 
 .bar-neutral {
     position: absolute;
     bottom: 0;
     width: 100%;
-    background: #ffc107;
+    background: linear-gradient(to top, #ffc107, #fd7e14);
     border-radius: 5px 5px 0 0;
+    transition: height 0.5s ease;
 }
 
-/* Table styles */
+/* ===== JADVAL STILLARI ===== */
 .table th {
     font-weight: 600;
     background: #f8f9fa;
+    color: #333;
+    border-bottom: 2px solid #dee2e6;
+    padding: 12px 15px;
+}
+
+.table td {
+    padding: 12px 15px;
+    vertical-align: middle;
+    border-top: 1px solid #e9ecef;
 }
 
 .mood-badge {
@@ -370,6 +460,9 @@
     border-radius: 20px;
     font-size: 12px;
     font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
 }
 
 .badge-happy {
@@ -408,25 +501,119 @@
     border: 1px solid rgba(108, 117, 125, 0.2);
 }
 
-/* Responsive */
+/* ===== CARD STILLARI ===== */
+.card {
+    background: white;
+    border: 1px solid #e3e6f0;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem 1.5rem;
+    background-color: white;
+    border-bottom: 1px solid #e3e6f0;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.card-header h3, .card-header h4, .card-header h5 {
+    margin: 0;
+    color: #333;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+.table-responsive {
+    overflow-x: auto;
+}
+
+/* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
-    .stats-grid {
+    .stats-list {
         grid-template-columns: 1fr;
     }
     
     .mood-stat-card {
         margin-bottom: 10px;
+        height: auto;
+        padding: 15px;
     }
     
     .trend-chart {
         height: 150px;
+        padding: 15px 5px;
     }
     
     .day-bar {
-        height: 100px;
+        width: 60%;
     }
     
     .day-label {
         font-size: 12px;
+    }
+    
+    .card-header {
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
+    }
+    
+    .card-actions {
+        width: 100%;
+        justify-content: flex-end;
+    }
+    
+    .filter-section .row {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .filter-section .col-3,
+    .filter-section .col-4 {
+        width: 100% !important;
+    }
+    
+    .filter-section .btn-block {
+        margin-top: 10px !important;
+    }
+}
+
+@media (max-width: 576px) {
+    .mood-stat-card {
+        flex-direction: column;
+        text-align: center;
+        padding: 15px 10px;
+    }
+    
+    .mood-icon {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+    
+    .distribution-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+    
+    .summary-item {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+    }
+    
+    .summary-item i {
+        margin: 0 auto;
     }
 }

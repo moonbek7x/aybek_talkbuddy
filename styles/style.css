@@ -1,244 +1,524 @@
-/* Reset va asosiy stillar */
+/* statistics.css */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #8a2be2 0%, #9370db 100%);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     padding: 20px;
 }
 
-/* Login konteyneri */
-.login-container {
-    width: 100%;
-    max-width: 400px;
-}
-
-/* Login kartasi */
-.login-card {
+.statistics-container {
+    max-width: 1200px;
+    margin: 0 auto;
     background: white;
     border-radius: 20px;
-    padding: 40px;
-    box-shadow: 0 10px 30px rgba(138, 43, 226, 0.3);
-    animation: fadeIn 0.5s ease;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    padding: 30px;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+/* Header Section */
+.header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #f0f0f0;
 }
 
-/* Logo */
-.logo {
-    text-align: center;
-    margin-bottom: 40px;
+.header-title h1 {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 5px;
 }
 
-.logo h1 {
-    color: blueviolet;
-    font-size: 32px;
-    margin-bottom: 8px;
-}
-
-.subtitle {
+.header-title p {
     color: #666;
     font-size: 16px;
+}
+
+.date-display {
+    background: #f8f9fa;
+    padding: 10px 20px;
+    border-radius: 10px;
     font-weight: 500;
-}
-
-/* Form */
-.login-form h2 {
-    color: #333;
-    font-size: 24px;
-    margin-bottom: 30px;
-    text-align: center;
-    font-weight: 600;
-}
-
-/* Input guruhlari */
-.input-group {
-    margin-bottom: 25px;
-}
-
-.input-group label {
+    color: #555;
     display: flex;
     align-items: center;
     gap: 10px;
-    margin-bottom: 8px;
-    color: #333;
-    font-weight: 500;
-    font-size: 15px;
 }
 
-.input-group input {
-    width: 100%;
-    padding: 16px;
-    border: 2px solid #ddd;
-    border-radius: 12px;
-    font-size: 16px;
-    transition: all 0.3s ease;
-    background: #f9f9f9;
+/* Stats Grid */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-bottom: 30px;
 }
 
-.input-group input:focus {
-    outline: none;
-    border-color: blueviolet;
-    background: white;
-    box-shadow: 0 0 0 3px rgba(138, 43, 226, 0.1);
-}
-
-/* Parol wrapper */
-.password-wrapper {
-    position: relative;
-}
-
-.toggle-password {
-    position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 18px;
-    padding: 5px;
-    color: #666;
-}
-
-.toggle-password:hover {
-    color: blueviolet;
-}
-
-/* Login tugmasi */
-.login-button {
-    width: 100%;
-    padding: 16px;
-    background: blueviolet;
+.stat-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
-    border: none;
-    border-radius: 12px;
-    font-size: 18px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    margin-top: 10px;
+    padding: 25px;
+    border-radius: 15px;
     display: flex;
-    justify-content: center;
     align-items: center;
+    gap: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
 }
 
-.login-button:hover {
-    background: #8a2be2;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(138, 43, 226, 0.4);
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(102, 126, 234, 0.4);
 }
 
-.login-button:active {
-    transform: translateY(0);
-}
-
-/* Demo ma'lumotlar */
-.demo-info {
-    margin-top: 30px;
-    padding: 20px;
-    background: #f8f5ff;
+.stat-icon {
+    width: 60px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.2);
     border-radius: 12px;
-    border-left: 4px solid blueviolet;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
 }
 
-.demo-info h4 {
-    color: blueviolet;
-    margin-bottom: 15px;
-    font-size: 16px;
+.stat-content h3 {
+    font-size: 32px;
+    margin-bottom: 5px;
+    font-weight: 700;
 }
 
-.demo-account {
-    background: white;
-    padding: 12px;
-    border-radius: 8px;
-    margin-bottom: 10px;
-    border: 1px solid #e6e6e6;
+.stat-content p {
+    font-size: 14px;
+    opacity: 0.9;
+    margin-bottom: 8px;
 }
 
-.demo-account:last-child {
-    margin-bottom: 0;
+.stat-subtitle {
+    font-size: 12px;
+    opacity: 0.8;
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
 
-.demo-account div {
+/* Mood Statistics */
+.mood-section {
+    background: #f8f9fa;
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 30px;
+}
+
+.section-title {
     display: flex;
     justify-content: space-between;
-    padding: 4px 0;
+    align-items: center;
+    margin-bottom: 25px;
 }
 
-/* Footer */
-.footer {
-    text-align: center;
-    margin-top: 30px;
-    padding-top: 20px;
-    border-top: 1px solid #eee;
-    color: #666;
+.section-title h2 {
+    font-size: 22px;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.section-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
     font-size: 14px;
 }
 
-/* Xato xabari */
-.error-message {
-    background: #fee;
-    color: #c33;
-    padding: 12px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    border: 1px solid #fcc;
-    display: none;
-    animation: slideDown 0.3s ease;
+.btn-primary {
+    background: #667eea;
+    color: white;
 }
 
-@keyframes slideDown {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
+.btn-primary:hover {
+    background: #5a6fd8;
 }
 
-/* Loading */
-.loading {
+.btn-success {
+    background: #10b981;
+    color: white;
+}
+
+.btn-success:hover {
+    background: #0da271;
+}
+
+.btn-outline {
+    background: transparent;
+    border: 1px solid #667eea;
+    color: #667eea;
+}
+
+.btn-outline:hover {
+    background: #667eea;
+    color: white;
+}
+
+/* Mood Stats Grid */
+.mood-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.mood-stat-card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease;
+}
+
+.mood-stat-card:hover {
+    transform: translateY(-3px);
+}
+
+.mood-icon {
+    font-size: 40px;
+    margin-bottom: 15px;
+}
+
+.mood-happy .mood-icon { color: #10b981; }
+.mood-normal .mood-icon { color: #f59e0b; }
+.mood-sad .mood-icon { color: #ef4444; }
+.mood-sick .mood-icon { color: #6b7280; }
+
+.mood-count {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.mood-label {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.mood-percentage {
     display: inline-block;
-    width: 20px;
-    height: 20px;
-    border: 3px solid rgba(255,255,255,.3);
-    border-radius: 50%;
-    border-top-color: white;
-    animation: spin 1s ease-in-out infinite;
-    margin-right: 10px;
+    padding: 4px 12px;
+    background: #f3f4f6;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #555;
 }
 
-@keyframes spin {
-    to { transform: rotate(360deg); }
+/* Summary Section */
+.summary-section {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
 }
 
-/* Responsive */
+.summary-card {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.summary-card h3 {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.summary-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.summary-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.summary-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.summary-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: white;
+}
+
+.summary-icon.users { background: #667eea; }
+.summary-icon.chart { background: #10b981; }
+.summary-icon.calendar { background: #3b82f6; }
+.summary-icon.trend { background: #f59e0b; }
+
+.summary-content {
+    flex: 1;
+}
+
+.summary-content small {
+    color: #666;
+    font-size: 13px;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.summary-content h4 {
+    font-size: 18px;
+    color: #333;
+    font-weight: 600;
+}
+
+.summary-content .text-success {
+    color: #10b981;
+}
+
+/* Trend Chart */
+.trend-chart {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    height: 120px;
+    margin-top: 20px;
+    padding: 0 10px;
+}
+
+.trend-day {
+    text-align: center;
+    flex: 1;
+    margin: 0 5px;
+}
+
+.day-bar {
+    height: 80px;
+    width: 40px;
+    background: #f3f4f6;
+    border-radius: 8px 8px 0 0;
+    margin: 0 auto 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+.bar-fill {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    border-radius: 8px 8px 0 0;
+    transition: height 1s ease;
+}
+
+.bar-positive {
+    background: linear-gradient(to top, #10b981, #34d399);
+}
+
+.bar-neutral {
+    background: linear-gradient(to top, #f59e0b, #fbbf24);
+}
+
+.day-label {
+    font-size: 12px;
+    color: #666;
+    font-weight: 500;
+}
+
+/* Progress Bars */
+.progress-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.progress-item {
+    margin-bottom: 10px;
+}
+
+.progress-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.progress-label {
+    font-size: 14px;
+    color: #555;
+    font-weight: 500;
+}
+
+.progress-value {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+}
+
+.progress-bar {
+    height: 10px;
+    background: #f3f4f6;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    border-radius: 5px;
+    transition: width 1s ease;
+}
+
+.progress-fill.happy { background: #10b981; }
+.progress-fill.normal { background: #f59e0b; }
+.progress-fill.sad { background: #ef4444; }
+.progress-fill.excited { background: #3b82f6; }
+.progress-fill.tired { background: #8b5cf6; }
+.progress-fill.sick { background: #6b7280; }
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .stats-grid,
+    .mood-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .summary-section {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .statistics-container {
+        padding: 20px;
+    }
+    
+    .header-section {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+    
+    .stats-grid,
+    .mood-stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .section-title {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+    
+    .trend-chart {
+        height: 100px;
+    }
+    
+    .day-bar {
+        width: 30px;
+        height: 60px;
+    }
+    
+    .mood-stat-card {
+        padding: 15px;
+    }
+}
+
 @media (max-width: 480px) {
-    .login-card {
-        padding: 30px 25px;
+    .statistics-container {
+        padding: 15px;
     }
     
-    .logo h1 {
-        font-size: 28px;
+    .stat-card {
+        padding: 15px;
     }
     
-    .login-form h2 {
-        font-size: 22px;
+    .stat-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
     }
     
-    .input-group input {
-        padding: 14px;
+    .stat-content h3 {
+        font-size: 24px;
     }
     
-    .login-button {
-        padding: 14px;
+    .btn {
+        padding: 8px 15px;
+        font-size: 13px;
+    }
+    
+    .mood-icon {
+        font-size: 32px;
+    }
+    
+    .mood-count {
+        font-size: 24px;
+    }
+    
+    .trend-chart {
+        height: 80px;
+        padding: 0 5px;
+    }
+    
+    .day-bar {
+        width: 25px;
+        height: 50px;
     }
 }
+
+/* Custom animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fadeInUp {
+    animation: fadeInUp 0.5s ease forwards;
+    opacity: 0;
+}
+
+.delay-100 { animation-delay: 0.1s; }
+.delay-200 { animation-delay: 0.2s; }
+.delay-300 { animation-delay: 0.3s; }
+.delay-400 { animation-delay: 0.4s; }
