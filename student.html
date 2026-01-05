@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="styles/dashboard.css">
     <link rel="stylesheet" href="styles/ai_chat.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
 </head>
 <body>
     <div class="dashboard">
@@ -151,226 +152,524 @@
 
                 <!-- Darslar -->
                 <section id="darslar" class="content-section">
-                    <!-- ... (oldingi darslar kodlari) ... -->
+                    <h2><i class="fas fa-book"></i> Darslarim</h2>
+                    
+                    <div class="filters">
+                        <select class="form-control" id="subjectFilter" onchange="filterLessons()">
+                            <option value="all">Barcha fanlar</option>
+                            <option value="matematika">Matematika</option>
+                            <option value="fizika">Fizika</option>
+                            <option value="kimyo">Kimyo</option>
+                            <option value="ona_tili">Ona Tili</option>
+                        </select>
+                    </div>
+                    
+                    <div class="lessons-grid" id="lessonsGrid">
+                        <!-- JavaScript orqali to'ldiriladi -->
+                    </div>
                 </section>
 
                 <!-- Topshiriqlar -->
                 <section id="topshiriqlar" class="content-section">
-                    <!-- ... (oldingi topshiriqlar kodlari) ... -->
+                    <div class="section-header">
+                        <h2><i class="fas fa-tasks"></i> Topshiriqlar</h2>
+                        <div class="task-filters">
+                            <select class="form-control" id="taskFilter" onchange="filterTasks()">
+                                <option value="all">Barcha topshiriqlar</option>
+                                <option value="pending">Kutayotgan topshiriqlar</option>
+                                <option value="completed">Bajarilgan topshiriqlar</option>
+                                <option value="overdue">Muddati o'tgan</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Topshiriqlar statistikasi -->
+                    <div class="task-stats">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-tasks"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="totalTasks">0</h3>
+                                <p>Jami topshiriqlar</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="completedTasks">0</h3>
+                                <p>Bajarilgan</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="pendingTasks">0</h3>
+                                <p>Kutayotgan</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-exclamation-circle"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="overdueTasks">0</h3>
+                                <p>Muddati o'tgan</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Topshiriqlar ro'yxati -->
+                    <div class="card">
+                        <h3>Topshiriqlar Ro'yxati</h3>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>№</th>
+                                        <th>Topshiriq nomi</th>
+                                        <th>Fan</th>
+                                        <th>Berilgan sana</th>
+                                        <th>Muddati</th>
+                                        <th>Holati</th>
+                                        <th>Baho</th>
+                                        <th>Amallar</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tasksTable">
+                                    <!-- JavaScript orqali to'ldiriladi -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- Yangi topshiriq bajarish -->
+                    <div class="card">
+                        <h3>Topshiriq Bajarish</h3>
+                        <form id="submitTaskForm" onsubmit="submitTask(event)">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="taskSelect">Topshiriqni tanlang *</label>
+                                        <select id="taskSelect" class="form-control" required>
+                                            <option value="">Tanlang</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="taskFile">Fayl yuklash *</label>
+                                        <input type="file" id="taskFile" class="form-control" accept=".pdf,.doc,.docx,.txt" required>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="taskComment">Izoh (ixtiyoriy)</label>
+                                <textarea id="taskComment" class="form-control" rows="3" placeholder="Topshiriq haqida qo'shimcha izoh..."></textarea>
+                            </div>
+                            
+                            <div class="text-right">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-paper-plane"></i> Topshirish
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </section>
 
                 <!-- Baholar -->
                 <section id="baholar" class="content-section">
-                    <!-- ... (oldingi baholar kodlari) ... -->
-                </section>
-
-                <!-- AI Darslar -->
-                <section id="ai-dars" class="content-section">
-                    <!-- ... (oldingi AI darslar kodlari) ... -->
-                </section>
-
-                <!-- YANGI: AI bilan Suxbat Bo'limi -->
-                <section id="ai-suxbat" class="content-section">
-                    <div class="ai-chat-container">
-                        <!-- Chat Header -->
-                        <div class="chat-header">
-                            <div class="header-content">
-                                <h1><i class="fas fa-robot"></i> AI Mentor bilan Suxbat</h1>
-                                <p>Har qanday mavzuni o'rganish uchun AI yordamchingiz</p>
-                            </div>
-                            <div class="header-actions">
-                                <button class="btn btn-outline" onclick="startNewChat()">
-                                    <i class="fas fa-redo"></i> Yangi suxbat
-                                </button>
-                                <button class="btn btn-primary" onclick="showTopicSelector()">
-                                    <i class="fas fa-book"></i> Mavzu tanlash
-                                </button>
-                            </div>
+                    <div class="section-header">
+                        <h2><i class="fas fa-star"></i> Baholarim</h2>
+                        <div class="grade-filters">
+                            <select class="form-control" id="gradePeriodFilter" onchange="filterGrades()">
+                                <option value="all">Barcha davr</option>
+                                <option value="week">Oxirgi hafta</option>
+                                <option value="month">Oxirgi oy</option>
+                                <option value="semester">Semestr</option>
+                            </select>
+                            <select class="form-control" id="gradeSubjectFilter" onchange="filterGrades()">
+                                <option value="all">Barcha fanlar</option>
+                                <option value="matematika">Matematika</option>
+                                <option value="fizika">Fizika</option>
+                                <option value="kimyo">Kimyo</option>
+                                <option value="ona_tili">Ona Tili</option>
+                            </select>
                         </div>
-
-                        <!-- Main Content -->
-                        <div class="chat-main">
-                            <!-- Left Side - Topic Selection -->
-                            <div class="topic-sidebar" id="topicSidebar">
-                                <div class="sidebar-card">
-                                    <h3><i class="fas fa-book-open"></i> Mavzuni tanlang</h3>
-                                    
-                                    <div class="subject-filter">
-                                        <select id="subjectFilter" class="form-control" onchange="filterTopics()">
-                                            <option value="all">Barcha fanlar</option>
-                                            <option value="matematika">Matematika</option>
-                                            <option value="fizika">Fizika</option>
-                                            <option value="kimyo">Kimyo</option>
-                                            <option value="biologiya">Biologiya</option>
-                                            <option value="tarix">Tarix</option>
-                                            <option value="ona_tili">Ona tili</option>
-                                            <option value="ingliz_tili">Ingliz tili</option>
-                                        </select>
+                    </div>
+                    
+                    <!-- O'rtacha baho va statistikalar -->
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="card">
+                                <h3>O'rtacha Baho</h3>
+                                <div class="average-grade-display">
+                                    <div class="grade-circle">
+                                        <span id="overallGrade">4.8</span>
                                     </div>
-
-                                    <div class="topics-list" id="topicsList">
-                                        <!-- Topics will be loaded here -->
-                                    </div>
-
-                                    <div class="custom-topic-input">
-                                        <h4><i class="fas fa-lightbulb"></i> O'zingizning mavzungiz</h4>
-                                        <div class="input-group">
-                                            <input type="text" 
-                                                   id="customTopicInput" 
-                                                   placeholder="Mavzuni kiriting...">
-                                            <button class="btn btn-sm btn-primary" onclick="startCustomTopic()">
-                                                <i class="fas fa-play"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="sidebar-card">
-                                    <h3><i class="fas fa-history"></i> So'nggi suxbatlar</h3>
-                                    <div class="chat-history" id="chatHistory">
-                                        <!-- Chat history will be loaded here -->
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Right Side - Chat Interface -->
-                            <div class="chat-interface">
-                                <!-- Welcome Screen -->
-                                <div class="welcome-screen" id="welcomeScreen">
-                                    <div class="welcome-content">
-                                        <div class="welcome-icon">
-                                            <i class="fas fa-robot"></i>
-                                        </div>
-                                        <h2>AI Mentoriga xush kelibsiz!</h2>
-                                        <p>O'ng tomondan mavzuni tanlang yoki o'zingiz mavzuni kiriting</p>
-                                        <div class="quick-topics">
-                                            <button class="quick-topic-btn" onclick="selectTopic('algebra', 'Algebra asoslari')">
-                                                <i class="fas fa-calculator"></i> Algebra
-                                            </button>
-                                            <button class="quick-topic-btn" onclick="selectTopic('fizika_qonunlari', 'Fizika qonunlari')">
-                                                <i class="fas fa-atom"></i> Fizika
-                                            </button>
-                                            <button class="quick-topic-btn" onclick="selectTopic('kimyo_elementlari', 'Kimyo elementlari')">
-                                                <i class="fas fa-flask"></i> Kimyo
-                                            </button>
-                                            <button class="quick-topic-btn" onclick="selectTopic('ona_tili_grammatika', 'Ona tili grammatikasi')">
-                                                <i class="fas fa-book"></i> Grammatika
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Active Chat -->
-                                <div class="active-chat" id="activeChat" style="display: none;">
-                                    <!-- Chat Header -->
-                                    <div class="active-chat-header">
-                                        <div class="chat-topic-info">
-                                            <h3 id="currentTopicTitle">Mavzu nomi</h3>
-                                            <p id="currentTopicDesc">Mavzu tavsifi</p>
-                                        </div>
-                                        <div class="chat-stats">
-                                            <span class="stat-item">
-                                                <i class="fas fa-comment"></i>
-                                                <span id="messageCount">0</span> xabar
-                                            </span>
-                                            <span class="stat-item">
-                                                <i class="fas fa-star"></i>
-                                                <span id="scoreCount">0</span> ball
-                                            </span>
-                                            <button class="btn btn-sm btn-secondary" onclick="showExercises()">
-                                                <i class="fas fa-tasks"></i> Mashqlar
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                    <!-- Chat Messages -->
-                                    <div class="chat-messages" id="chatMessages">
-                                        <!-- Messages will be loaded here -->
-                                    </div>
-
-                                    <!-- Chat Input -->
-                                    <div class="chat-input-area">
-                                        <div class="input-wrapper">
-                                            <input type="text" 
-                                                   id="messageInput" 
-                                                   placeholder="Savolingizni yozing yoki ovozli kiriting..."
-                                                   onkeypress="handleKeyPress(event)">
-                                            <div class="input-actions">
-                                                <button class="btn-icon" onclick="startVoiceInput()" title="Ovozli xabar">
-                                                    <i class="fas fa-microphone"></i>
-                                                </button>
-                                                <button class="btn-icon" onclick="sendQuickQuestion()" title="Tayyor savollar">
-                                                    <i class="fas fa-question"></i>
-                                                </button>
-                                                <button class="btn-send" onclick="sendMessage()">
-                                                    <i class="fas fa-paper-plane"></i> Yuborish
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div class="quick-questions" id="quickQuestions">
-                                            <!-- Quick questions will be loaded here -->
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Exercises Section -->
-                                <div class="exercises-section" id="exercisesSection" style="display: none;">
-                                    <div class="exercises-header">
-                                        <h3><i class="fas fa-tasks"></i> Mashqlar</h3>
-                                        <p id="exercisesCount">0 ta mashq</p>
-                                    </div>
-                                    <div class="exercises-list" id="exercisesList">
-                                        <!-- Exercises will be loaded here -->
-                                    </div>
-                                    <div class="exercises-actions">
-                                        <button class="btn btn-secondary" onclick="backToChat()">
-                                            <i class="fas fa-arrow-left"></i> Suxbatga qaytish
-                                        </button>
-                                        <button class="btn btn-primary" onclick="submitExercises()">
-                                            <i class="fas fa-check-circle"></i> Tekshirish
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <!-- Praise Section -->
-                                <div class="praise-section" id="praiseSection" style="display: none;">
-                                    <div class="praise-content" id="praiseContent">
-                                        <!-- Praise content will be loaded here -->
-                                    </div>
-                                    <div class="praise-actions">
-                                        <button class="btn btn-primary" onclick="showTopicSelector()">
-                                            <i class="fas fa-book"></i> Yangi mavzu tanlash
-                                        </button>
-                                        <button class="btn btn-secondary" onclick="showChatHistory()">
-                                            <i class="fas fa-history"></i> Tarixga qaytish
-                                        </button>
-                                    </div>
+                                    <p class="grade-label">Umumiy o'rtacha baho</p>
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Progress Bar -->
-                        <div class="progress-container">
-                            <div class="progress-header">
-                                <span>O'quv Jarayoni</span>
-                                <span id="progressPercentage">0%</span>
+                        
+                        <div class="col-8">
+                            <div class="card">
+                                <h3>Fanlar bo'yicha</h3>
+                                <div class="subject-grades">
+                                    <!-- JavaScript orqali to'ldiriladi -->
+                                </div>
                             </div>
-                            <div class="progress-bar">
-                                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
-                            </div>
-                            <div class="progress-steps">
-                                <div class="step active">Suxbat</div>
-                                <div class="step">Mavzuni o'rganish</div>
-                                <div class="step">Savol-javob</div>
-                                <div class="step">Mashqlar</div>
-                                <div class="step">Yakunlash</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Baholar jadvali -->
+                    <div class="card">
+                        <h3>Baholar Tarixi</h3>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>№</th>
+                                        <th>Fan</th>
+                                        <th>Dars/Topshiriq</th>
+                                        <th>Baho</th>
+                                        <th>O'qituvchi izohi</th>
+                                        <th>Sana</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="gradesTable">
+                                    <!-- JavaScript orqali to'ldiriladi -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- Baholash diagrammasi -->
+                    <div class="card">
+                        <h3>Baholar Statistikasi</h3>
+                        <div class="grade-chart" id="gradeChart">
+                            <div class="chart-placeholder">
+                                <!-- JavaScript orqali to'ldiriladi -->
                             </div>
                         </div>
                     </div>
                 </section>
-                <!-- AI bilan Suxbat Bo'limi Tugadi -->
+
+                <!-- AI Darslar -->
+                <section id="ai-dars" class="content-section">
+                    <h2><i class="fas fa-robot"></i> AI bilan Darslar</h2>
+                    
+                    <div class="card">
+                        <h3>Shaxsiylashtirilgan AI Assistant</h3>
+                        <div class="ai-assistant">
+                            <div class="ai-avatar">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div class="ai-message">
+                                <p>Salom, Aziz! Men sizning shaxsiy o'qituvchi assistantingizman. Qaysi mavzuda yordam kerak?</p>
+                            </div>
+                        </div>
+                        
+                        <div class="ai-options">
+                            <button class="btn btn-secondary" onclick="startAILesson('matematika')">
+                                <i class="fas fa-calculator"></i> Algebra masalalar
+                            </button>
+                            <button class="btn btn-secondary" onclick="startAILesson('fizika')">
+                                <i class="fas fa-atom"></i> Fizika tajribalari
+                            </button>
+                            <button class="btn btn-secondary" onclick="startAILesson('kimyo')">
+                                <i class="fas fa-flask"></i> Kimyo masalalar
+                            </button>
+                            <button class="btn btn-secondary" onclick="startAILesson('ona_tili')">
+                                <i class="fas fa-book"></i> O'na tili grammatikasi
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- AI darslar tarixi -->
+                    <div class="card">
+                        <h3>AI Darslar Tarixi</h3>
+                        <div class="ai-lessons-history">
+                            <!-- JavaScript orqali to'ldiriladi -->
+                        </div>
+                    </div>
+                </section>
+<!-- AI bilan Suxbat Bo'limi -->
+<section id="ai-suxbat" class="content-section">
+    <div class="ai-chat-container">
+        <!-- Chat Header -->
+        <div class="chat-header">
+            <div class="header-content">
+                <h1><i class="fas fa-robot"></i> AI Mentor </h1>
+                <p>Darslar bo'yicha har qanday savolingizga javob beraman va tushuntiraman</p>
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-outline" onclick="startNewChat()">
+                    <i class="fas fa-redo"></i> Yangi suxbat
+                </button>
+                <button class="btn btn-primary" onclick="showMathTopics()">
+                    <i class="fas fa-calculator"></i> Matematika mavzulari
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="chat-main">
+            <!-- Left Side - Chat History -->
+            <div class="history-sidebar">
+                <div class="history-card">
+                    <h3><i class="fas fa-history"></i> Suxbatlar tarixi</h3>
+                    <div class="history-list" id="chatHistory">
+                        <div class="history-item active">
+                            <div class="history-icon">
+                                <i class="fas fa-calculator"></i>
+                            </div>
+                            <div class="history-content">
+                                <h4>Algebra masalalar</h4>
+                                <p>Bugun, 14:30</p>
+                            </div>
+                        </div>
+                        <div class="history-item">
+                            <div class="history-icon">
+                                <i class="fas fa-shapes"></i>
+                            </div>
+                            <div class="history-content">
+                                <h4>Geometriya</h4>
+                                <p>Kecha, 16:45</p>
+                            </div>
+                        </div>
+                        <div class="history-item">
+                            <div class="history-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="history-content">
+                                <h4>Funksiyalar</h4>
+                                <p>2 kun oldin</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="history-card">
+                    <h3><i class="fas fa-lightbulb"></i> Tezkor mavzular</h3>
+                    <div class="quick-topics-sidebar">
+                        <button class="quick-topic-sidebar" onclick="selectMathTopic('algebra')">
+                            <i class="fas fa-calculator"></i> Algebra
+                        </button>
+                        <button class="quick-topic-sidebar" onclick="selectMathTopic('geometriya')">
+                            <i class="fas fa-shapes"></i> Geometriya
+                        </button>
+                        <button class="quick-topic-sidebar" onclick="selectMathTopic('funksiyalar')">
+                            <i class="fas fa-chart-line"></i> Funksiyalar
+                        </button>
+                        <button class="quick-topic-sidebar" onclick="selectMathTopic('trigonometriya')">
+                            <i class="fas fa-circle"></i> Trigonometriya
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side - Chat Interface -->
+            <div class="chat-interface">
+                <!-- Welcome Screen -->
+                <div class="welcome-screen" id="welcomeScreen">
+                    <div class="welcome-content">
+                        <div class="welcome-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <h2>Salom, men TalkBuddyAi yordamchisiman! 👋</h2>
+                        <p>Men sizga darslar bo'yicha har qanday savolingizda yordam beraman. Algebra, geometriya, funksiyalar - hamma narsani tushuntiraman!</p>
+                        <div class="quick-questions">
+                            <button class="quick-question-btn" onclick="askQuestion('Algebra nima?')">
+                                <i class="fas fa-question"></i> Algebra nima?
+                            </button>
+                            <button class="quick-question-btn" onclick="askQuestion('Kvadrat tenglama qanday yechiladi?')">
+                                <i class="fas fa-question"></i> Kvadrat tenglama?
+                            </button>
+                            <button class="quick-question-btn" onclick="askQuestion('Funksiya nima?')">
+                                <i class="fas fa-question"></i> Funksiya nima?
+                            </button>
+                            <button class="quick-question-btn" onclick="askQuestion('Pifagor teoremasi qanday?')">
+                                <i class="fas fa-question"></i> Pifagor teoremasi?
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Active Chat -->
+                <div class="active-chat" id="activeChat" style="display: none;">
+                    <!-- Chat Header -->
+                    <div class="active-chat-header">
+                        <div class="chat-topic-info">
+                            <h3 id="currentTopicTitle">Matematika suxbati</h3>
+                            <p id="currentTopicDesc">AI yordamchi bilan suxbat</p>
+                        </div>
+                        <div class="chat-stats">
+                            <span class="stat-item">
+                                <i class="fas fa-comment"></i>
+                                <span id="messageCount">0</span> xabar
+                            </span>
+                            <span class="stat-item">
+                                <i class="fas fa-star"></i>
+                                <span id="scoreCount">0</span> ball
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Chat Messages -->
+                    <div class="chat-messages" id="chatMessages">
+                        <!-- Messages will be loaded here -->
+                    </div>
+
+                    <!-- Understanding Check -->
+                    <div class="understanding-check" id="understandingCheck" style="display: none;">
+                        <h4><i class="fas fa-check-circle"></i> Mavzuni tushundingizmi?</h4>
+                        <div class="understanding-options">
+                            <button class="understanding-btn understanding-yes" onclick="answerUnderstanding('ha')">
+                                <i class="fas fa-thumbs-up"></i> Ha, tushundim
+                            </button>
+                            <button class="understanding-btn understanding-no" onclick="answerUnderstanding('yoq')">
+                                <i class="fas fa-thumbs-down"></i> Yo'q, tushunmadim
+                            </button>
+                            <button class="understanding-btn understanding-average" onclick="answerUnderstanding('ortacha')">
+                                <i class="fas fa-minus-circle"></i> O'rtacha
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Questions Section -->
+                    <div class="questions-section" id="questionsSection" style="display: none;">
+                        <div class="questions-header">
+                            <h4><i class="fas fa-tasks"></i> Mavzuni mustahkamlash uchun savollar</h4>
+                            <p>Quyidagi savollarga javob bering:</p>
+                        </div>
+                        <div class="questions-list" id="questionsList">
+                            <!-- Questions will be loaded here -->
+                        </div>
+                        <div class="questions-actions">
+                            <button class="btn btn-secondary" onclick="backToChat()">
+                                <i class="fas fa-arrow-left"></i> Suxbatga qaytish
+                            </button>
+                            <button class="btn btn-primary" onclick="submitAnswers()">
+                                <i class="fas fa-check-circle"></i> Javoblarni tekshirish
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Chat Input -->
+                    <div class="chat-input-area">
+                        <div class="input-wrapper">
+                            <input type="text" 
+                                   id="messageInput" 
+                                   placeholder="Matematikadan savolingizni yozing yoki ovozli kiriting..."
+                                   onkeypress="handleKeyPress(event)">
+                            <div class="input-actions">
+                                <button class="btn-icon" onclick="startVoiceInput()" title="Ovozli savol">
+                                    <i class="fas fa-microphone"></i>
+                                </button>
+                                <button class="btn-send" onclick="sendMessage()">
+                                    <i class="fas fa-paper-plane"></i> Yuborish
+                                </button>
+                            </div>
+                        </div>
+                        <div class="quick-suggestions" id="quickSuggestions">
+                            <button class="suggestion-btn" onclick="askQuestion('Algebra asoslari nima?')">
+                                Algebra asoslari
+                            </button>
+                            <button class="suggestion-btn" onclick="askQuestion('Kvadrat tenglama misol')">
+                                Kvadrat tenglama
+                            </button>
+                            <button class="suggestion-btn" onclick="askQuestion('Geometriya formulalari')">
+                                Geometriya formulalari
+                            </button>
+                            <button class="suggestion-btn" onclick="askQuestion('Sonlar nazariyasi')">
+                                Sonlar nazariyasi
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Results Section -->
+                <div class="results-section" id="resultsSection" style="display: none;">
+                    <div class="results-content">
+                        <div class="results-header">
+                            <h3><i class="fas fa-trophy"></i> Natijalar</h3>
+                            <p id="resultsScore">Siz 0/0 savolga to'g'ri javob berdingiz</p>
+                        </div>
+                        <div class="results-details" id="resultsDetails">
+                            <!-- Results details will be loaded here -->
+                        </div>
+                        <div class="results-actions">
+                            <button class="btn btn-primary" onclick="startNewChat()">
+                                <i class="fas fa-redo"></i> Yangi suxbat boshlash
+                            </button>
+                            <button class="btn btn-secondary" onclick="showChatHistory()">
+                                <i class="fas fa-history"></i> Tarixga qaytish
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Assistant Info -->
+        <div class="ai-assistant-info">
+            <div class="ai-profile">
+                <div class="ai-avatar-large">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="ai-details">
+                    <h4>TalkBuddyAi yordamchisi</h4>
+                    <p>9-sinf matematika dasturi bo'yicha mutaxassis</p>
+                </div>
+            </div>
+            <div class="ai-stats">
+                <div class="stat-item">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>500+ ta dars</span>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-check-circle"></i>
+                    <span>95% o'quvchilar tushunadi</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
             </div>
         </main>
+    </div>
+
+    <!-- Topshiriq bajarish modal -->
+    <div id="taskModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Topshiriq Bajarish</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="modalTaskForm">
+                    <div class="form-group">
+                        <label for="modalTaskSelect">Topshiriq</label>
+                        <input type="text" id="modalTaskSelect" class="form-control" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="modalTaskFile">Fayl yuklash</label>
+                        <input type="file" id="modalTaskFile" class="form-control" accept=".pdf,.doc,.docx,.txt">
+                    </div>
+                    <div class="form-group">
+                        <label for="modalTaskComment">Izoh</label>
+                        <textarea id="modalTaskComment" class="form-control" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Topshirish</button>
+                </form>
+            </div>
+        </div>
     </div>
 
     <!-- Scripts -->
@@ -379,680 +678,455 @@
     <script src="js/ai_chat.js"></script>
     
     <script>
-        // AI Chat uchun qo'shimcha CSS
+        // O'quvchi paneli uchun qo'shimcha CSS
         document.head.insertAdjacentHTML('beforeend', `
         <style>
-        .ai-chat-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        .chat-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 25px 30px;
-            border-radius: 15px;
-            margin-bottom: 25px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
-        }
-        
-        .header-content h1 {
-            font-size: 28px;
-            margin-bottom: 10px;
+        .student-info {
             display: flex;
             align-items: center;
-            gap: 15px;
-        }
-        
-        .header-content p {
-            font-size: 16px;
-            opacity: 0.9;
-        }
-        
-        .header-actions {
-            display: flex;
-            gap: 15px;
-        }
-        
-        .btn-outline {
-            background: transparent;
-            border: 2px solid white;
-            color: white;
-            padding: 12px 25px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-        
-        .btn-outline:hover {
-            background: white;
-            color: #667eea;
-        }
-        
-        .chat-main {
-            display: flex;
-            gap: 25px;
-            margin-bottom: 30px;
-            min-height: 600px;
-        }
-        
-        .topic-sidebar {
-            flex: 0 0 350px;
-            display: flex;
-            flex-direction: column;
             gap: 20px;
         }
         
-        .sidebar-card {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        .class-badge {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
         }
         
-        .sidebar-card h3 {
-            font-size: 18px;
-            margin-bottom: 20px;
-            color: #333;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        .rating {
+            color: var(--text-light);
         }
         
-        .subject-filter {
-            margin-bottom: 20px;
-        }
-        
-        .topics-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-bottom: 20px;
-            max-height: 300px;
-            overflow-y: auto;
-        }
-        
-        .topic-item {
-            padding: 15px;
-            background: #f8f9fa;
-            border: 2px solid #e9ecef;
-            border-radius: 10px;
+        .notification-badge {
+            position: relative;
             cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 12px;
         }
         
-        .topic-item:hover {
-            background: #667eea;
+        .badge-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: #dc3545;
             color: white;
-            border-color: #667eea;
-            transform: translateX(5px);
-        }
-        
-        .topic-item.active {
-            background: #667eea;
-            color: white;
-            border-color: #667eea;
-        }
-        
-        .topic-icon {
-            width: 40px;
-            height: 40px;
-            background: #667eea;
-            border-radius: 10px;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-        }
-        
-        .topic-info h4 {
-            font-size: 16px;
-            margin-bottom: 5px;
-        }
-        
-        .topic-info p {
             font-size: 12px;
-            opacity: 0.8;
         }
         
-        .custom-topic-input {
+        .student-schedule {
             margin-top: 20px;
         }
         
-        .custom-topic-input h4 {
-            font-size: 16px;
-            margin-bottom: 10px;
-            color: #333;
-        }
-        
-        .custom-topic-input .input-group {
-            display: flex;
-            gap: 10px;
-        }
-        
-        .chat-interface {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-        
-        .welcome-screen {
-            background: white;
-            border-radius: 15px;
-            padding: 40px;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            flex: 1;
+        .schedule-item {
             display: flex;
             align-items: center;
-            justify-content: center;
+            padding: 15px;
+            border-bottom: 1px solid var(--border-color);
         }
         
-        .welcome-content {
-            max-width: 500px;
+        .schedule-item:last-child {
+            border-bottom: none;
         }
         
-        .welcome-icon {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 32px;
-            color: white;
-            margin: 0 auto 25px;
+        .schedule-time {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--primary-color);
+            min-width: 80px;
         }
         
-        .welcome-content h2 {
-            font-size: 28px;
-            margin-bottom: 15px;
-            color: #333;
-        }
-        
-        .welcome-content p {
-            color: #666;
-            margin-bottom: 30px;
-            font-size: 16px;
-        }
-        
-        .quick-topics {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            justify-content: center;
-        }
-        
-        .quick-topic-btn {
-            padding: 15px 25px;
-            background: #f8f9fa;
-            border: 2px solid #e9ecef;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 500;
-        }
-        
-        .quick-topic-btn:hover {
-            background: #667eea;
-            color: white;
-            border-color: #667eea;
-            transform: translateY(-3px);
-        }
-        
-        .active-chat {
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            display: flex;
-            flex-direction: column;
+        .schedule-details {
             flex: 1;
         }
         
-        .active-chat-header {
-            padding: 20px 25px;
-            border-bottom: 1px solid #e9ecef;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .chat-topic-info h3 {
-            font-size: 20px;
-            color: #333;
+        .schedule-details h4 {
             margin-bottom: 5px;
         }
         
-        .chat-topic-info p {
-            color: #666;
+        .schedule-details p {
+            color: var(--text-light);
+            margin-bottom: 10px;
+        }
+        
+        .btn-sm {
+            padding: 6px 12px;
             font-size: 14px;
         }
         
-        .chat-stats {
+        .activity-list {
+            margin-top: 15px;
+        }
+        
+        .activity-item {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 15px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
         }
         
-        .stat-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: #666;
+        .activity-item:last-child {
+            border-bottom: none;
         }
         
-        .chat-messages {
-            flex: 1;
-            padding: 25px;
-            overflow-y: auto;
-            max-height: 400px;
-            background: #f8f9fa;
-        }
-        
-        .message {
-            display: flex;
-            margin-bottom: 20px;
-            animation: fadeIn 0.3s ease;
-        }
-        
-        .message.ai {
-            justify-content: flex-start;
-        }
-        
-        .message.user {
-            justify-content: flex-end;
-        }
-        
-        .message-avatar {
+        .activity-icon {
             width: 40px;
             height: 40px;
+            background-color: var(--primary-light);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
-            flex-shrink: 0;
-            margin-right: 15px;
+            color: var(--primary-color);
         }
         
-        .ai .message-avatar {
-            background: #667eea;
-            color: white;
+        .activity-content p {
+            margin-bottom: 5px;
         }
         
-        .user .message-avatar {
-            background: #28a745;
-            color: white;
+        .activity-content small {
+            color: var(--text-light);
         }
         
-        .message-content {
-            max-width: 70%;
-            padding: 15px;
-            border-radius: 15px;
-            position: relative;
+        .student-stats {
+            padding: 15px 0;
         }
         
-        .ai .message-content {
-            background: white;
-            border: 1px solid #e0e0e0;
-            border-top-left-radius: 0;
-        }
-        
-        .user .message-content {
-            background: #28a745;
-            color: white;
-            border-top-right-radius: 0;
-        }
-        
-        .chat-input-area {
-            padding: 20px 25px;
-            border-top: 1px solid #e9ecef;
-        }
-        
-        .input-wrapper {
+        .student-stats .stat-item {
             display: flex;
-            gap: 10px;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .student-stats .stat-item:last-child {
+            border-bottom: none;
+        }
+        
+        .ai-recommendation {
+            padding: 15px;
+            background-color: var(--primary-light);
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+        
+        .ai-recommendation p {
+            margin-bottom: 10px;
+        }
+        
+        .deadline-warning {
+            padding: 15px;
+            background-color: #fff3cd;
+            border-radius: 10px;
+            margin-top: 15px;
+            border-left: 4px solid #ffc107;
+        }
+        
+        .deadline-warning .warning-item {
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+        
+        .deadline-warning .warning-item:last-child {
+            margin-bottom: 0;
+            border-bottom: none;
+        }
+        
+        .filters {
+            margin-bottom: 20px;
+            max-width: 300px;
+        }
+        
+        .lessons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .lesson-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border: 1px solid var(--border-color);
+        }
+        
+        .lesson-card.ai-lesson {
+            border: 2px solid var(--primary-color);
+        }
+        
+        .lesson-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .lesson-header h4 {
+            color: var(--primary-color);
+        }
+        
+        .lesson-progress {
+            background-color: var(--success-color);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+        
+        .lesson-card p {
+            color: var(--text-light);
             margin-bottom: 15px;
         }
         
-        .input-wrapper input {
-            flex: 1;
-            padding: 15px 20px;
-            border: 2px solid #e9ecef;
-            border-radius: 10px;
-            font-size: 16px;
-            transition: border-color 0.3s;
-        }
-        
-        .input-wrapper input:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-        
-        .input-actions {
+        .lesson-footer {
             display: flex;
-            gap: 10px;
+            justify-content: space-between;
             align-items: center;
         }
         
-        .btn-icon {
-            width: 50px;
-            height: 50px;
-            background: #f8f9fa;
-            border: 2px solid #e9ecef;
-            border-radius: 10px;
-            cursor: pointer;
-            color: #666;
+        .ai-assistant {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .ai-avatar {
+            width: 60px;
+            height: 60px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s;
-        }
-        
-        .btn-icon:hover {
-            background: #667eea;
+            font-size: 24px;
             color: white;
-            border-color: #667eea;
         }
         
-        .btn-send {
-            padding: 0 25px;
-            background: #667eea;
-            border: none;
+        .ai-message {
+            flex: 1;
+            padding: 15px;
+            background-color: var(--bg-color);
             border-radius: 10px;
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.3s;
-            height: 50px;
         }
         
-        .btn-send:hover {
-            background: #764ba2;
-        }
-        
-        .quick-questions {
+        .ai-options {
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
+            margin-bottom: 20px;
         }
         
-        .quick-question {
-            padding: 8px 16px;
-            background: #f8f9fa;
-            border: 1px solid #e9ecef;
-            border-radius: 20px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.3s;
+        .task-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
         }
         
-        .quick-question:hover {
-            background: #667eea;
-            color: white;
-            border-color: #667eea;
-        }
-        
-        .exercises-section {
+        .task-stats .stat-card {
             background: white;
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         
-        .exercises-header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        
-        .exercises-header h3 {
-            font-size: 24px;
-            color: #333;
-            margin-bottom: 10px;
+        .task-stats .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--primary-light);
             display: flex;
             align-items: center;
             justify-content: center;
+            color: var(--primary-color);
+            font-size: 20px;
+        }
+        
+        .task-stats .stat-info h3 {
+            margin-bottom: 5px;
+            font-size: 24px;
+        }
+        
+        .task-stats .stat-info p {
+            color: var(--text-light);
+            margin: 0;
+        }
+        
+        .grade-filters {
+            display: flex;
             gap: 10px;
+            max-width: 500px;
         }
         
-        .exercises-header p {
-            color: #666;
+        .average-grade-display {
+            text-align: center;
+            padding: 20px;
         }
         
-        .exercises-list {
+        .grade-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
             display: flex;
-            flex-direction: column;
-            gap: 20px;
-            margin-bottom: 30px;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
         }
         
-        .exercise-item {
-            background: #f8f9fa;
-            padding: 25px;
-            border-radius: 10px;
-            border: 2px solid #e9ecef;
+        .grade-circle span {
+            font-size: 36px;
+            font-weight: 600;
+            color: white;
         }
         
-        .exercise-question {
-            font-size: 18px;
-            margin-bottom: 20px;
-            color: #333;
+        .grade-label {
+            color: var(--text-light);
+            font-size: 14px;
         }
         
-        .exercise-options {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
+        .subject-grades {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            padding: 15px 0;
         }
         
-        .option {
-            padding: 12px 20px;
+        .subject-grade-item {
             background: white;
-            border: 2px solid #e9ecef;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid var(--border-color);
         }
         
-        .option:hover {
-            border-color: #667eea;
+        .subject-grade-item h4 {
+            margin-bottom: 10px;
+            color: var(--text-color);
         }
         
-        .option.selected {
-            background: #d4edda;
-            border-color: #28a745;
+        .subject-grade-item .grade {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .ai-lessons-history {
+            display: grid;
+            gap: 15px;
+        }
+        
+        .ai-lesson-history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background-color: var(--bg-color);
+            border-radius: 10px;
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .task-status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .task-status-badge.pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        
+        .task-status-badge.completed {
+            background-color: #d4edda;
             color: #155724;
         }
         
-        .exercises-actions {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
+        .task-status-badge.overdue {
+            background-color: #f8d7da;
+            color: #721c24;
         }
         
-        .praise-section {
-            background: white;
-            border-radius: 15px;
-            padding: 40px;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        
-        .praise-content {
-            margin-bottom: 30px;
-        }
-        
-        .scientist-card {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            color: white;
-            padding: 30px;
-            border-radius: 15px;
-            margin-bottom: 25px;
-        }
-        
-        .scientist-img {
-            width: 100px;
-            height: 100px;
-            background: white;
-            border-radius: 50%;
-            margin: 0 auto 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 40px;
-            color: #f093fb;
-        }
-        
-        .scientist-name {
-            font-size: 24px;
-            margin-bottom: 10px;
-        }
-        
-        .scientist-quote {
-            font-style: italic;
-            opacity: 0.9;
-        }
-        
-        .praise-message h2 {
-            font-size: 28px;
-            margin-bottom: 15px;
-            color: #333;
-        }
-        
-        .praise-actions {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 30px;
-        }
-        
-        .progress-container {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        
-        .progress-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 15px;
-            font-weight: 600;
-            color: #333;
-        }
-        
-        .progress-bar {
-            height: 10px;
-            background: #e9ecef;
-            border-radius: 5px;
-            overflow: hidden;
-            margin-bottom: 20px;
-        }
-        
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            width: 0%;
-            transition: width 0.5s;
-        }
-        
-        .progress-steps {
-            display: flex;
-            justify-content: space-between;
-        }
-        
-        .step {
-            padding: 8px 16px;
-            background: #f8f9fa;
+        .grade-badge {
+            display: inline-block;
+            padding: 4px 12px;
             border-radius: 20px;
             font-size: 14px;
-            color: #666;
-            transition: all 0.3s;
+            font-weight: 600;
         }
         
-        .step.active {
-            background: #667eea;
-            color: white;
+        .grade-badge.excellent {
+            background-color: #d4edda;
+            color: #155724;
         }
         
-        .chat-history {
+        .grade-badge.good {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+        
+        .grade-badge.average {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.active {
             display: flex;
-            flex-direction: column;
-            gap: 10px;
         }
         
-        .history-item {
-            padding: 12px;
-            background: #f8f9fa;
-            border: 1px solid #e9ecef;
-            border-radius: 8px;
+        .modal-content {
+            background: white;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
             cursor: pointer;
-            transition: all 0.3s;
+            color: var(--text-light);
         }
         
-        .history-item:hover {
-            background: #667eea;
-            color: white;
-        }
-        
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        @media (max-width: 1200px) {
-            .chat-main {
-                flex-direction: column;
-            }
-            
-            .topic-sidebar {
-                flex: 1;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .chat-header {
-                flex-direction: column;
-                text-align: center;
-                gap: 15px;
-            }
-            
-            .header-actions {
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-            
-            .quick-topics {
-                flex-direction: column;
-            }
-            
-            .message-content {
-                max-width: 85%;
-            }
-            
-            .exercises-actions,
-            .praise-actions {
-                flex-direction: column;
-            }
+        .modal-body {
+            padding: 20px;
         }
         </style>
         `);

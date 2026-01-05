@@ -4,10 +4,979 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>O'qituvchi Panel - TalkBuddy Ai</title>
-    <link rel="stylesheet" href="styles/main.css">
-    <link rel="stylesheet" href="styles/dashboard.css">
-    <link rel="stylesheet" href="styles/teacher.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Asosiy CSS */
+        :root {
+            --primary-color: #8a2be2;
+            --primary-light: #e6d4ff;
+            --secondary-color: #6c757d;
+            --success-color: #28a745;
+            --danger-color: #dc3545;
+            --warning-color: #ffc107;
+            --info-color: #17a2b8;
+            --dark-color: #343a40;
+            --light-color: #f8f9fa;
+            --text-color: #333;
+            --text-light: #6c757d;
+            --bg-color: #f5f7fa;
+            --border-color: #dee2e6;
+            --sidebar-width: 260px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        .dashboard {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: white;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            padding: 25px 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo h2 {
+            color: var(--primary-color);
+            font-size: 22px;
+            margin-bottom: 5px;
+        }
+
+        .logo h2 i {
+            margin-right: 10px;
+        }
+
+        .user-role {
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        .sidebar-menu {
+            flex: 1;
+            padding: 20px 0;
+        }
+
+        .sidebar-menu ul {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 5px;
+        }
+
+        .sidebar-menu li.active {
+            background: var(--primary-light);
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .sidebar-menu li.active a {
+            color: var(--primary-color);
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: var(--text-color);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .sidebar-menu a:hover {
+            background: #f8f9fa;
+            color: var(--primary-color);
+        }
+
+        .sidebar-menu a i {
+            width: 20px;
+            margin-right: 12px;
+            color: var(--text-light);
+        }
+
+        .sidebar-menu li.active a i,
+        .sidebar-menu a:hover i {
+            color: var(--primary-color);
+        }
+
+        .sidebar-footer {
+            padding: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+        }
+
+        .avatar i {
+            color: var(--primary-color);
+            font-size: 18px;
+        }
+
+        .user-details strong {
+            display: block;
+            font-size: 16px;
+        }
+
+        .user-details small {
+            color: var(--text-light);
+            font-size: 13px;
+        }
+        /* File upload styles */
+.file-upload-area {
+    border: 2px dashed var(--border-color);
+    border-radius: 10px;
+    padding: 30px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    background: #f8f9fa;
+    margin-top: 10px;
+}
+
+.file-upload-area:hover {
+    border-color: var(--primary-color);
+    background: #f0f0f0;
+}
+
+.file-upload-area i {
+    font-size: 48px;
+    color: var(--primary-color);
+    margin-bottom: 10px;
+}
+
+.file-upload-area p {
+    margin: 10px 0;
+    color: var(--text-color);
+}
+
+.file-upload-area p span {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.file-upload-area small {
+    color: var(--text-light);
+    display: block;
+    margin-top: 5px;
+}
+
+/* File preview */
+.file-preview {
+    margin-top: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.file-item {
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    max-width: 300px;
+}
+
+.file-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    color: white;
+    font-size: 18px;
+}
+
+.file-icon.pdf { background: #FF6B6B; }
+.file-icon.doc { background: #4267B2; }
+.file-icon.xls { background: #21A366; }
+.file-icon.ppt { background: #D24726; }
+.file-icon.img { background: #4ECDC4; }
+.file-icon.other { background: #95A5A6; }
+
+.file-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.file-name {
+    font-weight: 500;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.file-size {
+    font-size: 12px;
+    color: var(--text-light);
+}
+
+.file-remove {
+    background: none;
+    border: none;
+    color: var(--danger-color);
+    cursor: pointer;
+    padding: 5px;
+    font-size: 14px;
+}
+
+/* Lesson plan item styles */
+.lesson-plan-item {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    border: 1px solid var(--border-color);
+    transition: transform 0.3s;
+    margin-bottom: 15px;
+}
+
+.lesson-plan-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.lesson-plan-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 15px;
+}
+
+.lesson-plan-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.lesson-plan-meta {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.lesson-plan-date {
+    background: var(--primary-light);
+    color: var(--primary-color);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+}
+
+.lesson-plan-status {
+    font-size: 12px;
+    padding: 3px 8px;
+    border-radius: 4px;
+}
+
+.status-draft { background: #FFEAA7; color: #E17055; }
+.status-active { background: #D4EDDA; color: #155724; }
+.status-completed { background: #D1ECF1; color: #0C5460; }
+
+.lesson-plan-details {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+.lesson-plan-detail {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-light);
+    font-size: 14px;
+}
+
+.lesson-plan-files {
+    margin: 15px 0;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.files-title {
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.files-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.file-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    text-decoration: none;
+    color: var(--text-color);
+    font-size: 14px;
+    transition: all 0.3s;
+}
+
+.file-link:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.lesson-plan-content {
+    margin: 15px 0;
+    line-height: 1.6;
+}
+
+.lesson-plan-content h5 {
+    margin: 10px 0 5px 0;
+    color: var(--text-color);
+}
+
+.lesson-plan-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    border-top: 1px solid var(--border-color);
+    padding-top: 15px;
+    margin-top: 15px;
+}
+
+.btn-outline-primary {
+    background: transparent;
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+}
+
+.btn-outline-primary:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+/* AI settings animation */
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#aiSettings {
+    animation: slideDown 0.3s ease;
+}
+
+        /* Main content */
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            min-height: 100vh;
+        }
+
+        .header {
+            background: white;
+            padding: 20px 30px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            color: var(--dark-color);
+        }
+
+        .text-light {
+            color: var(--text-light);
+        }
+
+        .date-display {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-light);
+        }
+
+        .date-display i {
+            color: var(--primary-color);
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .section-header h2 {
+            font-size: 24px;
+            color: var(--dark-color);
+        }
+
+        .section-header h2 i {
+            margin-right: 10px;
+            color: var(--primary-color);
+        }
+
+        /* Stats cards */
+        .stats-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stat-icon i {
+            font-size: 24px;
+        }
+
+        .stat-info h3 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--dark-color);
+            margin-bottom: 5px;
+        }
+
+        .stat-info p {
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .card h3 {
+            margin-bottom: 20px;
+            color: var(--dark-color);
+            font-size: 18px;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #7b1fa2;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--secondary-color);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #545b62;
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        /* Form elements */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            margin: -10px;
+        }
+
+        .col-4, .col-6 {
+            padding: 10px;
+        }
+
+        .col-4 { flex: 0 0 33.333%; max-width: 33.333%; }
+        .col-6 { flex: 0 0 50%; max-width: 50%; }
+
+        .text-right { text-align: right; }
+        .mt-3 { margin-top: 1rem !important; }
+
+        /* Tables */
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table th {
+            background: #f8f9fa;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: var(--text-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .table td {
+            padding: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .table tbody tr:hover {
+            background: #f8f9fa;
+        }
+
+        /* Status badges */
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            display: inline-block;
+        }
+
+        .status-badge.active {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-badge.inactive {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .status-badge.pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        /* Today lessons */
+        .today-lessons {
+            margin-top: 20px;
+        }
+
+        .lesson-item {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            background-color: var(--bg-color);
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border: 1px solid var(--border-color);
+        }
+
+        .lesson-time {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0 20px;
+            border-right: 2px solid var(--primary-color);
+        }
+
+        .time {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .duration {
+            font-size: 14px;
+            color: var(--text-light);
+        }
+
+        .lesson-details {
+            flex: 1;
+            padding: 0 20px;
+        }
+
+        .lesson-details h4 {
+            margin-bottom: 5px;
+            color: var(--text-color);
+        }
+
+        .lesson-details p {
+            color: var(--text-light);
+            margin-bottom: 10px;
+        }
+
+        .badge {
+            background-color: var(--primary-light);
+            color: var(--primary-color);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        /* Class stats */
+        .class-stats p {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+            color: var(--text-light);
+        }
+
+        .class-stats i {
+            color: var(--primary-color);
+        }
+
+        /* Lesson plans list */
+        .lesson-plans-list {
+            display: grid;
+            gap: 15px;
+        }
+
+        .lesson-plan-item {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s;
+        }
+
+        .lesson-plan-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .lesson-plan-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .lesson-plan-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .lesson-plan-date {
+            background: var(--primary-light);
+            color: var(--primary-color);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        .lesson-plan-details {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .lesson-plan-detail {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-light);
+        }
+
+        .lesson-plan-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        /* Statistics */
+        .filter-section {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .filter-section label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .filter-section label i {
+            margin-right: 8px;
+            color: var(--primary-color);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .health-stats,
+        .mood-stats,
+        .mood-distribution {
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .stats-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+        }
+
+        .stat-label {
+            font-weight: 500;
+        }
+
+        .stat-value {
+            font-weight: 600;
+        }
+
+        .distribution-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .distribution-item {
+            margin-bottom: 8px;
+        }
+
+        .distribution-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+
+        .dist-label {
+            font-weight: 500;
+        }
+
+        .dist-value {
+            font-weight: 600;
+        }
+
+        .progress {
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            border-radius: 4px;
+        }
+
+        .progress-bar-happy { background: #28a745; }
+        .progress-bar-normal { background: #ffc107; }
+        .progress-bar-sad { background: #dc3545; }
+        .progress-bar-excited { background: #007bff; }
+        .progress-bar-tired { background: #6f42c1; }
+        .progress-bar-sick { background: #6c757d; }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 70px;
+            }
+            
+            .sidebar-header .logo h2,
+            .sidebar-menu a span,
+            .sidebar-footer .user-info .user-details,
+            .sidebar-footer .btn span {
+                display: none;
+            }
+            
+            .main-content {
+                margin-left: 70px;
+            }
+            
+            .stats-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .stats-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .row {
+                flex-direction: column;
+            }
+            
+            .col-4, .col-6 {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+            
+            .lesson-item {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .lesson-time {
+                border-right: none;
+                border-bottom: 2px solid var(--primary-color);
+                padding-bottom: 10px;
+                margin-bottom: 10px;
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="dashboard">
@@ -30,8 +999,8 @@
                     </li>
                     <li>
                         <a href="#dars-plani">
-                            <i class="fas fa-calendar-alt"></i> <!-- Yangi icon -->
-                            <span>Dars Plani</span> <!-- Yangi nom -->
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>Dars Plani</span>
                         </a>
                     </li>
                     <li>
@@ -54,8 +1023,8 @@
                     </li>
                     <li>
                         <a href="#statistika">
-                            <i class="fas fa-chart-bar"></i> <!-- Yangi icon -->
-                            <span>Statistika</span> <!-- Yangi nom -->
+                            <i class="fas fa-chart-bar"></i>
+                            <span>Statistika</span>
                         </a>
                     </li>
                 </ul>
@@ -173,100 +1142,156 @@
                     </div>
                 </section>
 
-                <!-- Dars Plani (YANGI BO'LIM) -->
-                <section id="dars-plani" class="content-section">
-                    <div class="section-header">
-                        <h2><i class="fas fa-calendar-alt"></i> Dars Plani</h2>
-                        <button class="btn btn-primary" onclick="showAddLessonPlanModal()">
-                            <i class="fas fa-plus"></i> Yangi Dars Plani
-                        </button>
+           <!-- Dars Plani -->
+<section id="dars-plani" class="content-section">
+    <div class="section-header">
+        <h2><i class="fas fa-calendar-alt"></i> Dars Plani</h2>
+        <button class="btn btn-primary" onclick="showAddLessonPlanModal()">
+            <i class="fas fa-plus"></i> Yangi Dars Plani
+        </button>
+    </div>
+
+    <!-- Dars plani qo'shish -->
+    <div class="card">
+        <h3>Dars Plani Yaratish</h3>
+        <form id="addLessonPlanForm" onsubmit="addLessonPlan(event)" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-6">
+                    <div class="form-group">
+                        <label for="lessonPlanTitle">Dars Mavzusi *</label>
+                        <input type="text" id="lessonPlanTitle" class="form-control" placeholder="Masalan: Algebra asoslari" required>
                     </div>
-
-                    <!-- Dars plani qo'shish -->
-                    <div class="card">
-                        <h3>Dars Plani Yaratish</h3>
-                        <form id="addLessonPlanForm" onsubmit="addLessonPlan(event)">
-                            <div class="row">
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        <label for="lessonPlanTitle">Dars Mavzusi *</label>
-                                        <input type="text" id="lessonPlanTitle" class="form-control" placeholder="Masalan: Algebra asoslari" required>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        <label for="lessonPlanSubject">Fan *</label>
-                                        <select id="lessonPlanSubject" class="form-control" required>
-                                            <option value="">Tanlang</option>
-                                            <option value="matematika">Matematika</option>
-                                            <option value="ona_tili">Ona Tili</option>
-                                            <option value="ingliz_tili">Ingliz Tili</option>
-                                            <option value="fizika">Fizika</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-4">
-                                    <div class="form-group">
-                                        <label for="lessonPlanClass">Sinf *</label>
-                                        <select id="lessonPlanClass" class="form-control" required>
-                                            <option value="">Tanlang</option>
-                                            <option value="9">9-sinf</option>
-                                            <option value="10">10-sinf</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-4">
-                                    <div class="form-group">
-                                        <label for="lessonPlanDate">Sana *</label>
-                                        <input type="date" id="lessonPlanDate" class="form-control" required>
-                                    </div>
-                                </div>
-                                <div class="col-4">
-                                    <div class="form-group">
-                                        <label for="lessonPlanDuration">Davomiylik (soat) *</label>
-                                        <input type="number" id="lessonPlanDuration" class="form-control" min="0.5" max="3" step="0.5" value="1.5" required>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="lessonPlanObjectives">Dars Maqsadlari</label>
-                                <textarea id="lessonPlanObjectives" class="form-control" rows="2" placeholder="O'quvchilar nimani o'rganishlari kerak?"></textarea>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="lessonPlanMaterials">Kerakli Materiallar</label>
-                                <textarea id="lessonPlanMaterials" class="form-control" rows="2" placeholder="Dars uchun kerak bo'ladigan materiallar"></textarea>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="lessonPlanAI">AI yordamchi kerakmi?</label>
-                                <select id="lessonPlanAI" class="form-control">
-                                    <option value="yes">Ha</option>
-                                    <option value="no">Yo'q</option>
-                                </select>
-                            </div>
-
-                            <div class="text-right">
-                                <button type="reset" class="btn btn-secondary">Tozalash</button>
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fas fa-save"></i> Dars Plani Yaratish
-                                </button>
-                            </div>
-                        </form>
+                </div>
+                <div class="col-6">
+                    <div class="form-group">
+                        <label for="lessonPlanSubject">Fan *</label>
+                        <select id="lessonPlanSubject" class="form-control" required>
+                            <option value="">Tanlang</option>
+                            <option value="matematika">Matematika</option>
+                            <option value="ona_tili">Ona Tili</option>
+                            <option value="ingliz_tili">Ingliz Tili</option>
+                            <option value="fizika">Fizika</option>
+                            <option value="tarix">Tarix</option>
+                            <option value="biologiya">Biologiya</option>
+                            <option value="kimyo">Kimyo</option>
+                            <option value="geografiya">Geografiya</option>
+                        </select>
                     </div>
+                </div>
+            </div>
 
-                    <!-- Mavjud dars rejalari -->
-                    <div class="card">
-                        <h3>Mening Dars Rejalarim</h3>
-                        <div class="lesson-plans-list">
-                            <!-- JavaScript orqali to'ldiriladi -->
-                        </div>
+            <div class="row">
+                <div class="col-4">
+                    <div class="form-group">
+                        <label for="lessonPlanClass">Sinf *</label>
+                        <select id="lessonPlanClass" class="form-control" required>
+                            <option value="">Tanlang</option>
+                            <option value="5">5-sinf</option>
+                            <option value="6">6-sinf</option>
+                            <option value="7">7-sinf</option>
+                            <option value="8">8-sinf</option>
+                            <option value="9">9-sinf</option>
+                            <option value="10">10-sinf</option>
+                            <option value="11">11-sinf</option>
+                        </select>
                     </div>
-                </section>
+                </div>
+                <div class="col-4">
+                    <div class="form-group">
+                        <label for="lessonPlanDate">Sana *</label>
+                        <input type="date" id="lessonPlanDate" class="form-control" required>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="form-group">
+                        <label for="lessonPlanDuration">Davomiylik (soat) *</label>
+                        <select id="lessonPlanDuration" class="form-control" required>
+                            <option value="0.5">30 daqiqa</option>
+                            <option value="1">1 soat</option>
+                            <option value="1.5" selected>1.5 soat</option>
+                            <option value="2">2 soat</option>
+                            <option value="2.5">2.5 soat</option>
+                            <option value="3">3 soat</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="lessonPlanObjectives">Dars Maqsadlari *</label>
+                <textarea id="lessonPlanObjectives" class="form-control" rows="2" placeholder="O'quvchilar nimani o'rganishlari kerak?" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="lessonPlanMaterials">Kerakli Materiallar</label>
+                <textarea id="lessonPlanMaterials" class="form-control" rows="2" placeholder="Dars uchun kerak bo'ladigan materiallar"></textarea>
+            </div>
+
+            <!-- File yuklash qismi -->
+            <div class="form-group">
+                <label for="lessonPlanFiles">Fayllarni yuklash</label>
+                <div class="file-upload-area" onclick="document.getElementById('lessonPlanFiles').click()">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p>Faylni bu yerga torting yoki <span>bosing</span></p>
+                    <small>PDF, Word, Excel, PowerPoint, Rasm fayllari (max 10MB)</small>
+                    <input type="file" id="lessonPlanFiles" class="form-control-file" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.jpeg,.png" onchange="handleFiles(this)" style="display: none;">
+                </div>
+                <div id="filePreview" class="file-preview"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="lessonPlanAI">AI yordamchi kerakmi?</label>
+                <select id="lessonPlanAI" class="form-control">
+                    <option value="yes">Ha, AI yordamida dars rejasini yaratish</option>
+                    <option value="no">Yo'q, o'zim yarataman</option>
+                </select>
+            </div>
+
+            <!-- AI sozlamalari (faqat AI tanlangan bo'lsa) -->
+            <div id="aiSettings" style="display: none;">
+                <div class="form-group">
+                    <label for="aiComplexity">Darsning murakkablik darajasi</label>
+                    <select id="aiComplexity" class="form-control">
+                        <option value="easy">Oddiy</option>
+                        <option value="medium" selected>O'rta</option>
+                        <option value="advanced">Murakkab</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="aiDetails">Qo'shimcha tafsilotlar (ixtiyoriy)</label>
+                    <textarea id="aiDetails" class="form-control" rows="2" placeholder="AI ga qo'shimcha ko'rsatmalar..."></textarea>
+                </div>
+            </div>
+
+            <div class="text-right">
+                <button type="reset" class="btn btn-secondary" onclick="resetForm()">Tozalash</button>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Dars Plani Yaratish
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Mavjud dars rejalari -->
+    <div class="card">
+        <div class="card-header">
+            <h3>Mening Dars Rejalarim</h3>
+            <div class="form-group" style="margin: 0;">
+                <select id="lessonPlanFilter" class="form-control" onchange="filterLessonPlans()" style="width: 200px;">
+                    <option value="all">Barchasi</option>
+                    <option value="today">Bugungi</option>
+                    <option value="week">Ushbu hafta</option>
+                    <option value="month">Ushbu oy</option>
+                    <option value="matematika">Matematika</option>
+                    <option value="ona_tili">Ona Tili</option>
+                </select>
+            </div>
+        </div>
+        <div class="lesson-plans-list" id="lessonPlansList">
+            <!-- JavaScript orqali to'ldiriladi -->
+        </div>
+    </div>
+</section>
 
                 <!-- Mening darslarim -->
                 <section id="mening-darslarim" class="content-section">
@@ -427,333 +1452,164 @@
                     </div>
                 </section>
 
-<!-- Statistika Bo'limi -->
-<section id="statistika" class="content-section" style="display: none;">
-    <h2><i class="fas fa-chart-bar"></i> Statistika</h2>
-    
-    <!-- Filtrlash bo'limi -->
-    <div class="filter-section">
-        <div class="row">
-            <div class="col-4">
-                <div class="form-group">
-                    <label for="studentTypeFilter"><i class="fas fa-filter"></i> O'quvchilar Turi</label>
-                    <select id="studentTypeFilter" class="form-control" onchange="filterStatistics()">
-                        <option value="all">Barcha o'quvchilar</option>
-                        <option value="regular">Oddiy o'quvchilar</option>
-                        <option value="special_needs">Maxsus ehtiyojli o'quvchilar</option>
-                        <option value="gifted">Iqtidorli o'quvchilar</option>
-                        <option value="olympiad">Olimpiadachilar</option>
-                    </select>
-                </div>
-            </div>
-            <div class="col-4">
-                <div class="form-group">
-                    <label for="classFilter"><i class="fas fa-graduation-cap"></i> Sinf bo'yicha</label>
-                    <select id="classFilter" class="form-control" onchange="filterStatistics()">
-                        <option value="all">Barcha sinflar</option>
-                        <option value="1">1-sinf</option>
-                        <option value="2">2-sinf</option>
-                        <option value="3">3-sinf</option>
-                        <option value="4">4-sinf</option>
-                        <option value="5">5-sinf</option>
-                        <option value="6">6-sinf</option>
-                        <option value="7">7-sinf</option>
-                        <option value="8">8-sinf</option>
-                        <option value="9">9-sinf</option>
-                        <option value="10">10-sinf</option>
-                        <option value="11">11-sinf</option>
-                    </select>
-                </div>
-            </div>
-            <div class="col-4">
-                <div class="form-group">
-                    <label for="moodFilter"><i class="fas fa-smile"></i> Kayfiyat bo'yicha</label>
-                    <select id="moodFilter" class="form-control" onchange="filterStatistics()">
-                        <option value="all">Barcha kayfiyatlar</option>
-                        <option value="happy">Baxtli</option>
-                        <option value="normal">Oddiy</option>
-                        <option value="sad">G'amgin</option>
-                        <option value="excited">Hursand</option>
-                        <option value="tired">Charchagan</option>
-                        <option value="sick">Kasal</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Umumiy statistika -->
-    <div class="card">
-        <h3><i class="fas fa-users"></i> Umumiy O'quvchilar: 10 ta</h3>
-        <div class="row">
-            <div class="col-4">
-                <div class="health-stats">
-                    <h4><i class="fas fa-heartbeat"></i> Sog'liq Holati</h4>
-                    <div class="stats-list">
-                        <div class="stat-item">
-                            <span class="stat-label">Sog'lom:</span>
-                            <span class="stat-value" id="healthyCount">6 ta (60%)</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-label">Nogiron:</span>
-                            <span class="stat-value" id="disabledCount">3 ta (30%)</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-label">Vaqtincha kasal:</span>
-                            <span class="stat-value" id="sickCount">1 ta (10%)</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-4">
-                <div class="mood-stats">
-                    <h4><i class="fas fa-smile"></i> Kayfiyat Statistikasi</h4>
-                    <div class="stats-list">
-                        <div class="stat-item">
-                            <span class="stat-label">Baxtli:</span>
-                            <span class="stat-value" id="happyCount">3 ta (30%)</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-label">Oddiy:</span>
-                            <span class="stat-value" id="normalCount">2 ta (20%)</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-label">G'amgin:</span>
-                            <span class="stat-value" id="sadCount">1 ta (10%)</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-label">Hursand:</span>
-                            <span class="stat-value" id="excitedCount">2 ta (20%)</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-label">Charchagan:</span>
-                            <span class="stat-value" id="tiredCount">1 ta (10%)</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-label">Kasal:</span>
-                            <span class="stat-value" id="sickMoodCount">1 ta (10%)</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-4">
-                <div class="mood-distribution">
-                    <h4><i class="fas fa-chart-pie"></i> Kayfiyatlar Taqsimoti</h4>
-                <div class="distribution-list">
-    <div class="distribution-item">
-        <div class="distribution-header">
-            <span class="dist-label">Baxtli:</span>
-            <span class="dist-value">40%</span>
-        </div>
-        <div class="progress">
-            <div class="progress-bar progress-bar-happy" style="width: 40%"></div>
-        </div>
-    </div>
-    <div class="distribution-item">
-        <div class="distribution-header">
-            <span class="dist-label">Oddiy:</span>
-            <span class="dist-value">30%</span>
-        </div>
-        <div class="progress">
-            <div class="progress-bar progress-bar-normal" style="width: 30%"></div>
-        </div>
-    </div>
-    <div class="distribution-item">
-        <div class="distribution-header">
-            <span class="dist-label">G'amgin:</span>
-            <span class="dist-value">15%</span>
-        </div>
-        <div class="progress">
-            <div class="progress-bar progress-bar-sad" style="width: 15%"></div>
-        </div>
-    </div>
-    <div class="distribution-item">
-        <div class="distribution-header">
-            <span class="dist-label">Hursand:</span>
-            <span class="dist-value">10%</span>
-        </div>
-        <div class="progress">
-            <div class="progress-bar progress-bar-excited" style="width: 10%"></div>
-        </div>
-    </div>
-    <div class="distribution-item">
-        <div class="distribution-header">
-            <span class="dist-label">Charchagan:</span>
-            <span class="dist-value">4%</span>
-        </div>
-        <div class="progress">
-            <div class="progress-bar progress-bar-tired" style="width: 4%"></div>
-        </div>
-    </div>
-    <div class="distribution-item">
-        <div class="distribution-header">
-            <span class="dist-label">Kasal:</span>
-            <span class="dist-value">1%</span>
-        </div>
-        <div class="progress">
-            <div class="progress-bar progress-bar-sick" style="width: 1%"></div>
-        </div>
-    </div>
-</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Eng yaxshi o'quvchilar jadvali -->
-    <div class="card">
-        <div class="card-header">
-            <h3><i class="fas fa-trophy"></i> Eng Yaxshi O'quvchilar</h3>
-            <div class="card-actions">
-                <button class="btn btn-sm btn-secondary" onclick="resetStatisticsFilters()">
-                    <i class="fas fa-redo"></i> Filtrlarni tozalash
-                </button>
-            </div>
-        </div>
-        <div class="table-responsive">
-            <table class="table" id="topStudentsTable">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>O'quvchi</th>
-                        <th>Sinf</th>
-                        <th>Kayfiyat</th>
-                        <th>Sog'liq Holati</th>
-                        <th>O'quvchi Turi</th>
-                        <th>O'rtacha Baho</th>
-                        <th>Darslarni Bajarish</th>
-                        <th>Holati</th>
-                    </tr>
-                </thead>
-                <tbody id="topStudentsList">
-                    <!-- JavaScript orqali to'ldiriladi -->
-                </tbody>
-            </table>
-        </div>
-    </div>
-    
-    <!-- Filtrlar qismi (oldingi kabi) -->
-
-<!-- Asosiy statistikalar qismini yangilang -->
-
-    <!-- O'quvchilar Kayfiyati Statistikasi (FAQT STATISTIKA BO'LIMIDA KO'RINADI) -->
-    <div class="row" style="display: none;"> 
-        <div class="col-12">
-            <div class="card mood-statistics-card">
-                <div class="card-header">
-                    <h4><i class="fas fa-smile-beam"></i> O'quvchilar Kayfiyati Statistikasi</h4>
-                    <div class="card-actions">
-                        <button class="btn btn-sm btn-outline-primary" onclick="refreshMoodStats()">
-                            <i class="fas fa-sync-alt"></i> Yangilash
-                        </button>
-                        <button class="btn btn-sm btn-outline-success" onclick="exportMoodStats()">
-                            <i class="fas fa-download"></i> Eksport
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="card-body">
-                    <!-- Kayfiyat statistikasi kartalari -->
-                    <div class="row mb-4">
-                        <div class="col-md-3 col-sm-6">
-                            <div class="mood-stat-card happy">
-                                <div class="mood-icon">
-                                    <i class="fas fa-laugh"></i>
-                                </div>
-                                <div class="mood-info">
-                                    <h3 id="happyCount">24</h3>
-                                    <p>Baxtli</p>
-                                    <span class="mood-percentage">40%</span>
+                <!-- Statistika -->
+                <section id="statistika" class="content-section">
+                    <h2><i class="fas fa-chart-bar"></i> Statistika</h2>
+                    
+                    <!-- Filtrlash bo'limi -->
+                    <div class="filter-section">
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="studentTypeFilter"><i class="fas fa-filter"></i> O'quvchilar Turi</label>
+                                    <select id="studentTypeFilter" class="form-control" onchange="filterStatistics()">
+                                        <option value="all">Barcha o'quvchilar</option>
+                                        <option value="regular">Oddiy o'quvchilar</option>
+                                        <option value="special_needs">Maxsus ehtiyojli o'quvchilar</option>
+                                        <option value="gifted">Iqtidorli o'quvchilar</option>
+                                        <option value="olympiad">Olimpiadachilar</option>
+                                    </select>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-3 col-sm-6">
-                            <div class="mood-stat-card normal">
-                                <div class="mood-icon">
-                                    <i class="fas fa-meh"></i>
-                                </div>
-                                <div class="mood-info">
-                                    <h3 id="normalCount">18</h3>
-                                    <p>Oddiy</p>
-                                    <span class="mood-percentage">30%</span>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="classFilter"><i class="fas fa-graduation-cap"></i> Sinf bo'yicha</label>
+                                    <select id="classFilter" class="form-control" onchange="filterStatistics()">
+                                        <option value="all">Barcha sinflar</option>
+                                        <option value="9">9-sinf</option>
+                                        <option value="10">10-sinf</option>
+                                    </select>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-3 col-sm-6">
-                            <div class="mood-stat-card sad">
-                                <div class="mood-icon">
-                                    <i class="fas fa-frown"></i>
-                                </div>
-                                <div class="mood-info">
-                                    <h3 id="sadCount">9</h3>
-                                    <p>G'amgin</p>
-                                    <span class="mood-percentage">15%</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3 col-sm-6">
-                            <div class="mood-stat-card sick">
-                                <div class="mood-icon">
-                                    <i class="fas fa-temperature-high"></i>
-                                </div>
-                                <div class="mood-info">
-                                    <h3 id="sickCount">1</h3>
-                                    <p>Kasal</p>
-                                    <span class="mood-percentage">1%</span>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="moodFilter"><i class="fas fa-smile"></i> Kayfiyat bo'yicha</label>
+                                    <select id="moodFilter" class="form-control" onchange="filterStatistics()">
+                                        <option value="all">Barcha kayfiyatlar</option>
+                                        <option value="happy">Baxtli</option>
+                                        <option value="normal">Oddiy</option>
+                                        <option value="sad">G'amgin</option>
+                                        <option value="excited">Hursand</option>
+                                        <option value="tired">Charchagan</option>
+                                        <option value="sick">Kasal</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <!-- Kayfiyat taqsimoti -->
-                    <div class="row">
-                        <div class="col-md-8">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h5>Kayfiyat Taqsimoti</h5>
-                                </div>
-                                <div class="card-body">
-                                    <div id="moodDistribution">
-                                        <!-- JavaScript tomonidan to'ldiriladi -->
+                    
+                    <!-- Umumiy statistika -->
+                    <div class="card">
+                        <h3><i class="fas fa-users"></i> Umumiy O'quvchilar: 10 ta</h3>
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="health-stats">
+                                    <h4><i class="fas fa-heartbeat"></i> Sog'liq Holati</h4>
+                                    <div class="stats-list">
+                                        <div class="stat-item">
+                                            <span class="stat-label">Sog'lom:</span>
+                                            <span class="stat-value" id="healthyCount">6 ta (60%)</span>
+                                        </div>
+                                        <div class="stat-item">
+                                            <span class="stat-label">Nogiron:</span>
+                                            <span class="stat-value" id="disabledCount">3 ta (30%)</span>
+                                        </div>
+                                        <div class="stat-item">
+                                            <span class="stat-label">Vaqtincha kasal:</span>
+                                            <span class="stat-value" id="sickCount">1 ta (10%)</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h5>Statistika Xulosasi</h5>
+                            
+                            <div class="col-4">
+                                <div class="mood-stats">
+                                    <h4><i class="fas fa-smile"></i> Kayfiyat Statistikasi</h4>
+                                    <div class="stats-list">
+                                        <div class="stat-item">
+                                            <span class="stat-label">Baxtli:</span>
+                                            <span class="stat-value" id="happyCount">3 ta (30%)</span>
+                                        </div>
+                                        <div class="stat-item">
+                                            <span class="stat-label">Oddiy:</span>
+                                            <span class="stat-value" id="normalCount">2 ta (20%)</span>
+                                        </div>
+                                        <div class="stat-item">
+                                            <span class="stat-label">G'amgin:</span>
+                                            <span class="stat-value" id="sadCount">1 ta (10%)</span>
+                                        </div>
+                                        <div class="stat-item">
+                                            <span class="stat-label">Hursand:</span>
+                                            <span class="stat-value" id="excitedCount">2 ta (20%)</span>
+                                        </div>
+                                        <div class="stat-item">
+                                            <span class="stat-label">Charchagan:</span>
+                                            <span class="stat-value" id="tiredCount">1 ta (10%)</span>
+                                        </div>
+                                        <div class="stat-item">
+                                            <span class="stat-label">Kasal:</span>
+                                            <span class="stat-value" id="sickMoodCount">1 ta (10%)</span>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="card-body">
-                                    <div class="summary-stats">
-                                        <div class="summary-item">
-                                            <i class="fas fa-users text-primary"></i>
-                                            <div>
-                                                <small>Jami o'quvchilar</small>
-                                                <h6 id="totalStudentsCount">60</h6>
+                            </div>
+                            
+                            <div class="col-4">
+                                <div class="mood-distribution">
+                                    <h4><i class="fas fa-chart-pie"></i> Kayfiyatlar Taqsimoti</h4>
+                                    <div class="distribution-list">
+                                        <div class="distribution-item">
+                                            <div class="distribution-header">
+                                                <span class="dist-label">Baxtli:</span>
+                                                <span class="dist-value">40%</span>
+                                            </div>
+                                            <div class="progress">
+                                                <div class="progress-bar progress-bar-happy" style="width: 40%"></div>
                                             </div>
                                         </div>
-                                        <div class="summary-item">
-                                            <i class="fas fa-chart-line text-success"></i>
-                                            <div>
-                                                <small>O'rtacha kayfiyat</small>
-                                                <h6>4.2/5</h6>
+                                        <div class="distribution-item">
+                                            <div class="distribution-header">
+                                                <span class="dist-label">Oddiy:</span>
+                                                <span class="dist-value">30%</span>
+                                            </div>
+                                            <div class="progress">
+                                                <div class="progress-bar progress-bar-normal" style="width: 30%"></div>
                                             </div>
                                         </div>
-                                        <div class="summary-item">
-                                            <i class="fas fa-calendar-day text-info"></i>
-                                            <div>
-                                                <small>Bugun tekshirilgan</small>
-                                                <h6 id="todayChecked">52</h6>
+                                        <div class="distribution-item">
+                                            <div class="distribution-header">
+                                                <span class="dist-label">G'amgin:</span>
+                                                <span class="dist-value">15%</span>
+                                            </div>
+                                            <div class="progress">
+                                                <div class="progress-bar progress-bar-sad" style="width: 15%"></div>
                                             </div>
                                         </div>
-                                        <div class="summary-item">
-                                            <i class="fas fa-trend-up text-warning"></i>
-                                            <div>
-                                                <small>O'tgan haftaga nisbatan</small>
-                                                <h6 class="text-success">+8%</h6>
+                                        <div class="distribution-item">
+                                            <div class="distribution-header">
+                                                <span class="dist-label">Hursand:</span>
+                                                <span class="dist-value">10%</span>
+                                            </div>
+                                            <div class="progress">
+                                                <div class="progress-bar progress-bar-excited" style="width: 10%"></div>
+                                            </div>
+                                        </div>
+                                        <div class="distribution-item">
+                                            <div class="distribution-header">
+                                                <span class="dist-label">Charchagan:</span>
+                                                <span class="dist-value">4%</span>
+                                            </div>
+                                            <div class="progress">
+                                                <div class="progress-bar progress-bar-tired" style="width: 4%"></div>
+                                            </div>
+                                        </div>
+                                        <div class="distribution-item">
+                                            <div class="distribution-header">
+                                                <span class="dist-label">Kasal:</span>
+                                                <span class="dist-value">1%</span>
+                                            </div>
+                                            <div class="progress">
+                                                <div class="progress-bar progress-bar-sick" style="width: 1%"></div>
                                             </div>
                                         </div>
                                     </div>
@@ -762,244 +1618,750 @@
                         </div>
                     </div>
 
-                    <!-- Kayfiyat tendentsiyasi -->
-                    <div class="row mt-4">
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h5>Haftalik Kayfiyat Tendentsiyasi</h5>
-                                </div>
-                                <div class="card-body">
-                                    <div class="trend-chart">
-                                        <div class="trend-day">
-                                            <div class="day-label">Dush</div>
-                                            <div class="day-bar">
-                                                <div class="bar-positive" style="height: 70%"></div>
-                                            </div>
-                                        </div>
-                                        <div class="trend-day">
-                                            <div class="day-label">Sesh</div>
-                                            <div class="day-bar">
-                                                <div class="bar-positive" style="height: 65%"></div>
-                                            </div>
-                                        </div>
-                                        <div class="trend-day">
-                                            <div class="day-label">Chor</div>
-                                            <div class="day-bar">
-                                                <div class="bar-positive" style="height: 75%"></div>
-                                            </div>
-                                        </div>
-                                        <div class="trend-day">
-                                            <div class="day-label">Pay</div>
-                                            <div class="day-bar">
-                                                <div class="bar-positive" style="height: 80%"></div>
-                                            </div>
-                                        </div>
-                                        <div class="trend-day">
-                                            <div class="day-label">Jum</div>
-                                            <div class="day-bar">
-                                                <div class="bar-positive" style="height: 85%"></div>
-                                            </div>
-                                        </div>
-                                        <div class="trend-day">
-                                            <div class="day-label">Shan</div>
-                                            <div class="day-bar">
-                                                <div class="bar-neutral" style="height: 60%"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                    <!-- Eng yaxshi o'quvchilar jadvali -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-trophy"></i> Eng Yaxshi O'quvchilar</h3>
+                            <div class="card-actions">
+                                <button class="btn btn-sm btn-secondary" onclick="resetStatisticsFilters()">
+                                    <i class="fas fa-redo"></i> Filtrlarni tozalash
+                                </button>
                             </div>
                         </div>
+                        <div class="table-responsive">
+                            <table class="table" id="topStudentsTable">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>O'quvchi</th>
+                                        <th>Sinf</th>
+                                        <th>Kayfiyat</th>
+                                        <th>Sog'liq Holati</th>
+                                        <th>O'quvchi Turi</th>
+                                        <th>O'rtacha Baho</th>
+                                        <th>Darslarni Bajarish</th>
+                                        <th>Holati</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="topStudentsList">
+                                    <!-- JavaScript orqali to'ldiriladi -->
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Eng faol o'quvchilar -->
-   
-</section>
+                </section>
             </div>
         </main>
     </div>
 
-    <!-- Modal oynalar -->
-    <div id="addLessonModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Yangi Dars Qo'shish</h3>
-                <button class="modal-close" onclick="closeModal()">&times;</button>
-            </div>
-            <div class="modal-body">
-                <!-- Modal kontenti -->
-            </div>
-        </div>
-    </div>
-
-    <script src="js/auth.js"></script>
-    <script src="js/dashboard.js"></script>
-    <script src="js/teacher_dashboard.js"></script>
     <script>
-        document.head.insertAdjacentHTML('beforeend', `
-        <style>
-        .today-lessons {
-            margin-top: 20px;
+        // ==================== GLOBAL VARIABLES ====================
+        let lessons = [];
+        let lessonPlans = [];
+        let grades = [];
+        let studentsData = [];
+
+        // ==================== DASHBOARD FUNCTIONS ====================
+        function initializeDashboard() {
+            console.log("Dashboard ishga tushirilmoqda...");
+            
+            // Sana yangilash
+            updateDate();
+            
+            // Sidebar navigation sozlash
+            setupSidebarNavigation();
+            
+            // Demo ma'lumotlarni yuklash
+            loadInitialData();
+            
+            // Bugungi sanani o'rnatish
+            setTodayDate();
         }
-        
-        .lesson-item {
-            display: flex;
-            align-items: center;
-            padding: 20px;
-            background-color: var(--bg-color);
-            border-radius: 10px;
-            margin-bottom: 15px;
-            border: 1px solid var(--border-color);
+
+        function updateDate() {
+            const dateElement = document.getElementById('currentDate');
+            if (dateElement) {
+                const now = new Date();
+                const options = { 
+                    weekday: 'long', 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                };
+                dateElement.textContent = now.toLocaleDateString('uz-UZ', options);
+            }
         }
-        
-        .lesson-time {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 0 20px;
-            border-right: 2px solid var(--primary-color);
+
+        function setupSidebarNavigation() {
+            const menuItems = document.querySelectorAll('.sidebar-menu a');
+            const sidebarItems = document.querySelectorAll('.sidebar-menu li');
+            
+            menuItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Faol classni olib tashlash
+                    sidebarItems.forEach(li => {
+                        li.classList.remove('active');
+                    });
+                    
+                    // Joriy elementni faol qilish
+                    this.parentElement.classList.add('active');
+                    
+                    // Bo'lim ID sini olish
+                    const targetId = this.getAttribute('href').substring(1);
+                    
+                    // Bo'limni ko'rsatish
+                    showSection(targetId);
+                });
+            });
         }
-        
-        .time {
-            font-size: 18px;
-            font-weight: 600;
-            color: var(--primary-color);
+
+        function showSection(sectionId) {
+            console.log(`Ko'rsatilmoqda: ${sectionId}`);
+            
+            // Barcha bo'limlarni yashirish
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.style.display = 'none';
+                section.classList.remove('active');
+            });
+            
+            // Tanlangan bo'limni ko'rsatish
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.style.display = 'block';
+                targetSection.classList.add('active');
+                
+                // Agar statistika bo'limi ko'rsatilsa, uni yuklash
+                if (sectionId === 'statistika') {
+                    loadStatistics();
+                }
+            }
         }
-        
-        .duration {
-            font-size: 14px;
-            color: var(--text-light);
+
+        // ==================== DARSLAR FUNCTIONS ====================
+        function loadInitialData() {
+            // Demo darslar
+            lessons = [
+                {
+                    id: 1,
+                    name: "Algebra Asoslari",
+                    class: "9",
+                    subject: "matematika",
+                    ai: true,
+                    status: "active",
+                    created: "2024-01-15"
+                },
+                {
+                    id: 2,
+                    name: "Trigonometriya",
+                    class: "10",
+                    subject: "matematika",
+                    ai: true,
+                    status: "active",
+                    created: "2024-01-10"
+                },
+                {
+                    id: 3,
+                    name: "Geometriya Kirish",
+                    class: "9",
+                    subject: "matematika",
+                    ai: false,
+                    status: "inactive",
+                    created: "2024-01-05"
+                }
+            ];
+            
+            // Demo dars rejalari
+            lessonPlans = [
+                {
+                    id: 1,
+                    title: "Algebra asoslari",
+                    subject: "matematika",
+                    class: "9",
+                    date: new Date().toISOString().split('T')[0],
+                    duration: 1.5,
+                    objectives: "Algebraik ifodalarni hisoblash va soddalashtirishni o'rganish",
+                    materials: "Daftar, ruchka, darslik, interaktiv doska",
+                    ai: "yes",
+                    status: "active"
+                }
+            ];
+            
+            // Demo o'quvchilar
+            studentsData = [
+                { id: 1, name: "Aliyev Aziz", class: "9" },
+                { id: 2, name: "Xasanova Malika", class: "9" },
+                { id: 3, name: "Karimov Jasur", class: "10" },
+                { id: 4, name: "Yuldasheva Nozima", class: "9" }
+            ];
+            
+            // Demo baholar
+            grades = [
+                {
+                    id: 1,
+                    student: "Aliyev Aziz",
+                    studentId: 1,
+                    lesson: "Algebra Asoslari",
+                    lessonId: 1,
+                    value: 5,
+                    comment: "A'lo ish!",
+                    date: "2024-01-20"
+                }
+            ];
+            
+            // Jadvallarni yuklash
+            loadLessonsTable();
+            loadLessonPlansTable();
+            loadGradingTable();
         }
-        
-        .lesson-details {
-            flex: 1;
-            padding: 0 20px;
+
+        function setTodayDate() {
+            const dateInput = document.getElementById('lessonPlanDate');
+            if (dateInput) {
+                const today = new Date().toISOString().split('T')[0];
+                dateInput.value = today;
+                dateInput.min = today;
+            }
         }
-        
-        .lesson-details h4 {
-            margin-bottom: 5px;
-            color: var(--text-color);
+
+        function loadLessonsTable() {
+            const tbody = document.getElementById('lessonsTable');
+            if (!tbody) return;
+            
+            tbody.innerHTML = lessons.map((lesson, index) => `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td>${lesson.name}</td>
+                    <td>${lesson.class}-sinf</td>
+                    <td>${getSubjectText(lesson.subject)}</td>
+                    <td>
+                        <span class="status-badge ${lesson.ai ? 'active' : 'inactive'}">
+                            ${lesson.ai ? 'Ha' : 'Yo\'q'}
+                        </span>
+                    </td>
+                    <td>
+                        <span class="status-badge ${lesson.status}">
+                            ${lesson.status === 'active' ? 'Faol' : 'Nofaol'}
+                        </span>
+                    </td>
+                    <td>
+                        <button class="btn btn-sm btn-secondary" onclick="editLesson(${lesson.id})">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteLesson(${lesson.id})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                        <button class="btn btn-sm btn-primary" onclick="startLesson(${lesson.id})">
+                            <i class="fas fa-play"></i>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
         }
-        
-        .lesson-details p {
-            color: var(--text-light);
-            margin-bottom: 10px;
+
+        function showAddLessonModal() {
+            const lessonName = prompt("Yangi dars nomini kiriting:");
+            if (!lessonName) return;
+            
+            const lessonClass = prompt("Sinfni tanlang (9, 10):");
+            if (!lessonClass) return;
+            
+            const lessonSubject = prompt("Fan nomini kiriting (matematika, ona_tili, ...):");
+            if (!lessonSubject) return;
+            
+            const hasAI = confirm("AI yordamidan foydalanilsinmi?");
+            
+            const newLesson = {
+                id: lessons.length + 1,
+                name: lessonName,
+                class: lessonClass,
+                subject: lessonSubject,
+                ai: hasAI,
+                status: "active",
+                created: new Date().toISOString().split('T')[0]
+            };
+            
+            lessons.push(newLesson);
+            loadLessonsTable();
+            showNotification('Dars muvaffaqiyatli qo\'shildi!', 'success');
         }
-        
-        .badge {
-            background-color: var(--primary-light);
-            color: var(--primary-color);
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 14px;
+
+        function editLesson(id) {
+            const lesson = lessons.find(l => l.id === id);
+            if (!lesson) return;
+            
+            const newName = prompt("Yangi dars nomini kiriting:", lesson.name);
+            if (!newName) return;
+            
+            lesson.name = newName;
+            loadLessonsTable();
+            showNotification('Dars muvaffaqiyatli yangilandi!', 'success');
         }
-        
-        .class-stats p {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 8px 0;
-            color: var(--text-light);
+
+        function deleteLesson(id) {
+            if (!confirm('Darsni o\'chirishni istaysizmi?')) return;
+            
+            lessons = lessons.filter(lesson => lesson.id !== id);
+            loadLessonsTable();
+            showNotification('Dars o\'chirildi!', 'warning');
         }
-        
-        .class-stats i {
-            color: var(--primary-color);
+
+        function startLesson(id) {
+            const lesson = lessons.find(l => l.id === id);
+            if (lesson) {
+                showNotification(`${lesson.name} darsi boshlanmoqda...`, 'info');
+            }
         }
-        
-        /* Dars planlari ro'yxati */
-        .lesson-plans-list {
-            display: grid;
-            gap: 15px;
+
+        // ==================== DARS PLANI FUNCTIONS ====================
+        function showAddLessonPlanModal() {
+            // Form avtomatik ochiladi, hech narsa qilmaymiz
+            const darsPlaniSection = document.getElementById('dars-plani');
+            if (darsPlaniSection) {
+                showSection('dars-plani');
+            }
         }
-        
-        .lesson-plan-item {
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            border: 1px solid var(--border-color);
-            transition: transform 0.3s;
+
+        function loadLessonPlansTable() {
+            const container = document.querySelector('.lesson-plans-list');
+            if (!container) return;
+            
+            container.innerHTML = lessonPlans.map(plan => `
+                <div class="lesson-plan-item">
+                    <div class="lesson-plan-header">
+                        <div class="lesson-plan-title">${plan.title}</div>
+                        <div class="lesson-plan-date">${formatDate(plan.date)}</div>
+                    </div>
+                    
+                    <div class="lesson-plan-details">
+                        <div class="lesson-plan-detail">
+                            <i class="fas fa-graduation-cap"></i>
+                            <span>${plan.class}-sinf</span>
+                        </div>
+                        <div class="lesson-plan-detail">
+                            <i class="fas fa-book"></i>
+                            <span>${getSubjectText(plan.subject)}</span>
+                        </div>
+                        <div class="lesson-plan-detail">
+                            <i class="fas fa-clock"></i>
+                            <span>${plan.duration} soat</span>
+                        </div>
+                        <div class="lesson-plan-detail">
+                            <i class="fas fa-robot"></i>
+                            <span>AI: ${plan.ai === 'yes' ? 'Ha' : 'Yo\'q'}</span>
+                        </div>
+                    </div>
+                    
+                    ${plan.objectives ? `<p><strong>Maqsadlar:</strong> ${plan.objectives}</p>` : ''}
+                    ${plan.materials ? `<p><strong>Materiallar:</strong> ${plan.materials}</p>` : ''}
+                    
+                    <div class="lesson-plan-actions">
+                        <button class="btn btn-sm btn-secondary" onclick="editLessonPlan(${plan.id})">
+                            <i class="fas fa-edit"></i> Tahrirlash
+                        </button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteLessonPlan(${plan.id})">
+                            <i class="fas fa-trash"></i> O'chirish
+                        </button>
+                        <button class="btn btn-sm btn-primary" onclick="startLessonFromPlan(${plan.id})">
+                            <i class="fas fa-play"></i> Boshlash
+                        </button>
+                    </div>
+                </div>
+            `).join('');
         }
-        
-        .lesson-plan-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+
+        function addLessonPlan(event) {
+            event.preventDefault();
+            
+            const plan = {
+                title: document.getElementById('lessonPlanTitle').value,
+                subject: document.getElementById('lessonPlanSubject').value,
+                class: document.getElementById('lessonPlanClass').value,
+                date: document.getElementById('lessonPlanDate').value,
+                duration: parseFloat(document.getElementById('lessonPlanDuration').value),
+                objectives: document.getElementById('lessonPlanObjectives').value,
+                materials: document.getElementById('lessonPlanMaterials').value,
+                ai: document.getElementById('lessonPlanAI').value,
+            };
+            
+            // Validatsiya
+            if (!plan.title || !plan.subject || !plan.class || !plan.date) {
+                alert('Barcha majburiy maydonlarni to\'ldiring!');
+                return;
+            }
+            
+            const newPlan = {
+                ...plan,
+                id: lessonPlans.length + 1,
+                status: "active"
+            };
+            
+            lessonPlans.unshift(newPlan);
+            loadLessonPlansTable();
+            
+            // Formani tozalash
+            event.target.reset();
+            setTodayDate();
+            
+            showNotification('Dars rejasi muvaffaqiyatli yaratildi!', 'success');
         }
-        
-        .lesson-plan-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 15px;
+
+        function editLessonPlan(id) {
+            const plan = lessonPlans.find(p => p.id === id);
+            if (!plan) return;
+            
+            const newTitle = prompt("Yangi dars rejasi nomini kiriting:", plan.title);
+            if (!newTitle) return;
+            
+            plan.title = newTitle;
+            loadLessonPlansTable();
+            showNotification('Dars rejasi muvaffaqiyatli yangilandi!', 'success');
         }
-        
-        .lesson-plan-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: var(--text-color);
+
+        function deleteLessonPlan(id) {
+            if (!confirm('Dars rejasini o\'chirishni istaysizmi?')) return;
+            
+            lessonPlans = lessonPlans.filter(plan => plan.id !== id);
+            loadLessonPlansTable();
+            showNotification('Dars rejasi o\'chirildi!', 'warning');
         }
-        
-        .lesson-plan-date {
-            background: var(--primary-light);
-            color: var(--primary-color);
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 14px;
+
+        function startLessonFromPlan(id) {
+            const plan = lessonPlans.find(p => p.id === id);
+            if (plan) {
+                showNotification(`${plan.title} darsi boshlanmoqda...`, 'info');
+            }
         }
-        
-        .lesson-plan-details {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 15px;
+
+        // ==================== BAHOLASH FUNCTIONS ====================
+        function loadGradingTable() {
+            const tbody = document.getElementById('gradingTable');
+            if (!tbody) return;
+            
+            // O'quvchilar ro'yxatini to'ldirish
+            const studentSelect = document.getElementById('gradeStudent');
+            if (studentSelect) {
+                studentSelect.innerHTML = '<option value="">Tanlang</option>' + 
+                    studentsData.map(s => `<option value="${s.id}">${s.name} (${s.class}-sinf)</option>`).join('');
+            }
+            
+            // Darslar ro'yxatini to'ldirish
+            const lessonSelect = document.getElementById('gradeLesson');
+            if (lessonSelect) {
+                lessonSelect.innerHTML = '<option value="">Tanlang</option>' + 
+                    lessons.filter(l => l.status === 'active')
+                        .map(l => `<option value="${l.id}">${l.name} (${l.class}-sinf)</option>`).join('');
+            }
+            
+            // Baholash jadvalini to'ldirish
+            tbody.innerHTML = grades.map(grade => `
+                <tr>
+                    <td>${grade.student}</td>
+                    <td>${grade.lesson}</td>
+                    <td>
+                        <span class="status-badge ${grade.value >= 4 ? 'active' : grade.value === 3 ? 'pending' : 'inactive'}">
+                            ${grade.value}
+                        </span>
+                    </td>
+                    <td>${grade.comment || '-'}</td>
+                </tr>
+            `).join('');
         }
-        
-        .lesson-plan-detail {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--text-light);
+
+        function addGrade(event) {
+            event.preventDefault();
+            
+            const studentId = parseInt(document.getElementById('gradeStudent').value);
+            const lessonId = parseInt(document.getElementById('gradeLesson').value);
+            const value = parseInt(document.getElementById('gradeValue').value);
+            const comment = document.getElementById('gradeComment').value;
+            
+            if (!studentId || !lessonId || !value) {
+                alert('Barcha majburiy maydonlarni to\'ldiring!');
+                return;
+            }
+            
+            const student = studentsData.find(s => s.id === studentId);
+            const lesson = lessons.find(l => l.id === lessonId);
+            
+            if (!student || !lesson) {
+                alert('O\'quvchi yoki dars topilmadi!');
+                return;
+            }
+            
+            const newGrade = {
+                id: grades.length + 1,
+                student: student.name,
+                studentId: studentId,
+                lesson: lesson.name,
+                lessonId: lessonId,
+                value: value,
+                comment: comment,
+                date: new Date().toISOString().split('T')[0]
+            };
+            
+            grades.unshift(newGrade);
+            loadGradingTable();
+            
+            // Formani tozalash
+            event.target.reset();
+            
+            showNotification('Baho muvaffaqiyatli saqlandi!', 'success');
         }
-        
-        .lesson-plan-actions {
-            display: flex;
-            gap: 10px;
-            justify-content: flex-end;
+
+        // ==================== STATISTIKA FUNCTIONS ====================
+        function loadStatistics() {
+            console.log("Statistika yuklanmoqda...");
+            
+            // Demo statistika ma'lumotlari
+            const stats = {
+                healthy: 6,
+                disabled: 3,
+                sick: 1,
+                happy: 3,
+                normal: 2,
+                sad: 1,
+                excited: 2,
+                tired: 1,
+                sickMood: 1,
+                total: 10
+            };
+            
+            // Statistikani yangilash
+            document.getElementById('healthyCount').textContent = `${stats.healthy} ta (${(stats.healthy/stats.total*100)}%)`;
+            document.getElementById('disabledCount').textContent = `${stats.disabled} ta (${(stats.disabled/stats.total*100)}%)`;
+            document.getElementById('sickCount').textContent = `${stats.sick} ta (${(stats.sick/stats.total*100)}%)`;
+            document.getElementById('happyCount').textContent = `${stats.happy} ta (${(stats.happy/stats.total*100)}%)`;
+            document.getElementById('normalCount').textContent = `${stats.normal} ta (${(stats.normal/stats.total*100)}%)`;
+            document.getElementById('sadCount').textContent = `${stats.sad} ta (${(stats.sad/stats.total*100)}%)`;
+            document.getElementById('excitedCount').textContent = `${stats.excited} ta (${(stats.excited/stats.total*100)}%)`;
+            document.getElementById('tiredCount').textContent = `${stats.tired} ta (${(stats.tired/stats.total*100)}%)`;
+            document.getElementById('sickMoodCount').textContent = `${stats.sickMood} ta (${(stats.sickMood/stats.total*100)}%)`;
+            
+            // Eng yaxshi o'quvchilar jadvalini yuklash
+            loadTopStudents();
         }
-        
-        /* Filter section */
-        .filter-section {
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+
+        function filterStatistics() {
+            console.log("Statistika filtrlari qo'llanmoqda...");
+            loadStatistics();
+            showNotification('Statistika filtrlari yangilandi!', 'success');
         }
-        
-        .filter-section .form-group {
-            margin-bottom: 0;
+
+        function resetStatisticsFilters() {
+            document.getElementById('studentTypeFilter').value = 'all';
+            document.getElementById('classFilter').value = 'all';
+            document.getElementById('moodFilter').value = 'all';
+            loadStatistics();
+            showNotification('Filtrlar tozalandi!', 'info');
         }
-        
-        .filter-section label {
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 8px;
-            display: block;
+
+        function loadTopStudents() {
+            const tbody = document.getElementById('topStudentsList');
+            if (!tbody) return;
+            
+            // Demo o'quvchilar ma'lumotlari
+            const topStudents = [
+                { id: 1, name: "Aliyev Aziz", class: "9", mood: "Baxtli", health: "Sog'lom", type: "Oddiy", avgGrade: 5.0, completion: 100, status: "active" },
+                { id: 2, name: "Xasanova Malika", class: "9", mood: "Baxtli", health: "Sog'lom", type: "Iqtidorli", avgGrade: 4.9, completion: 98, status: "active" },
+                { id: 3, name: "Karimov Jasur", class: "10", mood: "Hursand", health: "Nogiron", type: "Maxsus ehtiyojli", avgGrade: 4.8, completion: 96, status: "active" }
+            ];
+            
+            tbody.innerHTML = topStudents.map((student, index) => `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td><strong>${student.name}</strong></td>
+                    <td><span class="badge">${student.class}-sinf</span></td>
+                    <td>
+                        <span class="status-badge ${student.mood === 'Baxtli' ? 'active' : student.mood === 'Hursand' ? 'active' : 'pending'}">
+                            ${student.mood}
+                        </span>
+                    </td>
+                    <td>
+                        <span class="status-badge ${student.health === 'Sog\'lom' ? 'active' : 'inactive'}">
+                            ${student.health}
+                        </span>
+                    </td>
+                    <td>
+                        <span class="status-badge ${student.type === 'Iqtidorli' ? 'active' : 'pending'}">
+                            ${student.type}
+                        </span>
+                    </td>
+                    <td><span class="badge">${student.avgGrade}</span></td>
+                    <td>${student.completion}%</td>
+                    <td>
+                        <span class="status-badge ${student.status}">
+                            ${student.status === 'active' ? 'Faol' : 'Nofaol'}
+                        </span>
+                    </td>
+                </tr>
+            `).join('');
         }
-        
-        .filter-section label i {
-            margin-right: 8px;
-            color: var(--primary-color);
+
+        // ==================== SINFLAR FUNCTIONS ====================
+        function showClassStudents(classNumber) {
+            const studentsList = document.getElementById('studentsList');
+            const table = document.getElementById('classStudentsTable');
+            
+            if (!studentsList || !table) return;
+            
+            // Demo o'quvchilar ma'lumotlari
+            const classStudents = [
+                { id: 1, name: "Aliyev Aziz", avgGrade: 5.0, completion: 100, attendance: 98, status: "active" },
+                { id: 2, name: "Xasanova Malika", avgGrade: 4.9, completion: 98, attendance: 96, status: "active" },
+                { id: 3, name: "Yuldasheva Nozima", avgGrade: 4.7, completion: 95, attendance: 97, status: "active" }
+            ];
+            
+            table.innerHTML = classStudents.map((student, index) => `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td>${student.name}</td>
+                    <td><span class="badge">${student.avgGrade}</span></td>
+                    <td>${student.completion}%</td>
+                    <td>${student.attendance}%</td>
+                    <td>
+                        <span class="status-badge ${student.status}">
+                            ${student.status === 'active' ? 'Faol' : 'Nofaol'}
+                        </span>
+                    </td>
+                </tr>
+            `).join('');
+            
+            studentsList.style.display = 'block';
         }
-        
-        .mt-3 {
-            margin-top: 1rem;
+
+        function hideStudentsList() {
+            const studentsList = document.getElementById('studentsList');
+            if (studentsList) {
+                studentsList.style.display = 'none';
+            }
         }
-        </style>
-        `);
+
+        // ==================== UMUMIY FUNCTIONS ====================
+        function getSubjectText(code) {
+            const subjects = {
+                'matematika': 'Matematika',
+                'ona_tili': 'Ona Tili',
+                'ingliz_tili': 'Ingliz Tili',
+                'fizika': 'Fizika'
+            };
+            return subjects[code] || code;
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('uz-UZ', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
+            });
+        }
+
+        function logout() {
+            if (confirm('Tizimdan chiqishni istaysizmi?')) {
+                showNotification('Tizimdan chiqildi', 'info');
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1000);
+            }
+        }
+
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification-alert ${type}`;
+            notification.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+                <span>${message}</span>
+            `;
+            
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'success' ? '#d4edda' : type === 'error' ? '#f8d7da' : '#d1ecf1'};
+                color: ${type === 'success' ? '#155724' : type === 'error' ? '#721c24' : '#0c5460'};
+                padding: 15px 20px;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                z-index: 1000;
+                animation: slideIn 0.3s ease, fadeOut 0.3s ease 2.7s forwards;
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // ==================== DOM YUKLANGANDA ====================
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeDashboard();
+            
+            // Notification uchun style qo'shish
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideIn {
+                    from {
+                        transform: translateX(100%);
+                        opacity: 0;
+                    }
+                    to {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+                }
+
+                @keyframes fadeOut {
+                    from {
+                        opacity: 1;
+                    }
+                    to {
+                        opacity: 0;
+                    }
+                }
+
+                .notification-alert {
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    padding: 15px 20px;
+                    border-radius: 8px;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    z-index: 1000;
+                    animation: slideIn 0.3s ease, fadeOut 0.3s ease 2.7s forwards;
+                }
+
+                .notification-alert.success {
+                    background: #d4edda;
+                    color: #155724;
+                }
+
+                .notification-alert.error {
+                    background: #f8d7da;
+                    color: #721c24;
+                }
+
+                .notification-alert.info {
+                    background: #d1ecf1;
+                    color: #0c5460;
+                }
+
+                .notification-alert.warning {
+                    background: #fff3cd;
+                    color: #856404;
+                }
+            `;
+            document.head.appendChild(style);
+        });
     </script>
 </body>
 </html>
