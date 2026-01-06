@@ -17,7 +17,14 @@ const DEMO_ACCOUNTS = {
         role: 'student',
         name: 'O\'quvchi',
         page: 'student.html'
+    },
+       'ota_ona': {  // BU XATO! Underscore bilan: ota_ona
+        password: 'ota_ona123',
+        role: 'ota-ona',
+        name: 'Ota-ona',
+        page: 'ota_ona.html'
     }
+
 };
 
 // DOM yuklanganda
@@ -94,23 +101,40 @@ function handleLogin() {
     }, 1500);
 }
 
-// Autentifikatsiya
+// Autentifikatsiya funksiyasini debug bilan
 function authenticate(username, password) {
+    console.log('=== AUTHENTICATE DEBUG ===');
+    console.log('Kiritilgan login:', username);
+    console.log('Kiritilgan parol:', password);
+    console.log('DEMO_ACCOUNTS mavjud loginlar:', Object.keys(DEMO_ACCOUNTS));
+    
     const user = DEMO_ACCOUNTS[username];
+    console.log('Topilgan user:', user);
     
     if (!user) {
+        console.log('User topilmadi!');
         return {
             success: false,
             error: 'Bunday login topilmadi!'
         };
     }
     
+    console.log('Parol solishtirish:');
+    console.log('Kiritilgan:', password);
+    console.log('Saqlangan:', user.password);
+    console.log('Mos keladimi?', user.password === password);
+    
     if (user.password !== password) {
+        console.log('Parol noto\'g\'ri!');
         return {
             success: false,
             error: 'Noto\'g\'ri parol!'
         };
     }
+    
+    console.log('Kirish muvaffaqiyatli!');
+    console.log('Yo\'naltiriladigan sahifa:', user.page);
+    console.log('=== AUTHENTICATE TUGADI ===');
     
     return {
         success: true,
@@ -121,8 +145,11 @@ function authenticate(username, password) {
     };
 }
 
-// Muvaffaqiyatli login
+// loginSuccess funksiyasiga debug qo'shing
 function loginSuccess(user) {
+    console.log('=== LOGIN SUCCESS DEBUG ===');
+    console.log('User object:', user);
+    
     // Ma'lumotlarni saqlash
     const userData = {
         ...user,
@@ -130,20 +157,20 @@ function loginSuccess(user) {
         token: 'demo_token_' + Date.now()
     };
     
+    console.log('Saving to localStorage:', userData);
     localStorage.setItem('smart_maktab_user', JSON.stringify(userData));
+    
+    console.log('Saving to sessionStorage: true');
     sessionStorage.setItem('smart_maktab_auth', 'true');
     
-    // Muvaffaqiyat animatsiyasi
-    const submitBtn = document.querySelector('.login-btn');
-    submitBtn.textContent = '✅ Muvaffaqiyatli!';
-    submitBtn.style.background = '#28a745';
+    console.log('Redirecting to:', user.page);
     
     // Yo'naltirish
     setTimeout(() => {
+        console.log('Redirecting now...');
         window.location.href = user.page;
     }, 1500);
 }
-
 // Login muvaffaqiyatsiz
 function loginFailed(errorMessage) {
     showError(errorMessage);
@@ -319,3 +346,24 @@ function getCurrentPage() {
 
 // Sahifa nomini consolega chiqarish
 getCurrentPage();
+// auth.js faylida logout funksiyasini global qiling:
+
+// Global logout funksiyasi
+window.logout = function() {
+    console.log('Global logout function called');
+    
+    // Barcha ma'lumotlarni tozalash
+    localStorage.removeItem('smart_maktab_user');
+    sessionStorage.removeItem('smart_maktab_auth');
+    
+    // Login sahifasiga yo'naltirish
+    window.location.href = 'index.html';
+};
+
+// Yoki boshqa sahifalarda ishlatish uchun:
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = { logout };
+} else {
+    // Browser uchun
+    window.logoutGlobal = logout;
+}

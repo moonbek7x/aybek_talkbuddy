@@ -213,15 +213,27 @@ function loadTodaySchedule() {
             room: "102-xona"
         },
         {
-            time: "10:00",
+            time: "08:50",
             subject: "Fizika",
             details: "Mexanika darsi - O'qituvchi: M. Mahmudova",
             room: "Fizika lab"
         },
         {
-            time: "12:00",
+            time: "09:40",
             subject: "Kimyo",
             details: "Kimyoviy reaktsiyalar - O'qituvchi: S. Sodiqova",
+            room: "Kimyo lab"
+        },
+              {
+            time: "10:30",
+            subject: "Ona Tili",
+            details: "Ona tili darsi - O'qituvchi: S. Rasulova",
+            room: "Kimyo lab"
+        },
+              {
+            time: "11:15",
+            subject: "Jizmoniy tarbiya",
+            details: "maktab zalida - O'qituvchi: T. Tohirov",
             room: "Kimyo lab"
         }
     ];

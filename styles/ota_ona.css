@@ -1,0 +1,599 @@
+/* Ota-Ona sahifasi uchun maxsus stillar */
+
+/* Bolani tanlash kartasi */
+.student-selector-card {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    border-left: 5px solid blueviolet;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.student-info {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.student-avatar {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, blueviolet, #8a2be2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    color: white;
+}
+
+.student-details h3 {
+    font-size: 1.8rem;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.student-details p {
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.student-badges {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.student-select {
+    min-width: 250px;
+}
+
+.student-select label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #333;
+}
+/* Yangi qo'shimchalar */
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.filters {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.filters label {
+    font-size: 0.9rem;
+    color: #666;
+    white-space: nowrap;
+}
+
+.password-input-group {
+    display: flex;
+    gap: 10px;
+}
+
+.password-input-group .form-control {
+    flex: 1;
+}
+
+/* Select elementlari uchun */
+.student-select .form-control {
+    padding: 10px 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s;
+}
+
+.student-select .form-control:focus {
+    border-color: blueviolet;
+    box-shadow: 0 0 0 3px rgba(138, 43, 226, 0.1);
+    outline: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .header-actions {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .filters {
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+    }
+    
+    .filters select {
+        width: 100%;
+    }
+    
+    .password-input-group {
+        flex-direction: column;
+    }
+}
+/* Kichik statistik kartalar */
+.stat-card-small {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: transform 0.3s;
+}
+
+.stat-card-small:hover {
+    transform: translateY(-3px);
+}
+
+.stat-icon-small {
+    width: 50px;
+    height: 50px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.stat-card-small .stat-info h3 {
+    font-size: 1.8rem;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.stat-card-small .stat-info p {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* Fanlar statistikasi grid */
+.subjects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.subject-card {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    border-left: 4px solid;
+    transition: all 0.3s;
+}
+
+.subject-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.subject-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.subject-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.subject-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.2rem;
+}
+
+.subject-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.subject-stat-item {
+    text-align: center;
+}
+
+.stat-label-small {
+    display: block;
+    font-size: 0.8rem;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.stat-value-small {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.subject-progress {
+    margin-top: 15px;
+}
+
+.progress-label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+}
+
+/* Fanlar ranglari */
+.subject-card.math { border-left-color: #ff6b6b; }
+.subject-card.physics { border-left-color: #4ecdc4; }
+.subject-card.chemistry { border-left-color: #45b7d1; }
+.subject-card.english { border-left-color: #96ceb4; }
+.subject-card.uzbek { border-left-color: #ffeaa7; }
+.subject-card.history { border-left-color: #dda0dd; }
+.subject-card.biology { border-left-color: #98d8c8; }
+.subject-card.geography { border-left-color: #f7dc6f; }
+
+.subject-card.math .subject-icon { background: #ff6b6b; }
+.subject-card.physics .subject-icon { background: #4ecdc4; }
+.subject-card.chemistry .subject-icon { background: #45b7d1; }
+.subject-card.english .subject-icon { background: #96ceb4; }
+.subject-card.uzbek .subject-icon { background: #ffeaa7; }
+.subject-card.history .subject-icon { background: #dda0dd; }
+.subject-card.biology .subject-icon { background: #98d8c8; }
+.subject-card.geography .subject-icon { background: #f7dc6f; }
+
+/* Student profil kartalari */
+.student-profile {
+    text-align: center;
+    padding: 20px;
+}
+
+.student-avatar-large {
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(135deg, blueviolet, #8a2be2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    color: white;
+    margin: 0 auto 20px;
+}
+
+.student-profile h4 {
+    font-size: 1.3rem;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.student-profile p {
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.student-stats {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-item span {
+    display: block;
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.stat-item strong {
+    font-size: 1.2rem;
+    color: #333;
+}
+
+/* Davomat kalendari */
+.attendance-calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+    padding: 20px;
+}
+
+.calendar-day {
+    aspect-ratio: 1;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.calendar-day:hover {
+    transform: scale(1.1);
+}
+
+.calendar-day.present {
+    background: #d4edda;
+    color: #155724;
+    border: 2px solid #c3e6cb;
+}
+
+.calendar-day.absent {
+    background: #f8d7da;
+    color: #721c24;
+    border: 2px solid #f5c6cb;
+}
+
+.calendar-day.late {
+    background: #fff3cd;
+    color: #856404;
+    border: 2px solid #ffeaa7;
+}
+
+.calendar-day.future {
+    background: #f8f9fa;
+    color: #666;
+    border: 1px solid #e9ecef;
+}
+
+.calendar-day.today {
+    border: 2px solid blueviolet;
+    background: white;
+    color: blueviolet;
+    font-weight: bold;
+}
+
+/* Vazifalar ro'yxati */
+.homework-list {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.homework-item {
+    padding: 15px;
+    border-bottom: 1px solid #f0f0f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.homework-item:last-child {
+    border-bottom: none;
+}
+
+.homework-info h4 {
+    font-size: 1rem;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.homework-info p {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 8px;
+}
+
+.homework-meta {
+    display: flex;
+    gap: 15px;
+    font-size: 0.8rem;
+    color: #888;
+}
+
+.homework-meta i {
+    margin-right: 5px;
+}
+
+.homework-status {
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.status-pending {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.status-done {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status-overdue {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+/* Diagramma containerlari */
+.chart-container {
+    height: 250px;
+    position: relative;
+    padding: 15px;
+}
+
+/* Sozlamalar formlari */
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.checkbox-group label {
+    cursor: pointer;
+    user-select: none;
+    color: #333;
+}
+
+/* Header actions */
+.header-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+/* Breadcrumb */
+.breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #666;
+    font-size: 0.9rem;
+    margin-top: 5px;
+}
+
+/* Responsive dizayn */
+@media (max-width: 1200px) {
+    .student-selector-card {
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .student-select {
+        width: 100%;
+        min-width: auto;
+    }
+    
+    .subjects-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .student-info {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .student-badges {
+        justify-content: center;
+    }
+    
+    .subjects-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .stat-card-small {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .homework-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .homework-meta {
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 576px) {
+    .attendance-calendar {
+        grid-template-columns: repeat(5, 1fr);
+        gap: 5px;
+    }
+    
+    .calendar-day {
+        font-size: 0.8rem;
+    }
+    
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .header-actions {
+        width: 100%;
+        flex-direction: column;
+    }
+    
+    .header-actions select,
+    .header-actions button {
+        width: 100%;
+    }
+}
+
+/* Animatsiyalar */
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-slide-in {
+    animation: slideInRight 0.3s ease-out;
+}
+
+.animate-fade-up {
+    animation: fadeInUp 0.5s ease-out;
+}
+
+/* Scrollbar stilizatsiyasi */
+.homework-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.homework-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.homework-list::-webkit-scrollbar-thumb {
+    background: blueviolet;
+    border-radius: 3px;
+}
+
+.homework-list::-webkit-scrollbar-thumb:hover {
+    background: #8a2be2;
+}
