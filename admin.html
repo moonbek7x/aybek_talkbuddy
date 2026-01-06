@@ -3,1315 +3,738 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TalkBuddy Ai - Ota-Ona Paneli</title>
+    <title>Admin Panel - TalkBuddy Ai</title>
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/dashboard.css">
+    <link rel="stylesheet" href="styles/admin_teacher.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        :root {
-            --primary-color: blueviolet;
-            --primary-dark: #8a2be2;
-            --primary-light: #e6d4ff;
-            --success-color: #28a745;
-            --warning-color: #ffc107;
-            --danger-color: #dc3545;
-            --info-color: #17a2b8;
-            --math-color: #ff6b6b;
-            --physics-color: #4ecdc4;
-            --chemistry-color: #45b7d1;
-            --english-color: #96ceb4;
-            --uzbek-color: #ffeaa7;
-            --history-color: #dda0dd;
-            --biology-color: #98d8c8;
-            --geography-color: #f7dc6f;
-        }
-
-        /* Ota-ona sahifasi uchun maxsus stillar */
-        .ota-ona-header {
-            background: linear-gradient(135deg, var(--primary-color), #6c63ff);
-            color: white;
-            padding: 25px 0;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 20px rgba(138, 43, 226, 0.2);
-        }
-
-        .header-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .parent-info {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .parent-avatar {
-            width: 70px;
-            height: 70px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-        }
-
-        .student-selector-container {
-            max-width: 1200px;
-            margin: 0 auto 30px;
-            padding: 0 20px;
-        }
-
-        .student-card {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-            border-left: 6px solid var(--primary-color);
-            margin-bottom: 20px;
-        }
-
-        .student-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .student-main-info {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .student-avatar {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
-            color: white;
-        }
-
-        .student-details h3 {
-            font-size: 1.8rem;
-            margin-bottom: 5px;
-            color: var(--primary-color);
-        }
-
-        .student-badges {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .badge {
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
-
-        .badge-primary { background: var(--primary-light); color: var(--primary-color); }
-        .badge-success { background: #d4edda; color: #155724; }
-        .badge-warning { background: #fff3cd; color: #856404; }
-        .badge-info { background: #d1ecf1; color: #0c5460; }
-
-        /* Fanlar statistikasi kartalari */
-        .subjects-stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 25px;
-            margin-bottom: 30px;
-        }
-
-        .subject-card {
-            background: white;
-            border-radius: 12px;
-            padding: 25px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-            transition: transform 0.3s;
-            border-top: 4px solid;
-        }
-
-        .subject-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .subject-card.math { border-top-color: var(--math-color); }
-        .subject-card.physics { border-top-color: var(--physics-color); }
-        .subject-card.chemistry { border-top-color: var(--chemistry-color); }
-        .subject-card.english { border-top-color: var(--english-color); }
-        .subject-card.uzbek { border-top-color: var(--uzbek-color); }
-        .subject-card.history { border-top-color: var(--history-color); }
-        .subject-card.biology { border-top-color: var(--biology-color); }
-        .subject-card.geography { border-top-color: var(--geography-color); }
-
-        .subject-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .subject-icon {
-            font-size: 2rem;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-        }
-
-        .math .subject-icon { background: var(--math-color); }
-        .physics .subject-icon { background: var(--physics-color); }
-        .chemistry .subject-icon { background: var(--chemistry-color); }
-        .english .subject-icon { background: var(--english-color); }
-        .uzbek .subject-icon { background: var(--uzbek-color); }
-        .history .subject-icon { background: var(--history-color); }
-        .biology .subject-icon { background: var(--biology-color); }
-        .geography .subject-icon { background: var(--geography-color); }
-
-        .subject-title {
-            font-size: 1.3rem;
-            font-weight: 600;
-            color: #333;
-        }
-
-        .subject-teacher {
-            color: #666;
-            font-size: 0.95rem;
-            margin-bottom: 15px;
-        }
-
-        .subject-stats {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .stat-item {
-            text-align: center;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 8px;
-        }
-
-        .stat-label {
-            display: block;
-            font-size: 0.9rem;
-            color: #666;
-            margin-bottom: 5px;
-        }
-
-        .stat-value {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: #333;
-        }
-
-        .subject-progress {
-            margin-top: 15px;
-        }
-
-        .progress-label {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 5px;
-            font-size: 0.9rem;
-        }
-
-        .progress-bar {
-            height: 10px;
-            background: #e9ecef;
-            border-radius: 5px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            border-radius: 5px;
-        }
-
-        .math .progress-fill { background: var(--math-color); }
-        .physics .progress-fill { background: var(--physics-color); }
-        .chemistry .progress-fill { background: var(--chemistry-color); }
-        .english .progress-fill { background: var(--english-color); }
-        .uzbek .progress-fill { background: var(--uzbek-color); }
-        .history .progress-fill { background: var(--history-color); }
-        .biology .progress-fill { background: var(--biology-color); }
-        .geography .progress-fill { background: var(--geography-color); }
-
-        /* Umumiy statistikalar */
-        .overall-stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 25px;
-            margin-bottom: 30px;
-        }
-
-        .overall-card {
-            background: white;
-            border-radius: 12px;
-            padding: 25px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-            text-align: center;
-        }
-
-        .overall-icon {
-            font-size: 3rem;
-            margin-bottom: 15px;
-            color: var(--primary-color);
-        }
-
-        .overall-value {
-            font-size: 2.5rem;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 10px;
-        }
-
-        .overall-label {
-            color: #666;
-            font-size: 1.1rem;
-        }
-
-        /* Grafiklar qismi */
-        .charts-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-            gap: 25px;
-            margin-bottom: 30px;
-        }
-
-        .chart-card {
-            background: white;
-            border-radius: 12px;
-            padding: 25px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-        }
-
-        .chart-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .chart-title {
-            font-size: 1.2rem;
-            color: #333;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .chart-container {
-            height: 300px;
-            position: relative;
-        }
-
-        /* Baholar jadvali */
-        .grades-container {
-            background: white;
-            border-radius: 12px;
-            padding: 25px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-            margin-bottom: 30px;
-        }
-
-        .grades-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .grades-filter {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-        }
-
-        .grades-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        .grades-table th {
-            background-color: var(--primary-light);
-            color: var(--primary-color);
-            padding: 15px;
-            text-align: left;
-            font-weight: 600;
-        }
-
-        .grades-table td {
-            padding: 15px;
-            border-bottom: 1px solid #e9ecef;
-        }
-
-        .grades-table tr:hover {
-            background-color: #f8f9fa;
-        }
-
-        .grade-badge {
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-weight: 500;
-            display: inline-block;
-        }
-
-        .grade-5 { background: #d4edda; color: #155724; }
-        .grade-4 { background: #fff3cd; color: #856404; }
-        .grade-3 { background: #ffeaa7; color: #8a6900; }
-        .grade-2 { background: #f8d7da; color: #721c24; }
-
-        /* Vazifalar qismi */
-        .homework-container {
-            background: white;
-            border-radius: 12px;
-            padding: 25px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-            margin-bottom: 40px;
-        }
-
-        .homework-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .homework-item {
-            background: #f8f9fa;
-            border-radius: 10px;
-            padding: 20px;
-            border-left: 4px solid var(--primary-color);
-        }
-
-        .homework-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .homework-subject {
-            font-weight: 600;
-            color: var(--primary-color);
-        }
-
-        .homework-date {
-            color: #666;
-            font-size: 0.9rem;
-        }
-
-        .homework-status {
-            display: inline-block;
-            padding: 3px 10px;
-            border-radius: 15px;
-            font-size: 0.85rem;
-            margin-top: 10px;
-        }
-
-        .status-done { background: #d4edda; color: #155724; }
-        .status-pending { background: #fff3cd; color: #856404; }
-        .status-overdue { background: #f8d7da; color: #721c24; }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                gap: 20px;
-                text-align: center;
-            }
-            
-            .subjects-stats,
-            .overall-stats,
-            .charts-container {
-                grid-template-columns: 1fr;
-            }
-            
-            .student-main-info {
-                flex-direction: column;
-                text-align: center;
-            }
-        }
-
-        /* Animatsiyalar */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .fade-in-up {
-            animation: fadeInUp 0.5s ease-out;
-        }
-    </style>
 </head>
 <body>
-    <!-- Sarlavha -->
-    <header class="ota-ona-header">
-        <div class="header-content">
-            <div class="logo">
-                <h1><i class="fas fa-home"></i> Ota-Ona Paneli</h1>
-                <p>Bolangizning barcha fanlardagi statistikasi va natijalari</p>
+    <div class="dashboard">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <h2><i class="fas fa-school"></i> TalkBuddy Ai</h2>
+                    <p class="user-role">Admin Panel</p>
+                </div>
             </div>
-            
-            <div class="parent-info">
-                <div class="parent-avatar">
-                    👨‍👩‍👦
+
+            <nav class="sidebar-menu">
+                <ul>
+                    <li class="active">
+                        <a href="#dashboard">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#users">
+                            <i class="fas fa-users"></i>
+                            <span>Foydalanuvchilar</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#ustozlar">
+                            <i class="fas fa-book"></i>
+                            <span>Ustozlar</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#statistika">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>Statistika</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#parametrlar">
+                            <i class="fas fa-cogs"></i>
+                            <span>Parametrlar</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="avatar">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    <div class="user-details">
+                        <strong>Admin User</strong>
+                        <small>admin@maktab.uz</small>
+                    </div>
                 </div>
-                <div>
-                    <h3>Ali Aliyev</h3>
-                    <p>Ota | +998 90 123 45 67</p>
-                </div>
-                <button class="btn btn-light" onclick="logout()">
-                    <i class="fas fa-sign-out-alt"></i> Chiqish
+                <button class="btn btn-secondary" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Chiqish
                 </button>
             </div>
-        </div>
-    </header>
+        </aside>
 
-    <!-- Asosiy kontent -->
-    <main class="container">
-        <!-- Bolani tanlash va asosiy ma'lumotlar -->
-        <div class="student-selector-container">
-            <div class="student-card fade-in-up">
-                <div class="student-header">
-                    <div class="student-main-info">
-                        <div class="student-avatar">
-                            👨‍🎓
+        <!-- Asosiy kontent -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-left">
+                    <h1>Admin Boshqaruvi</h1>
+                </div>
+                <div class="header-right">
+                    <div class="notification">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge">3</span>
+                    </div>
+                    <div class="date-display">
+                        <i class="fas fa-calendar"></i>
+                        <span id="currentDate"></span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Kontent -->
+            <div class="content">
+                <!-- Dashboard -->
+                <section id="dashboard" class="content-section active">
+                    <h2><i class="fas fa-tachometer-alt"></i> Dashboard</h2>
+                    
+                    <!-- Statistikalar -->
+                    <div class="stats-cards">
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background-color: #e6d4ff;">
+                                <i class="fas fa-users" style="color: blueviolet;"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>1,254</h3>
+                                <p>Jami O'quvchilar</p>
+                            </div>
                         </div>
-                        <div class="student-details">
-                            <h3 id="studentName">Aziz Aliyev</h3>
-                            <p id="studentInfo">9-sinf o'quvchisi | 45-IDUM | 15 yosh</p>
-                            <div class="student-badges">
-                                <span class="badge badge-success" id="studentStatus">Faol</span>
-                                <span class="badge badge-primary" id="studentRank">Sinfda 3-o'rin</span>
-                                <span class="badge badge-info" id="studentAttendance">Davomat: 96%</span>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background-color: #d4edda;">
+                                <i class="fas fa-chalkboard-teacher" style="color: #28a745;"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>48</h3>
+                                <p>O'qituvchilar</p>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background-color: #fff3cd;">
+                                <i class="fas fa-book" style="color: #ffc107;"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>156</h3>
+                                <p>Darslar</p>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background-color: #f8d7da;">
+                                <i class="fas fa-chart-line" style="color: #dc3545;"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>94%</h3>
+                                <p>Faollik</p>
                             </div>
                         </div>
                     </div>
-                    
-                    <div class="student-selector">
-                        <label for="studentSelect"><i class="fas fa-exchange-alt"></i> Bolani tanlash:</label>
-                        <select id="studentSelect" class="form-control" onchange="changeStudent()" style="width: 250px;">
-                            <option value="1" selected>Aziz Aliyev (9-sinf)</option>
-                            <option value="2">Muhammad Yusuf (8-sinf)</option>
-                            <option value="3">Zarina Akbarova (10-sinf)</option>
+
+                    <!-- Tezkor amallar -->
+                    <div class="quick-actions">
+                        <h3>Tezkor Amallar</h3>
+                        <div class="actions-grid">
+                            <button class="action-btn" onclick="showSection('users')">
+                                <i class="fas fa-user-plus"></i>
+                                <span>Yangi Foydalanuvchi</span>
+                            </button>
+                            <button class="action-btn" onclick="showSection('ustozlar')">
+                                <i class="fas fa-plus-circle"></i>
+                                <span>Ustozlar</span>
+                            </button>
+                            <button class="action-btn" onclick="showSection('statistika')">
+                                <i class="fas fa-chart-pie"></i>
+                                <span>Statistika</span>
+                            </button>
+                            <button class="action-btn" onclick="showSection('parametrlar')">
+                                <i class="fas fa-cog"></i>
+                                <span>Tizim Sozlamalari</span>
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+<!-- Foydalanuvchilar -->
+<section id="users" class="content-section">
+    <div class="section-header">
+        <h2><i class="fas fa-users"></i> Foydalanuvchilar Boshqaruvi</h2>
+        <button class="btn btn-primary" onclick="showAddUserModal()">
+            <i class="fas fa-plus"></i> Yangi Foydalanuvchi
+        </button>
+    </div>
+
+    <!-- Foydalanuvchi qo'shish formasi -->
+    <div class="card">
+        <h3>Yangi Foydalanuvchi Qo'shish</h3>
+        <form id="addUserForm" onsubmit="addUser(event)">
+            <div class="row">
+                <div class="col-4">
+                    <div class="form-group">
+                        <label for="userLogin">Login *</label>
+                        <input type="text" id="userLogin" class="form-control" required>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="form-group">
+                        <label for="userPassword">Parol *</label>
+                        <input type="password" id="userPassword" class="form-control" required>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="form-group">
+                        <label for="userHealthStatus">O'quvchi Holati *</label>
+                        <select id="userHealthStatus" class="form-control" required>
+                            <option value="">Tanlang</option>
+                            <option value="healthy">Sog'lom</option>
+                            <option value="temporarily_ill">Vaqtincha kasal</option>
+                            <option value="disabled">Nogiron</option>
                         </select>
                     </div>
                 </div>
-                
-                <div class="row" style="margin-top: 20px;">
-                    <div class="col-4">
-                        <div class="text-center">
-                            <h4><i class="fas fa-chart-line"></i> Umumiy o'rtacha</h4>
-                            <div class="overall-value" id="overallAverage">4.5</div>
-                        </div>
+            </div>
+
+            <div class="row">
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="userAge">Yoshi</label>
+                        <input type="number" id="userAge" class="form-control" min="6" max="60">
                     </div>
-                    <div class="col-4">
-                        <div class="text-center">
-                            <h4><i class="fas fa-book"></i> O'qilgan darslar</h4>
-                            <div class="overall-value" id="completedLessons">128</div>
-                        </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="userClass">Sinf</label>
+                        <select id="userClass" class="form-control">
+                            <option value="">Tanlang</option>
+                            <option value="1">1-sinf</option>
+                            <option value="2">2-sinf</option>
+                            <option value="3">3-sinf</option>
+                            <option value="4">4-sinf</option>
+                            <option value="5">5-sinf</option>
+                            <option value="6">6-sinf</option>
+                            <option value="7">7-sinf</option>
+                            <option value="8">8-sinf</option>
+                            <option value="9">9-sinf</option>
+                            <option value="10">10-sinf</option>
+                            <option value="11">11-sinf</option>
+                        </select>
                     </div>
-                    <div class="col-4">
-                        <div class="text-center">
-                            <h4><i class="fas fa-calendar-check"></i> Davomat</h4>
-                            <div class="overall-value" id="attendanceRate">96%</div>
-                        </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="userPhone">Telefon Raqam</label>
+                        <input type="tel" id="userPhone" class="form-control" placeholder="+998">
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="userStatus">Holati</label>
+                        <select id="userStatus" class="form-control">
+                            <option value="active">Faol</option>
+                            <option value="inactive">Nofaol</option>
+                            <option value="blocked">Bloklangan</option>
+                        </select>
                     </div>
                 </div>
             </div>
+
+            <div class="form-group">
+                <label for="userFullName">To'liq Ism</label>
+                <input type="text" id="userFullName" class="form-control">
+            </div>
+
+            <div class="text-right">
+                <button type="reset" class="btn btn-secondary">Tozalash</button>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Saqlash
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Foydalanuvchilar jadvali -->
+    <div class="card">
+        <h3>Ro'yxatdagi Foydalanuvchilar</h3>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Login</th>
+                        <th>Ism</th>
+                        <th>O'quvchi Holati</th>
+                        <th>Sinf</th>
+                        <th>Yoshi</th>
+                        <th>Telefon</th>
+                        <th>Holati</th>
+                        <th>Amallar</th>
+                    </tr>
+                </thead>
+                <tbody id="usersTable">
+                    <!-- JavaScript orqali to'ldiriladi -->
+                </tbody>
+            </table>
         </div>
+    </div>
+</section>
+<!-- Ustozlar Boshqaruvi -->
+<section id="ustozlar" class="content-section">
+    <div class="section-header">
+        <h2><i class="fas fa-chalkboard-teacher"></i> Ustozlar Boshqaruvi</h2>
+        <button class="btn btn-primary" onclick="showAddTeacherModal()">
+            <i class="fas fa-plus"></i> Yangi Ustoz
+        </button>
+    </div>
 
-        <!-- Fanlar statistikasi -->
-        <h2 class="section-title"><i class="fas fa-book-open"></i> Fanlar bo'yicha statistikalar</h2>
-        <div class="subjects-stats">
-            <!-- Matematika -->
-            <div class="subject-card math fade-in-up">
-                <div class="subject-header">
-                    <div>
-                        <div class="subject-title">Matematika</div>
-                        <div class="subject-teacher">O'qituvchi: R. Ismoilov</div>
-                    </div>
-                    <div class="subject-icon">∫</div>
-                </div>
-                
-                <div class="subject-stats">
-                    <div class="stat-item">
-                        <span class="stat-label">O'rtacha baho</span>
-                        <span class="stat-value">4.8</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">Baholar soni</span>
-                        <span class="stat-value">12</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">Darslar</span>
-                        <span class="stat-value">24/24</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">O'qituvchi bahosi</span>
-                        <span class="stat-value">5</span>
+    <!-- Ustoz qo'shish formasi -->
+    <div class="card">
+        <h3>Yangi Ustoz Qo'shish</h3>
+        <form id="addTeacherForm" onsubmit="addTeacher(event)">
+            <div class="row">
+                <div class="col-4">
+                    <div class="form-group">
+                        <label for="teacherFirstName">Ism *</label>
+                        <input type="text" id="teacherFirstName" class="form-control" required>
                     </div>
                 </div>
-                
-                <div class="subject-progress">
-                    <div class="progress-label">
-                        <span>Fan bo'yicha yutuqlar</span>
-                        <span>92%</span>
+                <div class="col-4">
+                    <div class="form-group">
+                        <label for="teacherLastName">Familiya *</label>
+                        <input type="text" id="teacherLastName" class="form-control" required>
                     </div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: 92%"></div>
+                </div>
+                <div class="col-4">
+                    <div class="form-group">
+                        <label for="teacherAge">Yoshi *</label>
+                        <input type="number" id="teacherAge" class="form-control" required min="25" max="70">
                     </div>
                 </div>
             </div>
 
-            <!-- Fizika -->
-            <div class="subject-card physics fade-in-up">
-                <div class="subject-header">
-                    <div>
-                        <div class="subject-title">Fizika</div>
-                        <div class="subject-teacher">O'qituvchi: M. Karimova</div>
-                    </div>
-                    <div class="subject-icon">⚛</div>
-                </div>
-                
-                <div class="subject-stats">
-                    <div class="stat-item">
-                        <span class="stat-label">O'rtacha baho</span>
-                        <span class="stat-value">4.5</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">Baholar soni</span>
-                        <span class="stat-value">8</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">Darslar</span>
-                        <span class="stat-value">22/24</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">O'qituvchi bahosi</span>
-                        <span class="stat-value">4</span>
+            <div class="row">
+                <div class="col-6">
+                    <div class="form-group">
+                        <label for="teacherPhone">Telefon Raqami *</label>
+                        <input type="tel" id="teacherPhone" class="form-control" placeholder="+998 90 123 45 67" required>
                     </div>
                 </div>
-                
-                <div class="subject-progress">
-                    <div class="progress-label">
-                        <span>Fan bo'yicha yutuqlar</span>
-                        <span>85%</span>
-                    </div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: 85%"></div>
+                <div class="col-6">
+                    <div class="form-group">
+                        <label for="teacherExperience">Tajriba (yil) *</label>
+                        <input type="number" id="teacherExperience" class="form-control" required min="0" max="50">
                     </div>
                 </div>
             </div>
 
-            <!-- Kimyo -->
-            <div class="subject-card chemistry fade-in-up">
-                <div class="subject-header">
-                    <div>
-                        <div class="subject-title">Kimyo</div>
-                        <div class="subject-teacher">O'qituvchi: S. Abdurahmonov</div>
-                    </div>
-                    <div class="subject-icon">⚗</div>
-                </div>
-                
-                <div class="subject-stats">
-                    <div class="stat-item">
-                        <span class="stat-label">O'rtacha baho</span>
-                        <span class="stat-value">4.7</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">Baholar soni</span>
-                        <span class="stat-value">10</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">Darslar</span>
-                        <span class="stat-value">23/24</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">O'qituvchi bahosi</span>
-                        <span class="stat-value">5</span>
+            <div class="row">
+                <div class="col-6">
+                    <div class="form-group">
+                        <label for="teacherQualification">Malakasi *</label>
+                        <select id="teacherQualification" class="form-control" required>
+                            <option value="">Tanlang</option>
+                            <option value="oliy">Oliy ma'lumotli</option>
+                            <option value="orta-maxsus">O'rta maxsus</option>
+                            <option value="magistr">Magistr</option>
+                            <option value="doktor">PhD/Doktor</option>
+                        </select>
                     </div>
                 </div>
-                
-                <div class="subject-progress">
-                    <div class="progress-label">
-                        <span>Fan bo'yicha yutuqlar</span>
-                        <span>88%</span>
-                    </div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: 88%"></div>
+                <div class="col-6">
+                    <div class="form-group">
+                        <label for="teacherHasClass">Dars Bera oladimi? *</label>
+                        <select id="teacherHasClass" class="form-control" required>
+                            <option value="">Tanlang</option>
+                            <option value="ha">Ha, dars bera oladi</option>
+                            <option value="yoq">Yo'q, dars bera olmaydi</option>
+                        </select>
                     </div>
                 </div>
             </div>
 
-            <!-- Ingliz tili -->
-            <div class="subject-card english fade-in-up">
-                <div class="subject-header">
-                    <div>
-                        <div class="subject-title">Ingliz tili</div>
-                        <div class="subject-teacher">O'qituvchi: D. Rasulova</div>
-                    </div>
-                    <div class="subject-icon">🇬🇧</div>
-                </div>
-                
-                <div class="subject-stats">
-                    <div class="stat-item">
-                        <span class="stat-label">O'rtacha baho</span>
-                        <span class="stat-value">4.6</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">Baholar soni</span>
-                        <span class="stat-value">14</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">Darslar</span>
-                        <span class="stat-value">24/24</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">O'qituvchi bahosi</span>
-                        <span class="stat-value">5</span>
-                    </div>
-                </div>
-                
-                <div class="subject-progress">
-                    <div class="progress-label">
-                        <span>Fan bo'yicha yutuqlar</span>
-                        <span>90%</span>
-                    </div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: 90%"></div>
-                    </div>
-                </div>
+            <div class="form-group">
+                <label for="teacherSubjects">O'qitadigan Fanlar</label>
+                <select id="teacherSubjects" class="form-control" multiple>
+                    <option value="matematika">Matematika</option>
+                    <option value="fizika">Fizika</option>
+                    <option value="kimyo">Kimyo</option>
+                    <option value="biologiya">Biologiya</option>
+                    <option value="ona_tili">Ona Tili</option>
+                    <option value="ingliz_tili">Ingliz Tili</option>
+                    <option value="tarix">Tarix</option>
+                    <option value="geografiya">Geografiya</option>
+                    <option value="informatika">Informatika</option>
+                </select>
+                <small class="text-muted">Bir nechta fanni tanlash uchun CTRL tugmasini bosib turib tanlang</small>
             </div>
 
-            <!-- Ona tili -->
-            <div class="subject-card uzbek fade-in-up">
-                <div class="subject-header">
-                    <div>
-                        <div class="subject-title">O'zbek tili</div>
-                        <div class="subject-teacher">O'qituvchi: Z. Yusupova</div>
-                    </div>
-                    <div class="subject-icon">🇺🇿</div>
-                </div>
-                
-                <div class="subject-stats">
-                    <div class="stat-item">
-                        <span class="stat-label">O'rtacha baho</span>
-                        <span class="stat-value">4.9</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">Baholar soni</span>
-                        <span class="stat-value">15</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">Darslar</span>
-                        <span class="stat-value">24/24</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">O'qituvchi bahosi</span>
-                        <span class="stat-value">5</span>
-                    </div>
-                </div>
-                
-                <div class="subject-progress">
-                    <div class="progress-label">
-                        <span>Fan bo'yicha yutuqlar</span>
-                        <span>95%</span>
-                    </div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: 95%"></div>
-                    </div>
-                </div>
+            <div class="form-group">
+                <label for="teacherNotes">Qo'shimcha ma'lumotlar</label>
+                <textarea id="teacherNotes" class="form-control" rows="3" placeholder="Maxsus ko'nikmalar, sertifikatlar..."></textarea>
             </div>
 
-            <!-- Tarix -->
-            <div class="subject-card history fade-in-up">
-                <div class="subject-header">
-                    <div>
-                        <div class="subject-title">Tarix</div>
-                        <div class="subject-teacher">O'qituvchi: B. Ahmedov</div>
-                    </div>
-                    <div class="subject-icon">🏛</div>
-                </div>
-                
-                <div class="subject-stats">
-                    <div class="stat-item">
-                        <span class="stat-label">O'rtacha baho</span>
-                        <span class="stat-value">4.2</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">Baholar soni</span>
-                        <span class="stat-value">7</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">Darslar</span>
-                        <span class="stat-value">20/24</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">O'qituvchi bahosi</span>
-                        <span class="stat-value">4</span>
-                    </div>
-                </div>
-                
-                <div class="subject-progress">
-                    <div class="progress-label">
-                        <span>Fan bo'yicha yutuqlar</span>
-                        <span>78%</span>
-                    </div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: 78%"></div>
-                    </div>
-                </div>
+            <div class="text-right">
+                <button type="reset" class="btn btn-secondary">Tozalash</button>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Saqlash
+                </button>
             </div>
+        </form>
+    </div>
 
-            <!-- Biologiya -->
-            <div class="subject-card biology fade-in-up">
-                <div class="subject-header">
-                    <div>
-                        <div class="subject-title">Biologiya</div>
-                        <div class="subject-teacher">O'qituvchi: N. Sharipova</div>
-                    </div>
-                    <div class="subject-icon">🌿</div>
-                </div>
-                
-                <div class="subject-stats">
-                    <div class="stat-item">
-                        <span class="stat-label">O'rtacha baho</span>
-                        <span class="stat-value">4.4</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">Baholar soni</span>
-                        <span class="stat-value">9</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">Darslar</span>
-                        <span class="stat-value">21/24</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">O'qituvchi bahosi</span>
-                        <span class="stat-value">4</span>
-                    </div>
-                </div>
-                
-                <div class="subject-progress">
-                    <div class="progress-label">
-                        <span>Fan bo'yicha yutuqlar</span>
-                        <span>82%</span>
-                    </div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: 82%"></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Geografiya -->
-            <div class="subject-card geography fade-in-up">
-                <div class="subject-header">
-                    <div>
-                        <div class="subject-title">Geografiya</div>
-                        <div class="subject-teacher">O'qituvchi: A. Qodirov</div>
-                    </div>
-                    <div class="subject-icon">🌍</div>
-                </div>
-                
-                <div class="subject-stats">
-                    <div class="stat-item">
-                        <span class="stat-label">O'rtacha baho</span>
-                        <span class="stat-value">4.3</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">Baholar soni</span>
-                        <span class="stat-value">8</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">Darslar</span>
-                        <span class="stat-value">22/24</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">O'qituvchi bahosi</span>
-                        <span class="stat-value">4</span>
-                    </div>
-                </div>
-                
-                <div class="subject-progress">
-                    <div class="progress-label">
-                        <span>Fan bo'yicha yutuqlar</span>
-                        <span>80%</span>
-                    </div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: 80%"></div>
-                    </div>
-                </div>
-            </div>
+    <!-- Ustozlar jadvali -->
+    <div class="card">
+        <h3>Ro'yxatdagi Ustozlar</h3>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Ism</th>
+                        <th>Familiya</th>
+                        <th>Yoshi</th>
+                        <th>Telefon</th>
+                        <th>Tajriba</th>
+                        <th>Malakasi</th>
+                        <th>Dars</th>
+                        <th>Fanlar</th>
+                        <th>Holati</th>
+                        <th>Amallar</th>
+                    </tr>
+                </thead>
+                <tbody id="teachersTable">
+                    <!-- JavaScript orqali to'ldiriladi -->
+                </tbody>
+            </table>
         </div>
-
-        <!-- Umumiy statistikalar -->
-        <h2 class="section-title"><i class="fas fa-chart-pie"></i> Umumiy ko'rsatkichlar</h2>
-        <div class="overall-stats">
-            <div class="overall-card fade-in-up">
-                <div class="overall-icon">
-                    <i class="fas fa-trophy"></i>
-                </div>
-                <div class="overall-value">3</div>
-                <div class="overall-label">Sinfdagi o'rni</div>
-                <div class="progress-bar" style="margin-top: 15px;">
-                    <div class="progress-fill" style="width: 90%; background: gold;"></div>
-                </div>
-            </div>
-            
-            <div class="overall-card fade-in-up">
-                <div class="overall-icon">
-                    <i class="fas fa-star"></i>
-                </div>
-                <div class="overall-value">28</div>
-                <div class="overall-label">A'lo baholar soni</div>
-                <div class="progress-bar" style="margin-top: 15px;">
-                    <div class="progress-fill" style="width: 85%; background: #28a745;"></div>
-                </div>
-            </div>
-            
-            <div class="overall-card fade-in-up">
-                <div class="overall-icon">
-                    <i class="fas fa-calendar-check"></i>
-                </div>
-                <div class="overall-value">96%</div>
-                <div class="overall-label">Davomat foizi</div>
-                <div class="progress-bar" style="margin-top: 15px;">
-                    <div class="progress-fill" style="width: 96%; background: #007bff;"></div>
-                </div>
-            </div>
-            
-            <div class="overall-card fade-in-up">
-                <div class="overall-icon">
-                    <i class="fas fa-graduation-cap"></i>
-                </div>
-                <div class="overall-value">128</div>
-                <div class="overall-label">Topilgan darslar</div>
-                <div class="progress-bar" style="margin-top: 15px;">
-                    <div class="progress-fill" style="width: 92%; background: var(--primary-color);"></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Grafiklar -->
-        <h2 class="section-title"><i class="fas fa-chart-line"></i> Dinamika va taqsimot</h2>
-        <div class="charts-container">
-            <div class="chart-card fade-in-up">
-                <div class="chart-header">
-                    <h3 class="chart-title">
-                        <i class="fas fa-chart-line"></i> Fanlar bo'yicha o'rtacha baholar
-                    </h3>
-                </div>
-                <div class="chart-container">
-                    <canvas id="subjectGradesChart"></canvas>
-                </div>
-            </div>
-            
-            <div class="chart-card fade-in-up">
-                <div class="chart-header">
-                    <h3 class="chart-title">
-                        <i class="fas fa-chart-bar"></i> Oxirgi 6 oy dinamikasi
-                    </h3>
-                </div>
-                <div class="chart-container">
-                    <canvas id="monthlyProgressChart"></canvas>
-                </div>
-            </div>
-        </div>
-
-        <!-- Baholar jadvali -->
-        <div class="grades-container fade-in-up">
-            <div class="grades-header">
-                <h3><i class="fas fa-table"></i> Oxirgi baholar</h3>
-                <div class="grades-filter">
-                    <select id="subjectFilter" class="form-control" style="width: 200px;" onchange="filterGrades()">
-                        <option value="all">Barcha fanlar</option>
-                        <option value="matematika">Matematika</option>
-                        <option value="fizika">Fizika</option>
-                        <option value="kimyo">Kimyo</option>
-                        <option value="ingliz_tili">Ingliz tili</option>
-                        <option value="ona_tili">O'zbek tili</option>
-                        <option value="tarix">Tarix</option>
-                        <option value="biologiya">Biologiya</option>
-                        <option value="geografiya">Geografiya</option>
+    </div>
+</section>
+<!-- Statistika -->
+<section id="statistika" class="content-section">
+    <h2><i class="fas fa-chart-bar"></i> Statistika</h2>
+    
+    <!-- Filtrlash bo'limi -->
+    <div class="filter-section">
+        <div class="row">
+            <div class="col-4">
+                <div class="form-group">
+                    <label for="studentTypeFilter"><i class="fas fa-filter"></i> O'quvchilar Turi</label>
+                    <select id="studentTypeFilter" class="form-control" onchange="filterStatistics()">
+                        <option value="all">Barcha o'quvchilar</option>
+                        <option value="regular">Oddiy o'quvchilar</option>
+                        <option value="special_needs">Maxsus ehtiyojli o'quvchilar</option>
+                        <option value="gifted">Iqtidorli o'quvchilar</option>
+                        <option value="olympiad">Olimpiadachilar</option>
                     </select>
-                    <button class="btn btn-secondary" onclick="exportGrades()">
-                        <i class="fas fa-download"></i> Export
-                    </button>
                 </div>
             </div>
-            
-            <div class="table-responsive">
-                <table class="grades-table">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Fan</th>
-                            <th>Baho</th>
-                            <th>Sana</th>
-                            <th>O'qituvchi</th>
-                            <th>Izoh</th>
-                            <th>Holati</th>
-                        </tr>
-                    </thead>
-                    <tbody id="gradesTable">
-                        <!-- JavaScript orqali to'ldiriladi -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Vazifalar va topshiriqlar -->
-        <div class="homework-container fade-in-up">
-            <div class="grades-header">
-                <h3><i class="fas fa-tasks"></i> Vazifalar va topshiriqlar</h3>
-                <span class="badge badge-primary">3 ta yangi vazifa</span>
-            </div>
-            
-            <div class="homework-list">
-                <div class="homework-item">
-                    <div class="homework-header">
-                        <span class="homework-subject">Matematika</span>
-                        <span class="homework-date">20.03.2024</span>
-                    </div>
-                    <p>Algebra: 10 ta tenglamani yechish. Geometriya: 5 ta masala.</p>
-                    <span class="homework-status status-pending">Bajarilmoqda</span>
+            <div class="col-4">
+                <div class="form-group">
+                    <label for="classFilter"><i class="fas fa-graduation-cap"></i> Sinf bo'yicha</label>
+                    <select id="classFilter" class="form-control" onchange="filterStatistics()">
+                        <option value="all">Barcha sinflar</option>
+                        <option value="1">1-sinf</option>
+                        <option value="2">2-sinf</option>
+                        <option value="3">3-sinf</option>
+                        <option value="4">4-sinf</option>
+                        <option value="5">5-sinf</option>
+                        <option value="6">6-sinf</option>
+                        <option value="7">7-sinf</option>
+                        <option value="8">8-sinf</option>
+                        <option value="9">9-sinf</option>
+                            <option value="10">10-sinf</option>
+                        <option value="11">11-sinf</option>
+                    </select>
                 </div>
-                
-                <div class="homework-item">
-                    <div class="homework-header">
-                        <span class="homework-subject">Fizika</span>
-                        <span class="homework-date">19.03.2024</span>
-                    </div>
-                    <p>Mexanika bo'limi: 15 ta test savoli. Tajriba hisobotini tayyorlash.</p>
-                    <span class="homework-status status-done">Bajarildi ✓</span>
-                </div>
-                
-                <div class="homework-item">
-                    <div class="homework-header">
-                        <span class="homework-subject">Ingliz tili</span>
-                        <span class="homework-date">18.03.2024</span>
-                    </div>
-                    <p>Essay yozish: "My Future Profession". Yangi so'zlarni o'rganish.</p>
-                    <span class="homework-status status-overdue">Muddati o'tgan</span>
+            </div>
+            <div class="col-4">
+                <div class="form-group">
+                    <label for="moodFilter"><i class="fas fa-smile"></i> Kayfiyat bo'yicha</label>
+                    <select id="moodFilter" class="form-control" onchange="filterStatistics()">
+                        <option value="all">Barcha kayfiyatlar</option>
+                        <option value="happy">Baxtli</option>
+                        <option value="normal">Oddiy</option>
+                        <option value="sad">G'amgin</option>
+                        <option value="excited">Hursand</option>
+                        <option value="tired">Charchagan</option>
+                        <option value="sick">Kasal</option>
+                    </select>
                 </div>
             </div>
         </div>
-    </main>
-
-    <!-- Footer -->
-    <footer class="dashboard-footer" style="text-align: center; padding: 20px; color: #666; border-top: 1px solid #ddd;">
-        <p>© 2024 TalkBuddy Ai - Ota-Ona Paneli. Barcha huquqlar himoyalangan.</p>
-        <p>Ma'lumotlar oxirgi marta yangilandi: <span id="lastUpdateTime"></span></p>
-    </footer>
-
-    <!-- JavaScript -->
-    <script src="js/auth.js"></script>
-    <script>
-        // Sahifa yuklanganda
-        document.addEventListener('DOMContentLoaded', function() {
-            // Auth tekshirish
-            const user = checkAuth();
-            if (!user) {
-                window.location.href = 'index.html';
-                return;
-            }
-
-            // Dashboardni ishga tushirish
-            initParentDashboard();
-            updateLastUpdateTime();
-            setInterval(updateLastUpdateTime, 60000);
-        });
-
-        // Dashboardni ishga tushirish
-        function initParentDashboard() {
-            // Baholarni yuklash
-            loadGrades();
+    </div>
+    
+    <!-- Umumiy statistika -->
+    <div class="card">
+        <h3><i class="fas fa-users"></i> Umumiy O'quvchilar: 10 ta</h3>
+        <div class="row">
+            <div class="col-4">
+                <div class="health-stats">
+                    <h4><i class="fas fa-heartbeat"></i> Sog'liq Holati</h4>
+                    <div class="stats-list">
+                        <div class="stat-item">
+                            <span class="stat-label">Sog'lom:</span>
+                            <span class="stat-value" id="healthyCount">6 ta (60%)</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Nogiron:</span>
+                            <span class="stat-value" id="disabledCount">3 ta (30%)</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Vaqtincha kasal:</span>
+                            <span class="stat-value" id="sickCount">1 ta (10%)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
             
-            // Grafiklarni yaratish
-            createSubjectGradesChart();
-            createMonthlyProgressChart();
+            <div class="col-4">
+                <div class="mood-stats">
+                    <h4><i class="fas fa-smile"></i> Kayfiyat Statistikasi</h4>
+                    <div class="stats-list">
+                        <div class="stat-item">
+                            <span class="stat-label">Baxtli:</span>
+                            <span class="stat-value" id="happyCount">3 ta (30%)</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Oddiy:</span>
+                            <span class="stat-value" id="normalCount">2 ta (20%)</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">G'amgin:</span>
+                            <span class="stat-value" id="sadCount">1 ta (10%)</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Hursand:</span>
+                            <span class="stat-value" id="excitedCount">2 ta (20%)</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Charchagan:</span>
+                            <span class="stat-value" id="tiredCount">1 ta (10%)</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Kasal:</span>
+                            <span class="stat-value" id="sickMoodCount">1 ta (10%)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
             
-            // Yangilangan vaqtni ko'rsatish
-            updateLastUpdateTime();
-        }
+            <div class="col-4">
+                <div class="mood-distribution">
+                    <h4><i class="fas fa-chart-pie"></i> Kayfiyatlar Taqsimoti</h4>
+                <div class="distribution-list">
+    <div class="distribution-item">
+        <div class="distribution-header">
+            <span class="dist-label">Baxtli:</span>
+            <span class="dist-value">40%</span>
+        </div>
+        <div class="progress">
+            <div class="progress-bar progress-bar-happy" style="width: 40%"></div>
+        </div>
+    </div>
+    <div class="distribution-item">
+        <div class="distribution-header">
+            <span class="dist-label">Oddiy:</span>
+            <span class="dist-value">30%</span>
+        </div>
+        <div class="progress">
+            <div class="progress-bar progress-bar-normal" style="width: 30%"></div>
+        </div>
+    </div>
+    <div class="distribution-item">
+        <div class="distribution-header">
+            <span class="dist-label">G'amgin:</span>
+            <span class="dist-value">15%</span>
+        </div>
+        <div class="progress">
+            <div class="progress-bar progress-bar-sad" style="width: 15%"></div>
+        </div>
+    </div>
+    <div class="distribution-item">
+        <div class="distribution-header">
+            <span class="dist-label">Hursand:</span>
+            <span class="dist-value">10%</span>
+        </div>
+        <div class="progress">
+            <div class="progress-bar progress-bar-excited" style="width: 10%"></div>
+        </div>
+    </div>
+    <div class="distribution-item">
+        <div class="distribution-header">
+            <span class="dist-label">Charchagan:</span>
+            <span class="dist-value">4%</span>
+        </div>
+        <div class="progress">
+            <div class="progress-bar progress-bar-tired" style="width: 4%"></div>
+        </div>
+    </div>
+    <div class="distribution-item">
+        <div class="distribution-header">
+            <span class="dist-label">Kasal:</span>
+            <span class="dist-value">1%</span>
+        </div>
+        <div class="progress">
+            <div class="progress-bar progress-bar-sick" style="width: 1%"></div>
+        </div>
+    </div>
+</div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        // Baholarni yuklash
-        function loadGrades() {
-            const gradesData = [
-                { id: 1, subject: 'Matematika', grade: 5, date: '20.03.2024', teacher: 'R. Ismoilov', comment: 'A\'lo', status: 'active' },
-                { id: 2, subject: 'Fizika', grade: 4, date: '19.03.2024', teacher: 'M. Karimova', comment: 'Yaxshi', status: 'active' },
-                { id: 3, subject: 'Kimyo', grade: 5, date: '18.03.2024', teacher: 'S. Abdurahmonov', comment: 'A\'lo', status: 'active' },
-                { id: 4, subject: 'Ingliz tili', grade: 5, date: '17.03.2024', teacher: 'D. Rasulova', comment: 'A\'lo', status: 'active' },
-                { id: 5, subject: 'O\'zbek tili', grade: 5, date: '16.03.2024', teacher: 'Z. Yusupova', comment: 'A\'lo', status: 'active' },
-                { id: 6, subject: 'Tarix', grade: 4, date: '15.03.2024', teacher: 'B. Ahmedov', comment: 'Yaxshi', status: 'active' },
-                { id: 7, subject: 'Biologiya', grade: 4, date: '14.03.2024', teacher: 'N. Sharipova', comment: 'Yaxshi', status: 'active' },
-                { id: 8, subject: 'Geografiya', grade: 3, date: '13.03.2024', teacher: 'A. Qodirov', comment: 'Qoniqarli', status: 'active' },
-                { id: 9, subject: 'Matematika', grade: 5, date: '12.03.2024', teacher: 'R. Ismoilov', comment: 'A\'lo', status: 'active' },
-                { id: 10, subject: 'Fizika', grade: 5, date: '11.03.2024', teacher: 'M. Karimova', comment: 'A\'lo', status: 'active' }
-            ];
+    <!-- Eng yaxshi o'quvchilar jadvali -->
+    <div class="card">
+        <div class="card-header">
+            <h3><i class="fas fa-trophy"></i> Eng Yaxshi O'quvchilar</h3>
+            <div class="card-actions">
+                <button class="btn btn-sm btn-secondary" onclick="resetStatisticsFilters()">
+                    <i class="fas fa-redo"></i> Filtrlarni tozalash
+                </button>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table" id="topStudentsTable">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>O'quvchi</th>
+                        <th>Sinf</th>
+                        <th>Kayfiyat</th>
+                        <th>Sog'liq Holati</th>
+                        <th>O'quvchi Turi</th>
+                        <th>O'rtacha Baho</th>
+                        <th>Darslarni Bajarish</th>
+                        <th>Holati</th>
+                    </tr>
+                </thead>
+                <tbody id="topStudentsList">
+                    <!-- JavaScript orqali to'ldiriladi -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
 
-            const tableBody = document.getElementById('gradesTable');
-            tableBody.innerHTML = '';
-
-            gradesData.forEach((grade, index) => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${index + 1}</td>
-                    <td><strong>${grade.subject}</strong></td>
-                    <td><span class="grade-badge grade-${grade.grade}">${grade.grade}</span></td>
-                    <td>${grade.date}</td>
-                    <td>${grade.teacher}</td>
-                    <td>${grade.comment}</td>
-                    <td>
-                        <span class="badge ${grade.status === 'active' ? 'badge-success' : 'badge-danger'}">
-                            ${grade.status === 'active' ? 'Faol' : 'Nofaol'}
-                        </span>
-                    </td>
-                `;
-                tableBody.appendChild(row);
-            });
-        }
-
-        // Fanlar bo'yicha baholar grafigi
-        let subjectGradesChart;
-        function createSubjectGradesChart() {
-            const ctx = document.getElementById('subjectGradesChart').getContext('2d');
-            
-            subjectGradesChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: ['Matematika', 'Fizika', 'Kimyo', 'Ingliz tili', 'Ona tili', 'Tarix', 'Biologiya', 'Geografiya'],
-                    datasets: [{
-                        label: 'O\'rtacha baho',
-                        data: [4.8, 4.5, 4.7, 4.6, 4.9, 4.2, 4.4, 4.3],
-                        backgroundColor: [
-                            'var(--math-color)',
-                            'var(--physics-color)',
-                            'var(--chemistry-color)',
-                            'var(--english-color)',
-                            'var(--uzbek-color)',
-                            'var(--history-color)',
-                            'var(--biology-color)',
-                            'var(--geography-color)'
-                        ],
-                        borderWidth: 2,
-                        borderColor: '#fff'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: false,
-                            min: 3,
-                            max: 5,
-                            ticks: {
-                                stepSize: 0.5
-                            }
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            display: false
-                        }
-                    }
-                }
-            });
-        }
-
-        // Oylik progress grafigi
-        let monthlyProgressChart;
-        function createMonthlyProgressChart() {
-            const ctx = document.getElementById('monthlyProgressChart').getContext('2d');
-            
-            monthlyProgressChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: ['Okt', 'Noy', 'Dek', 'Yan', 'Fev', 'Mar'],
-                    datasets: [{
-                        label: 'O\'rtacha baho',
-                        data: [4.2, 4.3, 4.5, 4.4, 4.6, 4.5],
-                        borderColor: 'var(--primary-color)',
-                        backgroundColor: 'rgba(138, 43, 226, 0.1)',
-                        borderWidth: 3,
-                        fill: true,
-                        tension: 0.3
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: false,
-                            min: 3.5,
-                            max: 5,
-                            ticks: {
-                                stepSize: 0.5
-                            }
-                        }
-                    }
-                }
-            });
-        }
-
-        // Bola o'zgarganda
-        function changeStudent() {
-            const select = document.getElementById('studentSelect');
-            const studentId = select.value;
-            
-            if (!studentId) return;
-            
-            // Loading holati
-            document.querySelector('.student-card').style.opacity = '0.7';
-            
-            setTimeout(() => {
-                // Tanlangan bolaga mos ma'lumotlarni yangilash
-                if (studentId === '1') {
-                    // Aziz Aliyev
-                    document.getElementById('studentName').textContent = 'Aziz Aliyev';
-                    document.getElementById('studentInfo').textContent = '9-sinf o\'quvchisi | 45-IDUM | 15 yosh';
-                    document.getElementById('studentRank').textContent = 'Sinfda 3-o\'rin';
-                    document.getElementById('overallAverage').textContent = '4.5';
-                    document.getElementById('completedLessons').textContent = '128';
-                    document.getElementById('attendanceRate').textContent = '96%';
+                <!-- Parametrlar -->
+                <section id="parametrlar" class="content-section">
+                    <h2><i class="fas fa-cogs"></i> Tizim Parametrlari</h2>
                     
-                    // Fan statistikalarini yangilash
-                    updateSubjectStatsForStudent1();
-                } else if (studentId === '2') {
-                    // Muhammad Yusuf
-                    document.getElementById('studentName').textContent = 'Muhammad Yusuf';
-                    document.getElementById('studentInfo').textContent = '8-sinf o\'quvchisi | 45-IDUM | 14 yosh';
-                    document.getElementById('studentRank').textContent = 'Sinfda 5-o\'rin';
-                    document.getElementById('overallAverage').textContent = '4.3';
-                    document.getElementById('completedLessons').textContent = '115';
-                    document.getElementById('attendanceRate').textContent = '94%';
-                    
-                    // Fan statistikalarini yangilash
-                    updateSubjectStatsForStudent2();
-                } else if (studentId === '3') {
-                    // Zarina Akbarova
-                    document.getElementById('studentName').textContent = 'Zarina Akbarova';
-                    document.getElementById('studentInfo').textContent = '10-sinf o\'quvchisi | 45-IDUM | 16 yosh';
-                    document.getElementById('studentRank').textContent = 'Sinfda 1-o\'rin';
-                    document.getElementById('overallAverage').textContent = '4.7';
-                    document.getElementById('completedLessons').textContent = '142';
-                    document.getElementById('attendanceRate').textContent = '98%';
-                    
-                    // Fan statistikalarini yangilash
-                    updateSubjectStatsForStudent3();
-                }
-                
-                document.querySelector('.student-card').style.opacity = '1';
-                
-                // Grafiklarni yangilash
-                updateCharts();
-                
-            }, 500);
-        }
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="card">
+                                <h3>Umumiy Sozlamalar</h3>
+                                <form id="systemSettings">
+                                    <div class="form-group">
+                                        <label for="siteName">Sayt Nomi</label>
+                                        <input type="text" id="siteName" class="form-control" value="TalkBuddy Ai">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="siteUrl">Sayt URL</label>
+                                        <input type="url" id="siteUrl" class="form-control" value="https://talkbuddyai.uz">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="adminEmail">Admin Email</label>
+                                        <input type="email" id="adminEmail" class="form-control" value="admin@talkbuddyai.uz">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="timezone">Vaqt Zonasi</label>
+                                        <select id="timezone" class="form-control">
+                                            <option value="Asia/Tashkent" selected>Toshkent (GMT+5)</option>
+                                            <option value="UTC">UTC</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="language">Til</label>
+                                        <select id="language" class="form-control">
+                                            <option value="uz" selected>O'zbekcha</option>
+                                            <option value="ru">Ruscha</option>
+                                            <option value="en">Inglizcha</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-save"></i> Sozlamalarni Saqlash
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                        
+                        <div class="col-6">
+                            <div class="card">
+                                <h3>Xavfsizlik Sozlamalari</h3>
+                                <form id="securitySettings">
+                                    <div class="form-group">
+                                        <label for="sessionTimeout">Sessiya Muddati (daqiqa)</label>
+                                        <input type="number" id="sessionTimeout" class="form-control" value="30" min="5" max="120">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="maxLoginAttempts">Maksimal Kirish Urinishi</label>
+                                        <input type="number" id="maxLoginAttempts" class="form-control" value="5" min="1" max="10">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="passwordStrength">Parol Kuchliligi</label>
+                                        <select id="passwordStrength" class="form-control">
+                                            <option value="weak">Oddiy</option>
+                                            <option value="medium" selected>O'rtacha</option>
+                                            <option value="strong">Kuchli</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <div class="checkbox-group">
+                                            <input type="checkbox" id="twoFactorAuth" checked>
+                                            <label for="twoFactorAuth">Ikki faktorli autentifikatsiya</label>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <div class="checkbox-group">
+                                            <input type="checkbox" id="emailNotifications" checked>
+                                            <label for="emailNotifications">Email bildirishnomalari</label>
+                                        </div>
+                                    </div>
+                                    
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-shield-alt"></i> Xavfsizlikni Saqlash
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
 
-        // Fan statistikalarini yangilash (Aziz uchun)
-        function updateSubjectStatsForStudent1() {
-            // Matematika
-            document.querySelector('.math .stat-value:nth-child(1)').textContent = '4.8';
-            document.querySelector('.math .progress-fill').style.width = '92%';
-            
-            // Fizika
-            document.querySelector('.physics .stat-value:nth-child(1)').textContent = '4.5';
-            document.querySelector('.physics .progress-fill').style.width = '85%';
-            
-            // Kimyo
-            document.querySelector('.chemistry .stat-value:nth-child(1)').textContent = '4.7';
-            document.querySelector('.chemistry .progress-fill').style.width = '88%';
-            
-            // ... boshqa fanlar uchun ham shunday
-        }
+    <!-- Modal oynalar -->
+    <div id="addUserModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Yangi Foydalanuvchi</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!-- Modal kontenti -->
+            </div>
+        </div>
+    </div>
 
-        // Grafiklarni yangilash
-        function updateCharts() {
-            // Grafiklarni yangilash kodi
-            console.log('Grafiklar yangilandi');
-            
-            // Yangilangan vaqtni ko'rsatish
-            updateLastUpdateTime();
-        }
-
-        // Baholarni filter qilish
-        function filterGrades() {
-            const filter = document.getElementById('subjectFilter').value;
-            const tableRows = document.querySelectorAll('#gradesTable tr');
-            
-            tableRows.forEach(row => {
-                const subjectCell = row.querySelector('td:nth-child(2)');
-                if (subjectCell) {
-                    const subject = subjectCell.textContent.toLowerCase();
-                    if (filter === 'all' || subject.includes(filter)) {
-                        row.style.display = '';
-                    } else {
-                        row.style.display = 'none';
-                    }
-                }
-            });
-        }
-
-        // Baholarni export qilish
-        function exportGrades() {
-            alert('Baholar jadvali Excel fayl sifatida yuklab olindi.');
-            // Bu yerda haqiqiy export funksiyasi bo'ladi
-        }
-
-        // Yangilangan vaqtni ko'rsatish
-        function updateLastUpdateTime() {
-            const now = new Date();
-            const timeStr = now.toLocaleTimeString('uz-UZ', {
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit'
-            });
-            document.getElementById('lastUpdateTime').textContent = 
-                `${now.toLocaleDateString('uz-UZ')} ${timeStr}`;
-        }
-
-        // Chiqish funksiyasi
-        function logout() {
-            if (confirm('Tizimdan chiqishni xohlaysizmi?')) {
-                if (typeof window.logout === 'function') {
-                    window.logout();
-                } else {
-                    localStorage.removeItem('smart_maktab_user');
-                    sessionStorage.removeItem('smart_maktab_auth');
-                    window.location.href = 'index.html';
-                }
-            }
-        }
-    </script>
+    <script src="js/dashboard.js"></script>
 </body>
-</html>
+    </html>
