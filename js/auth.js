@@ -228,8 +228,9 @@ function setupDemoAccounts() {
         account.style.cursor = 'pointer';
         account.addEventListener('click', function() {
             const text = this.textContent;
-            const loginMatch = text.match(/Login:\s*(\w+)/);
-            const passwordMatch = text.match(/Parol:\s*(\w+)/);
+            const loginMatch = text.match(/Login:\s*([^\s]+)/);
+const passwordMatch = text.match(/Parol:\s*([^\s]+)/);
+            
             
             if (loginMatch && passwordMatch) {
                 const login = loginMatch[1];
