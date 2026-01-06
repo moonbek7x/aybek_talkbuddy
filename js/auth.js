@@ -74,6 +74,9 @@ function handleLoginSubmit(e) {
 function handleLogin() {
     const username = document.getElementById('username').value.trim();
     const password = document.getElementById('password').value.trim();
+    localStorage.clear();
+    sessionStorage.clear();
+    
     
     // Validatsiya
     if (!username || !password) {
